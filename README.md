@@ -115,6 +115,8 @@ V4: Partnership with grocery stores for ingredient delivery, premium subscriptio
 
 ### [BONUS] Interactive Prototype
 
+<img src="figma/cs388_figma_interactive.gif" width=300>
+
 [https://www.figma.com/file/ZElKva705TDTAHHQwN6J5o/CS388_Group](https://www.figma.com/file/ZElKva705TDTAHHQwN6J5o/CS388_Group)
 
 <br>
