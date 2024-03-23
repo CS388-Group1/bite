@@ -10,7 +10,7 @@
 
 ### Description
 
-Bite is an app that helps users discover recipes based on the ingredients they have available. By inputting the ingredients they have on hand, users can quickly find recipe options that suit their needs. The app also allows users to save their dietary preferences and favorite recipes for easy access.
+Bite is an app that helps users discover recipes based on the ingredients they have available. By inputting the ingredients they have on hand or scanning their food using the Spoonacular image classification API, users can quickly find recipe options that suit their needs. The app also allows users to save their dietary preferences, create and manage their own recipes, and discover trending recipes.
 
 ### App Evaluation
 
@@ -35,32 +35,52 @@ V4: Partnership with grocery stores for ingredient delivery, premium subscriptio
 2. User can search for recipes based on input ingredients
 3. User can view a list of recipe options
 4. User can view detailed information for each recipe
-5. User can save dietary preferences
-6. User can save favorite recipes
+5. User can save favorite recipes
+6. User can discover trending recipes
+7. User can scan food and find recipes for it
 
 **Optional Features**
 
-1. User can filter recipes by cuisine, meal type, or cooking time
-2. User can create a shopping list based on missing ingredients for a selected recipe
-3. User can share recipes with friends or on social media platforms
+1. User can add a recipe
+2. User has a list of their created recipes
+3. User can filter recipes by cuisine, meal type, or cooking time
 4. User can rate and review recipes
+5. User can save dietary preferences
 
 ### 2. Screen Archetypes
 
 * Home Screen
+  * User can view trending recipes
+  * User can view recipe of the day
 * Search Screen
   * User can input available ingredients 
   * User can search for recipes based on input ingredients
+  * User can search for recipes by name
 * Recipe List Screen
   * Displays a list of recipe options based on user input and preferences
 * Recipe Detail Screen
   * Shows detailed information for a selected recipe, including ingredients, instructions, and nutritional information
-* Favorites Screen
-  * Displays a list of the user's saved favorite recipes
 * Discover Screen
   * Suggests new recipes based on user preferences and popular items
+* Scan Food Screen
+  * Allows user to scan food items and find recipes for them
+* Create Recipe Screen
+  * Allows user to add a new recipe
+* My Recipes Screen
+  * Displays a list of the user's created recipes
+* Discover Screen
+  * Suggests new trending recipes based on user preferences
+* Favorites Screen
+  * Displays a list of the user's saved favorite recipes
 * Settings
- * User can save dietary preferences
+  * User can save dietary preferences
+  * User can log out
+* Dietary Preferences
+  * User can save dietary preferences
+* Log In
+  * User can log in to their account
+* Sign Up
+  * User can create a new account
 
 ### 3. Navigation
 
@@ -68,22 +88,39 @@ V4: Partnership with grocery stores for ingredient delivery, premium subscriptio
 
 * Home
 * Search 
-* Favorites
+* Scan Food (accessed via + button)
+* Create Recipe (accessed via + button) (optional)
 * Discover 
-* Settings
+* Favorites
 
 **Flow Navigation** (Screen to Screen)
 
-- Home -> Search (ingredients input)
-- Search -> Recipe List (search results)
-- Recipe List -> Recipe Detail 
-- Recipe Detail -> Favorites (save recipe)
-- Favorites -> Recipe Detail
-- Discover -> Recipe Detail
+* Log In
+  * => Home
+* Sign Up 
+  * => Home
+* Home
+  * => Recipe Detail (recipe of the day, trending recipes)
+  * => Settings
+    * => Dietary Preferences (optional)
+    * => My Recipes (optional)
+    * => Log Out
+* Scan Food (scan food item)
+  * => Recipe List (matching search results)
+* Create Recipe (add recipe) (optional)
+  * => My Recipes (list of all created recipes) (optional)
+* Search (by ingredients or recipe name)
+  * => Recipe List (search results)
+* Recipe List (list of recipes)
+  * => Recipe Detail
+* Discover
+  * => Recipe Detail
+* Favorites (save recipe)
+  * => Recipe Detail
 
 ## Wireframes
 
-[Add picture of your hand sketched wireframes in this section] <img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
+<img src="wireframe/mockup.png" width=600>
 
 <br>
 
@@ -91,7 +128,15 @@ V4: Partnership with grocery stores for ingredient delivery, premium subscriptio
 
 ### [BONUS] Digital Wireframes & Mockups
 
+<img src="wireframe/figma.png" width=600>
+
+[https://www.figma.com/file/ZElKva705TDTAHHQwN6J5o/CS388_Group](https://www.figma.com/file/ZElKva705TDTAHHQwN6J5o/CS388_Group)
+
 ### [BONUS] Interactive Prototype
+
+<img src="figma/cs388_figma_interactive.gif" width=300>
+
+[https://www.figma.com/file/ZElKva705TDTAHHQwN6J5o/CS388_Group](https://www.figma.com/file/ZElKva705TDTAHHQwN6J5o/CS388_Group)
 
 <br>
 
