@@ -42,7 +42,7 @@ V4: Partnership with grocery stores for ingredient delivery, premium subscriptio
 **Optional Features**
 
 1. User can add a recipe
-2. User has a list of their recipes
+2. User has a list of their created recipes
 3. User can filter recipes by cuisine, meal type, or cooking time
 4. User can rate and review recipes
 5. User can save dietary preferences
@@ -73,7 +73,14 @@ V4: Partnership with grocery stores for ingredient delivery, premium subscriptio
 * Favorites Screen
   * Displays a list of the user's saved favorite recipes
 * Settings
- * User can save dietary preferences
+  * User can save dietary preferences
+  * User can log out
+* Dietary Preferences
+  * User can save dietary preferences
+* Log In
+  * User can log in to their account
+* Sign Up
+  * User can create a new account
 
 ### 3. Navigation
 
@@ -82,22 +89,34 @@ V4: Partnership with grocery stores for ingredient delivery, premium subscriptio
 * Home
 * Search 
 * Scan Food (accessed via + button)
-* Create Recipe (accessed via + button)
+* Create Recipe (accessed via + button) (optional)
 * Discover 
 * Favorites
 
 **Flow Navigation** (Screen to Screen)
 
-- Home -> Recipe Detail (recipe of the day)
-- Home -> Discover (trending recipes)
-- Scan Food -> Recipe List (search results)
-- Create Recipe -> My Recipes (created recipes)
-- Search -> Recipe List (search results)
-- Recipe List -> Recipe Detail 
-- Recipe Detail -> Favorites (save recipe)
-- Favorites -> Recipe Detail
-- Discover -> Recipe Detail
-- Settings -> Dietary Preferences, My Recipes, Log Out
+* Log In
+  * => Home
+* Sign Up 
+  * => Home
+* Home
+  * => Recipe Detail (recipe of the day, trending recipes)
+  * => Settings
+    * => Dietary Preferences (optional)
+    * => My Recipes (optional)
+    * => Log Out
+* Scan Food (scan food item)
+  * => Recipe List (matching search results)
+* Create Recipe (add recipe) (optional)
+  * => My Recipes (list of all created recipes) (optional)
+* Search (by ingredients or recipe name)
+  * => Recipe List (search results)
+* Recipe List (list of recipes)
+  * => Recipe Detail
+* Discover
+  * => Recipe Detail
+* Favorites (save recipe)
+  * => Recipe Detail
 
 ## Wireframes
 
