@@ -13,7 +13,10 @@
         android:theme="@style/Theme.Bite"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".Register"
+            android:exported="false" />
+        <activity
+            android:name=".Login"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Bite">
@@ -23,6 +26,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+        />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
