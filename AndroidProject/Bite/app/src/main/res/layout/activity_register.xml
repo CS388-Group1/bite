@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+    <ImageView
+        android:id="@+id/filledCheckIcon1"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passReqTextView"
+        app:srcCompat="@drawable/green_check_icon_round"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/signUpButton"
+        android:layout_width="330dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/rounded_black_background"
+        android:fontFamily="sans-serif"
+        android:text="Sign Up"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passReqTextView2" />
+
+    <TextView
+        android:id="@+id/passReqTextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="20dp"
+        android:text="A number"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passReqTextView1" />
+
+    <ImageView
+        android:id="@+id/emptyCheckIcon1"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/gray_check_icon_round_v2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passReqTextView" />
+
+    <TextView
+        android:id="@+id/passReqTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="28dp"
+        android:text="Your Password must contain:"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPasswordInit" />
+
+    <EditText
+        android:id="@+id/editTextTextPasswordInit"
+        android:layout_width="330dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_gray_background"
+        android:drawableStart="@drawable/baseline_password_24"
+        android:drawableEnd="@drawable/baseline_remove_red_eye_24"
+        android:drawablePadding="6dp"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddressInit" />
+
+    <EditText
+        android:id="@+id/editTextTextEmailAddressInit"
+        android:layout_width="330dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/rounded_gray_background"
+        android:drawableLeft="@drawable/baseline_email_24"
+        android:drawablePadding="6dp"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcomeLabel" />
+
+    <TextView
+        android:id="@+id/welcomeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="68dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Welcome!"
+        android:textColor="#2E3E5C"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/emptyCheckIcon2"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="62dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passReqTextView"
+        android:src="@drawable/gray_check_icon_round_v2" />
+
+    <TextView
+        android:id="@+id/passReqTextView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="24dp"
+        android:text="At least 8 characters"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passReqTextView" />
+
+    <ImageView
+        android:id="@+id/filledCheckIcon2"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passReqTextView"
+        app:srcCompat="@drawable/green_check_icon_round"
+        android:visibility="invisible"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
