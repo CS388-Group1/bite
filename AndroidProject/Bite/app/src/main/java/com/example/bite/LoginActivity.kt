@@ -38,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        //Login Logic
         binding.loginButton.setOnClickListener{
             val email = binding.editTextTextEmailAddress.text.toString()
             val password = binding.editTextTextPassword.text.toString()
@@ -59,8 +60,9 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        //Google Sign In Logic
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestIdToken(getString(R.string.default_web_client_id)) //Web Client Id is generated
             .requestEmail()
             .build()
 
@@ -72,11 +74,12 @@ class LoginActivity : AppCompatActivity() {
 
 
         val passwordEditText = binding.editTextTextPassword
+
+        //Toggle Password Visibility
         passwordEditText.setOnTouchListener(View.OnTouchListener { v, event ->
             val DRAWABLE_END = 2
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= passwordEditText.right - passwordEditText.compoundDrawables[DRAWABLE_END].bounds.width()) {
-                    // Toggle password visibility
                     if (passwordEditText.inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
                         passwordEditText.inputType =
                             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
@@ -90,6 +93,7 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
+    //Google Sign In Functions
     private fun signInGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         launcher.launch(signInIntent)

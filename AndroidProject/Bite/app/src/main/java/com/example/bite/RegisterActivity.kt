@@ -36,6 +36,7 @@ class RegisterActivity : AppCompatActivity() {
             return pattern.matches(str)
         }
 
+        //Sign Up Logic
         binding.signUpButton.setOnClickListener{
             val email = binding.editTextTextEmailAddressInit.text.toString()
             val password = binding.editTextTextPasswordInit.text.toString()
@@ -58,11 +59,12 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         val passwordEditText = binding.editTextTextPasswordInit
+
+        //Toggle Password Visibility
         passwordEditText.setOnTouchListener(OnTouchListener { v, event ->
             val DRAWABLE_END = 2
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= passwordEditText.right - passwordEditText.compoundDrawables[DRAWABLE_END].bounds.width()) {
-                    // Toggle password visibility
                     if (passwordEditText.inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
                         passwordEditText.inputType =
                             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
@@ -80,6 +82,7 @@ class RegisterActivity : AppCompatActivity() {
         val greenCheck1 = binding.filledCheckIcon1
         val greenCheck2 = binding.filledCheckIcon2
 
+        //Password Requirement Logic
         passwordEditText.addTextChangedListener{
             val s = passwordEditText.text.toString()
                  if(s != "" && s.length >= 8){
