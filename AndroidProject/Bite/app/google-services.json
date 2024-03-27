@@ -1,26 +1,44 @@
 {
   "project_info": {
-    "project_number": "847447649539",
-    "project_id": "bite-5ee9b",
-    "storage_bucket": "bite-5ee9b.appspot.com"
+    "project_number": "88352232259",
+    "project_id": "bite-c9a5c",
+    "storage_bucket": "bite-c9a5c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:847447649539:android:4f5111c9913f7383dd4d36",
+        "mobilesdk_app_id": "1:88352232259:android:44b28139830304bdc615f6",
         "android_client_info": {
           "package_name": "com.example.bite"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "88352232259-s8fg3mluarpitjo7qv4hr26dfskbtknp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bite",
+            "certificate_hash": "1285fb287de96bd26f1c3448e62c47be69f37e60"
+          }
+        },
+        {
+          "client_id": "88352232259-ur5uvlvel4a3t52r6n24mlfgi455mihk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCEYLCyGzr-otHakE4f7jxo2P0PSqw95EY"
+          "current_key": "AIzaSyBpZPKkk_b7Choj_Go2KOQhmrsxXpzv72w"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88352232259-ur5uvlvel4a3t52r6n24mlfgi455mihk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

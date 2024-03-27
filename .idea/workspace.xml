@@ -5,6 +5,11 @@
       <config />
     </shared>
     <layouts>
+      <layout url="file://$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/layout/activity_login.xml">
+        <config>
+          <theme>@style/Theme.Bite</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/layout/activity_main.xml">
         <config>
           <theme>@style/Theme.Bite</theme>
@@ -25,11 +30,6 @@
           <theme>@style/Theme.Bite</theme>
         </config>
       </layout>
-      <layout url="file://$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/layout/item_recipe_image.xml">
-        <config>
-          <theme>@style/Theme.Bite</theme>
-        </config>
-      </layout>
     </layouts>
   </component>
   <component name="AutoImportSettings">
@@ -37,10 +37,72 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b779d3f6-f200-41be-b7b2-bc225b652ef7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/bite.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/gray_check_icon-playstore.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/ic_launcher-playstore.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/java/com/example/bite/DashboardActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/java/com/example/bite/LoginActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/java/com/example/bite/RegisterActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/baseline_check_circle_outline_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/baseline_email_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/baseline_password_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/baseline_remove_red_eye_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/gray_check_icon_foreground.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/gray_check_icon_round_v2.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/green_check_icon_foreground.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/green_check_icon_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/rounded_black_background.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/rounded_gray_background.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/rounded_red_background.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/rounded_white_background.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/font/cambo.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/layout/activity_dashboard.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/layout/activity_login.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/layout/activity_register.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-anydpi-v26/gray_check_icon_round_v2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-anydpi-v26/green_check_icon.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-anydpi-v26/green_check_icon_round.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-mdpi/gray_check_icon_round_v2.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-mdpi/green_check_icon_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xhdpi/green_check_icon_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xxhdpi/gray_check_icon_round_v2.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xxhdpi/green_check_icon_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xxxhdpi/gray_check_icon_round_v2.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xxxhdpi/green_check_icon_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/values/font_certs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/values/gray_check_icon_background.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/values/green_check_icon_background.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/values/ic_launcher_background.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/values/preloaded_fonts.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/.idea/deploymentTargetDropDown.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/.idea/deploymentTargetDropDown.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/google-services.json" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/google-services.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/java/com/example/bite/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/java/com/example/bite/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/values/colors.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/ic_launcher_background.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/ic_launcher_foreground.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/drawable/ic_launcher_foreground.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-hdpi/ic_launcher.webp" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-hdpi/ic_launcher.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-mdpi/ic_launcher.webp" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-mdpi/ic_launcher.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xhdpi/ic_launcher.webp" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xhdpi/ic_launcher.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/app/src/main/res/values/themes.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidProject/Bite/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidProject/Bite/build.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +122,9 @@
     <system id="GRADLE">
       <state>
         <task path="$PROJECT_DIR$/AndroidProject/Bite/app">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/AndroidProject/Bite">
           <activation />
         </task>
         <projects_view>
@@ -99,11 +164,11 @@
       <list>
         <option value="Class" />
         <option value="Kotlin Data Class" />
-        <option value="resourceFile" />
         <option value="layoutResourceFile_vertical" />
         <option value="Kotlin Class" />
         <option value="Kotlin File" />
         <option value="layoutResourceFile" />
+        <option value="resourceFile" />
       </list>
     </option>
   </component>
@@ -118,6 +183,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2eESxfMN78wjnby03hXVSnfuySH" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -126,36 +194,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "mehmet",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/akifb/AndroidStudioProjects/bite/AndroidProject/Bite/app/src/main/java/com/example/bite",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "experimental"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging mehmet&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/akifb/AndroidStudioProjects/bite/AndroidProject/Bite/app/src&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;experimental&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\akifb\AndroidStudioProjects\bite\AndroidProject\Bite\app\src" />
       <recent name="C:\Users\akifb\AndroidStudioProjects\bite\AndroidProject\Bite\app\src\main\java\com\example\bite" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\akifb\AndroidStudioProjects\bite\AndroidProject\Bite\app" />
+      <recent name="C:\Users\akifb\AndroidStudioProjects\bite\AndroidProject\Bite" />
       <recent name="C:\Users\akifb\AndroidStudioProjects\bite\AndroidProject\Bite\app\src\main\java\com\example\bite\models" />
       <recent name="C:\Users\akifb\AndroidStudioProjects\bite\AndroidProject\Bite\app\src\main\res\layout" />
       <recent name="C:\Users\akifb\AndroidStudioProjects\bite\AndroidProject\Bite\app\src\main\java\com" />
-      <recent name="C:\Users\akifb\AndroidStudioProjects\bite\AndroidProject\Bite\app\src\main\java" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
       <recent name="com.example.bite.network" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="gradle signingReport" />
+    </option>
+  </component>
+  <component name="RunManager" selected="Android App.Bite.app">
     <configuration name="Bite.app" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="Bite.app.main" />
       <option name="DEPLOY" value="true" />
@@ -223,6 +299,33 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" goal="" />
       </method>
     </configuration>
+    <configuration name="Bite [signingReport]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/AndroidProject/Bite" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="signingReport" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.Bite [signingReport]" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
