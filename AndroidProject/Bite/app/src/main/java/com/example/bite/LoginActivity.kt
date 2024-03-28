@@ -9,7 +9,6 @@ import android.text.InputType
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.bite.databinding.ActivityLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -91,6 +90,12 @@ class LoginActivity : AppCompatActivity() {
             }
             false
         })
+
+        binding.demoButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     //Google Sign In Functions
