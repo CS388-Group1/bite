@@ -150,7 +150,7 @@
         android:layout_width="330dp"
         android:layout_height="47dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:background="@color/gray"
         android:drawableTint="#FFFFFF"
         android:paddingLeft="120dp"
@@ -160,6 +160,5 @@
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginGoogleButton" />
-
+        app:layout_constraintTop_toBottomOf="@+id/noAccountTextLabel2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
