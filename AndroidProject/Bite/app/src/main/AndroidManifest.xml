@@ -28,6 +28,7 @@
             android:theme="@style/Theme.Bite">
         </activity>
         <activity android:name=".SearchByIngredient"
+            android:theme="@style/AppTheme"
             android:exported="true" />
 
         <activity
