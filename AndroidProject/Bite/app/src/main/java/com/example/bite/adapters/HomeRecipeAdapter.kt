@@ -8,9 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bite.R
+import com.example.bite.models.HomeRecipe
 import com.example.bite.models.Recipe
 
-class HomeRecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClicked: (Recipe) -> Unit) :
+class HomeRecipeAdapter(private var recipes: List<HomeRecipe>, private val onRecipeClicked: (HomeRecipe) -> Unit) :
     RecyclerView.Adapter<HomeRecipeAdapter.HomeRecipeViewHolder>() {
 
     inner class HomeRecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,11 +36,11 @@ class HomeRecipeAdapter(private var recipes: List<Recipe>, private val onRecipeC
         with(holder) {
             recipeTitle.text = recipe.name
             recipeAuthor.text = recipe.author
-            Glide.with(recipeImage.context).load(recipe.imageUrl).into(recipeImage)
+            Glide.with(recipeImage.context).load(recipe.imageUrl).centerCrop().into(recipeImage)
             itemView.setOnClickListener { onRecipeClicked(recipe) }
         }
     }
-    fun updateRecipes(newRecipes: List<Recipe>) {
+    fun updateRecipes(newRecipes: List<HomeRecipe>) {
         recipes = newRecipes
         notifyDataSetChanged()
     }

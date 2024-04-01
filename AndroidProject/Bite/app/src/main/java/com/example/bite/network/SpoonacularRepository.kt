@@ -2,6 +2,7 @@ package com.example.bite.network
 
 
 import android.util.Log
+import com.example.bite.models.HomeRecipe
 import com.example.bite.models.IngredientListResponse
 import com.example.bite.models.Recipe
 import com.example.bite.models.RecipeResponse
@@ -33,10 +34,14 @@ class SpoonacularRepository {
         return response.results.map { it.toRecipe() }
     }
 
-    suspend fun getTrendingRecipes(): RecipeResponse {
+    suspend fun getTrendingRecipes(): List<HomeRecipe> {
         val response = api.getTrendingRecipes()
-        Log.v("response", response.toString())
-        return response.toRecipe()
+        return response.recipes.map { it.toHomeRecipe()}
+    }
+
+    suspend fun getRandomRecipe(): List<HomeRecipe> {
+        val response = api.getRandomRecipe()
+        return response.recipes.map { it.toHomeRecipe()}
     }
 
 

@@ -3,7 +3,6 @@ package com.example.bite.models
 data class Recipe(
     val id: String,
     val name: String,
-    val author: String,
     val description: String,
     val imageUrl: String,
     val cookingTime: Int
@@ -13,7 +12,6 @@ data class RecipeResponse(
     val id: Int,
     val title: String,
     val image: String,
-    val creditsText: String,
     val missedIngredientCount: Int,
     val missedIngredients: List<Ingredient>,
     val usedIngredientCount: Int,
@@ -23,7 +21,6 @@ data class RecipeResponse(
         return Recipe(
             id = id.toString(),
             name = title,
-            author = creditsText,
             description = "Description unavailable",
             imageUrl = image,
             cookingTime = 0
