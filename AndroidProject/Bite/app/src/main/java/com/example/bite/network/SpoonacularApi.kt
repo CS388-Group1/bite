@@ -3,6 +3,7 @@ package com.example.bite.network
 import com.example.bite.BuildConfig
 import com.example.bite.models.IngredientListResponse
 import com.example.bite.models.IngredientResponse
+import com.example.bite.models.Recipe
 import com.example.bite.models.RecipeListResponse
 import com.example.bite.models.RecipeResponse
 import retrofit2.http.Field
@@ -50,7 +51,7 @@ interface SpoonacularApi {
         @Query("number") number: Int = 10,
         @Query("tags") tags: String = "vegetarian",
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
-    ): RecipeListResponse
+    ): List<RecipeResponse>
 
     @GET("recipes/complexSearch")
     suspend fun searchRecipeByName(

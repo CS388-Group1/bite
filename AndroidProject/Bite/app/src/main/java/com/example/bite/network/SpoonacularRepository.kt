@@ -1,8 +1,10 @@
 package com.example.bite.network
 
 
+import android.util.Log
 import com.example.bite.models.IngredientListResponse
 import com.example.bite.models.Recipe
+import com.example.bite.models.RecipeResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -31,9 +33,10 @@ class SpoonacularRepository {
         return response.results.map { it.toRecipe() }
     }
 
-    suspend fun getTrendingRecipes(): List<Recipe> {
-        val response = api.getTrendingRecipes(10)
-        return response.results.map { it.toRecipe()}
+    suspend fun getTrendingRecipes(): RecipeResponse {
+        val response = api.getTrendingRecipes()
+        Log.v("response", response.toString())
+        return response.toRecipe()
     }
 
 
