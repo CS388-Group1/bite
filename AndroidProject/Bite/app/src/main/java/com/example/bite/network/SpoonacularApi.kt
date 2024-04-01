@@ -50,7 +50,7 @@ interface SpoonacularApi {
         @Query("number") number: Int = 10,
         @Query("tags") tags: String = "vegetarian",
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
-    ): List<RecipeListResponse>
+    ): RecipeListResponse
 
     @GET("recipes/complexSearch")
     suspend fun searchRecipeByName(

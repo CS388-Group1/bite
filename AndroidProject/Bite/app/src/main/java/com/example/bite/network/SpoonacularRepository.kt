@@ -1,5 +1,6 @@
 package com.example.bite.network
 
+
 import com.example.bite.models.IngredientListResponse
 import com.example.bite.models.Recipe
 import retrofit2.Retrofit
@@ -28,6 +29,11 @@ class SpoonacularRepository {
     suspend fun searchRecipeByName(query: String): List<Recipe> {
         val response = api.searchRecipeByName(query)
         return response.results.map { it.toRecipe() }
+    }
+
+    suspend fun getTrendingRecipes(): List<Recipe> {
+        val response = api.getTrendingRecipes(10)
+        return response.results.map { it.toRecipe()}
     }
 
 
