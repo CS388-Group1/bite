@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bite.models.IngredientResponse
@@ -34,7 +35,7 @@ class SearchByIngredient: AppCompatActivity() {
         ingredientAdapter = IngredientAdapter(emptyList())
         selectedAdapter = IngredientAdapter(emptyList())
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = GridLayoutManager(this,4)
         recyclerView.adapter = ingredientAdapter
 
         spoonacularRepository = SpoonacularRepository()
@@ -46,7 +47,7 @@ class SearchByIngredient: AppCompatActivity() {
 
         }
         var selected: List<IngredientResponse> = emptyList()
-        selectedRecyclerView.layoutManager = LinearLayoutManager(this)
+        selectedRecyclerView.layoutManager = GridLayoutManager(this,4)
         selectedRecyclerView.adapter = selectedAdapter
         ingredientAdapter.setOnClickListener (object :
             IngredientAdapter.OnClickListener {

@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="100dp"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="16dp">
 
-    <ImageView
-        android:id="@+id/imageViewIngredient"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="centerCrop" />
+    <RelativeLayout
+        android:layout_width="72dp"
+        android:layout_height="90dp">
 
-    <TextView
-        android:id="@+id/textViewIngredientName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"
-        android:layout_weight="1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        <TextView
+            android:id="@+id/textViewIngredientName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageViewIngredient"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="-40dp"
+            android:textSize="11sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+        <ImageView
+            android:id="@+id/imageViewIngredient"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/rounded_white_background"/>
+    </RelativeLayout>
 
 </LinearLayout>
