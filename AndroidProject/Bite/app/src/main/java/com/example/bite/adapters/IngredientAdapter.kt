@@ -1,5 +1,6 @@
 package com.example.bite
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,8 @@ import com.example.bite.models.IngredientResponse
 
 class IngredientAdapter(private var ingredients: List<IngredientResponse>) :
     RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
-
-    class IngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private var onClickListener: OnClickListener? = null
+    inner class IngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val imageView: ImageView = itemView.findViewById(R.id.imageViewIngredient)
         val nameView: TextView = itemView.findViewById(R.id.textViewIngredientName)
     }
@@ -32,9 +33,24 @@ class IngredientAdapter(private var ingredients: List<IngredientResponse>) :
             .placeholder(R.drawable.placeholder_image)
             .error(R.drawable.error_image)
             .into(holder.imageView)
+
+        holder.itemView.setOnClickListener{
+            if(onClickListener != null){
+                onClickListener!!.onClick(position, ingredient)
+            }
+        }
     }
 
     override fun getItemCount() = ingredients.size
+
+    fun setOnClickListener(onClickListener: OnClickListener) {
+        this.onClickListener = onClickListener
+    }
+
+    interface OnClickListener {
+        fun onClick(position: Int, ingredient: IngredientResponse)
+    }
+
 
     fun updateIngredients(newIngredients: List<IngredientResponse>) {
         ingredients = newIngredients

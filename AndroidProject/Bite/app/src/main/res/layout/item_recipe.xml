@@ -50,7 +50,5 @@
         android:background="@drawable/rounded_white_outer_black_background"
         android:text="@string/heart_icon"
         android:textSize="25sp"
-        android:textScaleX="1.3"
-        android:textAlignment="center"
         />
 </RelativeLayout>
