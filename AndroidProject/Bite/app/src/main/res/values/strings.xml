@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Bite</string>
     <string name="default_web_client_id">88352232259-ur5uvlvel4a3t52r6n24mlfgi455mihk.apps.googleusercontent.com</string>
+    <string name="heart_icon">♡</string>
 </resources>
