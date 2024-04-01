@@ -47,7 +47,7 @@ class RecipeDetailActivity : AppCompatActivity() {
             name = "Default Recipe",
             description = "This is a default recipe.",
             imageUrl = "https://example.com/default_image.jpg",
-            cookingTime = 0
+            cookingTime = 0,
         )
     }
 }

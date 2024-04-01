@@ -21,7 +21,7 @@ data class RecipeResponse(
         return Recipe(
             id = id.toString(),
             name = title,
-            description = "Description unavailable",
+            description = "Description Unavailable",
             imageUrl = image,
             cookingTime = 0
         )
