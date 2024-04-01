@@ -90,12 +90,6 @@ class LoginActivity : AppCompatActivity() {
             }
             false
         })
-
-        binding.demoButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-
     }
 
     //Google Sign In Functions
