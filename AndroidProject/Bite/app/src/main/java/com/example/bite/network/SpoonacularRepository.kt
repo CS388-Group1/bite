@@ -30,6 +30,15 @@ class SpoonacularRepository {
         return response.results.map { it.toRecipe() }
     }
 
+    suspend fun getRecipeById(recipeId: String): Recipe? {
+        return try {
+            val response = api.getRecipeById(recipeId)
+            response.toRecipe()
+        } catch (e: Exception) {
+            null // Handle error or return null in case of failure
+        }
+    }
+
 
 
 }

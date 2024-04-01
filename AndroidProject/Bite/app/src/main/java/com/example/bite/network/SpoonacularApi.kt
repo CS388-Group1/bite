@@ -9,6 +9,7 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface SpoonacularApi {
@@ -58,5 +59,12 @@ interface SpoonacularApi {
         @Query("number") number: Int = 10,
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
     ): RecipeListResponse
+
+    @GET("recipes/{id}/information")
+    suspend fun getRecipeById(
+        @Path("id") id: String,
+        @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
+    ): RecipeResponse
+
 
 }
