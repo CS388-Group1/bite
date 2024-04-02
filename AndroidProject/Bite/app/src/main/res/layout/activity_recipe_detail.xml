@@ -62,7 +62,9 @@
             android:layout_below="@id/recipeImage"
             android:layout_marginTop="16dp"
             android:text="Recipe Title"
-            android:textSize="24sp" />
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:layout_centerHorizontal="true"/>
 
         <!-- Recipe Author -->
         <TextView
@@ -72,7 +74,8 @@
             android:layout_below="@id/recipeTitle"
             android:layout_marginTop="8dp"
             android:text="Recipe Author"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"/>
 
         <!-- Recipe Description -->
         <TextView
@@ -81,7 +84,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/recipeAuthor"
             android:layout_marginTop="16dp"
-            android:text="Recipe Description" />
+            android:text="Recipe Description"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"/>
 
         <!-- Ingredients Section -->
         <TextView
@@ -91,7 +96,10 @@
             android:layout_below="@id/recipeDescription"
             android:layout_marginTop="16dp"
             android:text="Ingredients"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"/>
 
         <!-- Ingredients List -->
         <androidx.recyclerview.widget.RecyclerView
@@ -109,7 +117,10 @@
             android:layout_below="@id/ingredientsRecyclerView"
             android:layout_marginTop="16dp"
             android:text="Instructions"
-            android:textSize="20sp" />
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"/>
 
         <TextView
             android:id="@+id/recipeInstructions"
@@ -118,7 +129,9 @@
             android:layout_below="@id/instructionsTitle"
             android:layout_marginTop="8dp"
             android:text="Instructions"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"/>
 
 
     </RelativeLayout>

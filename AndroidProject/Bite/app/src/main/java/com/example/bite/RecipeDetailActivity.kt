@@ -32,7 +32,7 @@ class RecipeDetailActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.recipeLabel).text = "Recipe" // Set recipe label
                 findViewById<TextView>(R.id.recipeTitle).text = recipe.name // Set recipe title
                 findViewById<TextView>(R.id.recipeDescription).text = HtmlCompat.fromHtml(recipe.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
-                findViewById<TextView>(R.id.recipeAuthor).text = recipe.sourceName
+                findViewById<TextView>(R.id.recipeAuthor).text = "By " + recipe.sourceName
                 // Set other recipe details like author, description, and image
                 // Use Glide or any other image loading library to load the image
                 Glide.with(this@RecipeDetailActivity).load(recipe.imageUrl).into(findViewById(R.id.recipeImage))
