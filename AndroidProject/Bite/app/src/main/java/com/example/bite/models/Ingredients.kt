@@ -5,8 +5,7 @@ data class Ingredient(
     val name: String,
     val image: String,
     val amount: Double,
-    val unit: String,
-    val original: String
+    val unit: String
 )
 
 data class IngredientListResponse(
@@ -15,9 +14,37 @@ data class IngredientListResponse(
     val number: Int,
     val totalResults: Int
 )
-
 data class IngredientResponse(
     val id: Int,
     val name: String,
     val image: String
 )
+
+data class RecipeIngredientsResponse(
+    val ingredients: List<RecipeIngredients>
+)
+
+data class RecipeIngredients(
+    val amount: AmountResponse,
+    val image: String,
+    val name: String
+) {
+    fun toIngredient(): Ingredient {
+        return Ingredient(
+            name = name,
+            amount = amount.us.value,
+            unit = amount.us.unit,
+            image = image,
+            id = 0
+        )
+    }
+}
+data class AmountResponse(
+    val us: AmountUsResponse
+)
+data class AmountUsResponse (
+    val unit: String,
+    val value: Double
+)
+
+

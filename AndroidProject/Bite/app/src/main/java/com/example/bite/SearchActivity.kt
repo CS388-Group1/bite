@@ -1,5 +1,6 @@
 package com.example.bite
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -33,6 +34,9 @@ class SearchActivity : ComponentActivity() {
 
         recipeAdapter = RecipeAdapter(emptyList()) { recipe ->
             // Handle recipe click here
+            val intent = Intent(this@SearchActivity, RecipeDetailActivity::class.java)
+            intent.putExtra("RECIPE_ID", recipe.id) // Pass the selected recipe to RecipeDetailActivity
+            startActivity(intent)
         }
 
         recyclerView.layoutManager = LinearLayoutManager(this)
