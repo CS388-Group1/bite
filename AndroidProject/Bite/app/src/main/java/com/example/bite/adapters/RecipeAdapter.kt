@@ -15,6 +15,7 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
         val imageView: ImageView = itemView.findViewById(R.id.imageViewRecipe)
         val nameView: TextView = itemView.findViewById(R.id.textViewRecipeName)
         val descriptionView: TextView = itemView.findViewById(R.id.textViewDescription)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {

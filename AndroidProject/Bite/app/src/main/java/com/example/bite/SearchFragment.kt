@@ -37,6 +37,9 @@ class SearchFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerView)
         recipeAdapter = RecipeAdapter(emptyList()) { recipe ->
             // Handle recipe click here
+            val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
+            intent.putExtra("RECIPE_ID", recipe.id) // Assuming recipe ID is used to fetch details
+            startActivity(intent)
         }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = recipeAdapter

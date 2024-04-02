@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecipeDetailActivity">>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Views and other elements go here -->
+        <include layout="@layout/loading_layout" />
+
+        <RelativeLayout
+            android:id="@+id/mainContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <!-- Back Arrow Button -->
+            <!-- Recipe Label
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="72dp"
+                android:layout_height="118dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="37dp"
+                android:layout_marginTop="16dp"
+                android:background="?android:attr/selectableItemBackground"
+
+                android:src="@drawable/back_arrow" />
+               -->
+            <TextView
+                android:id="@+id/recipeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:text="Recipe"
+                android:textSize="20sp" />
+
+            <!-- Favorite Button
+            <ImageButton
+                android:id="@+id/favoriteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:src="@drawable/empty_heart" />
+            -->
+            <!-- Recipe Image -->
+            <ImageView
+                android:id="@+id/recipeImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/recipeLabel"
+                android:scaleType="centerCrop" />
+
+            <!-- Recipe Title -->
+            <TextView
+                android:id="@+id/recipeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recipeImage"
+                android:layout_marginTop="16dp"
+                android:text="Recipe Title"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:layout_centerHorizontal="true"/>
+
+            <!-- Recipe Author -->
+            <TextView
+                android:id="@+id/recipeAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recipeTitle"
+                android:layout_marginTop="8dp"
+                android:text="Recipe Author"
+                android:textSize="16sp"
+                android:layout_centerHorizontal="true"/>
+
+            <!-- Recipe Description -->
+            <TextView
+                android:id="@+id/recipeDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recipeAuthor"
+                android:layout_marginTop="16dp"
+                android:text="Recipe Description"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"/>
+
+            <!-- Ingredients Section -->
+            <TextView
+                android:id="@+id/ingredientsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recipeDescription"
+                android:layout_marginTop="16dp"
+                android:text="Ingredients"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"/>
+
+            <!-- Ingredients List -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ingredientsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ingredientsTitle"
+                android:layout_marginTop="8dp" />
+
+            <!-- Instructions Section -->
+            <TextView
+                android:id="@+id/instructionsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ingredientsRecyclerView"
+                android:layout_marginTop="16dp"
+                android:text="Instructions"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"/>
+
+            <TextView
+                android:id="@+id/recipeInstructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/instructionsTitle"
+                android:layout_marginTop="8dp"
+                android:text="Instructions"
+                android:textSize="16dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"/>
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView >
