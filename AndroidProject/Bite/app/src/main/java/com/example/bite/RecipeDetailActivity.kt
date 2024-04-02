@@ -2,6 +2,7 @@ package com.example.bite
 
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +10,6 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.bite.models.InstructionStep
 import com.example.bite.models.Recipe
 import com.example.bite.network.SpoonacularRepository
 import kotlinx.coroutines.launch
@@ -45,9 +45,9 @@ class RecipeDetailActivity : AppCompatActivity() {
                     Glide.with(this@RecipeDetailActivity).load(recipe.imageUrl)
                         .into(findViewById(R.id.recipeImage))
 
+                    findViewById<TextView>(R.id.recipeInstructions).text = recipe.instructions
+                    Log.e("Instructions:", "Instructions: ${recipe.instructions}")
 
-                    findViewById<TextView>(R.id.recipeInstructions).text =
-                        buildInstructionsString(recipe.instructions)
                 }
 
             } finally {
@@ -57,13 +57,13 @@ class RecipeDetailActivity : AppCompatActivity() {
             }
         }
     }
-    private fun buildInstructionsString(instructionSteps: List<InstructionStep>?): String {
-        val instructionsStringBuilder = StringBuilder()
-        instructionSteps?.forEach { step ->
-            instructionsStringBuilder.append("${step.number}. ${step.step}\n")
-        }
-        return instructionsStringBuilder.toString()
-    }
+//    private fun buildInstructionsString(instructionSteps: List<InstructionStep>?): String {
+//        val instructionsStringBuilder = StringBuilder()
+//        instructionSteps?.forEach { step ->
+//            instructionsStringBuilder.append("${step.number}. ${step.step}\n")
+//        }
+//        return instructionsStringBuilder.toString()
+//    }
 
 
 }
