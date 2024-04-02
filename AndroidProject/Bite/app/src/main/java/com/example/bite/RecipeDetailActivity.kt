@@ -1,13 +1,12 @@
 package com.example.bite
 
 import android.os.Bundle
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.bite.models.InstructionStep
 import com.example.bite.models.Recipe
 import com.example.bite.network.SpoonacularRepository
 import kotlinx.coroutines.launch
@@ -26,28 +25,31 @@ class RecipeDetailActivity : AppCompatActivity() {
 
         // Fetch recipe from repository based on ID
         lifecycleScope.launch {
-            val recipe: Recipe? = recipeId?.let { spoonacularRepository.getRecipeById(it) }
+            val recipe: Recipe? = recipeId?.let { spoonacularRepository.getRecipeInfo(it) }
 
             // Update UI with fetched recipe details
             recipe?.let {
                 findViewById<TextView>(R.id.recipeLabel).text = "Recipe" // Set recipe label
                 findViewById<TextView>(R.id.recipeTitle).text = recipe.name // Set recipe title
-                findViewById<TextView>(R.id.recipeDescription).text = recipe.description
+                findViewById<TextView>(R.id.recipeDescription).text = HtmlCompat.fromHtml(recipe.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                findViewById<TextView>(R.id.recipeAuthor).text = recipe.sourceName
                 // Set other recipe details like author, description, and image
                 // Use Glide or any other image loading library to load the image
                 Glide.with(this@RecipeDetailActivity).load(recipe.imageUrl).into(findViewById(R.id.recipeImage))
+
+
+                findViewById<TextView>(R.id.recipeInstructions).text = buildInstructionsString(recipe.instructions)
+
             }
         }
     }
-
-    private fun getDefaultRecipe(): Recipe? {
-        // Create a default recipe object with placeholder values
-        return Recipe(
-            id = "default",
-            name = "Default Recipe",
-            description = "This is a default recipe.",
-            imageUrl = "https://example.com/default_image.jpg",
-            cookingTime = 0,
-        )
+    private fun buildInstructionsString(instructionSteps: List<InstructionStep>?): String {
+        val instructionsStringBuilder = StringBuilder()
+        instructionSteps?.forEach { step ->
+            instructionsStringBuilder.append("${step.number}. ${step.step}\n")
+        }
+        return instructionsStringBuilder.toString()
     }
+
+
 }

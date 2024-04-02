@@ -3,6 +3,9 @@ package com.example.bite.network
 import com.example.bite.BuildConfig
 import com.example.bite.models.IngredientListResponse
 import com.example.bite.models.IngredientResponse
+import com.example.bite.models.DetailedRecipeResponse
+import com.example.bite.models.RecipeIngredientsResponse
+import com.example.bite.models.RecipeInstructionsResponse
 import com.example.bite.models.RecipeListResponse
 import com.example.bite.models.RecipeResponse
 import retrofit2.http.Field
@@ -60,11 +63,28 @@ interface SpoonacularApi {
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
     ): RecipeListResponse
 
+
     @GET("recipes/{id}/information")
     suspend fun getRecipeById(
         @Path("id") id: String,
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
-    ): RecipeResponse
+    ): DetailedRecipeResponse
 
+    @GET("recipes/{id}/summary")
+    suspend fun getRecipeSummary(
+        @Path("id") id: String,
+        @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
+    ): DetailedRecipeResponse
 
+    @GET("recipes/{id}/ingredientWidget.json")
+    suspend fun getRecipeIngredients(
+        @Path("id") id: String,
+        @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
+    ): RecipeIngredientsResponse
+
+    @GET("recipes/{id}/analyzedInstructions")
+    suspend fun getRecipeInstructions(
+        @Path("id") id: String,
+        @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
+    ): RecipeInstructionsResponse
 }
