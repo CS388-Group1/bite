@@ -9,12 +9,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bite.models.IngredientResponse
+import com.google.android.material.imageview.ShapeableImageView
 
 class IngredientAdapter(private var ingredients: List<IngredientResponse>) :
     RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
     private var onClickListener: OnClickListener? = null
     inner class IngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val imageView: ImageView = itemView.findViewById(R.id.imageViewIngredient)
+        val imageView: ShapeableImageView = itemView.findViewById(R.id.imageViewIngredient)
         val nameView: TextView = itemView.findViewById(R.id.textViewIngredientName)
     }
 
@@ -25,7 +26,10 @@ class IngredientAdapter(private var ingredients: List<IngredientResponse>) :
 
     override fun onBindViewHolder(holder: IngredientViewHolder, position: Int) {
         val ingredient = ingredients[position]
-        holder.nameView.text = ingredient.name
+
+        val ingredientName = ingredient.name.split(" ").joinToString(" ") { it.capitalize() }
+        holder.nameView.text = ingredientName
+        holder.nameView.textAlignment = View.TEXT_ALIGNMENT_CENTER
 
         val imageUrl = "https://spoonacular.com/cdn/ingredients_100x100/${ingredient.image}"
         Glide.with(holder.imageView.context)
@@ -34,8 +38,8 @@ class IngredientAdapter(private var ingredients: List<IngredientResponse>) :
             .error(R.drawable.error_image)
             .into(holder.imageView)
 
-        holder.itemView.setOnClickListener{
-            if(onClickListener != null){
+        holder.itemView.setOnClickListener {
+            if (onClickListener != null) {
                 onClickListener!!.onClick(position, ingredient)
             }
         }
