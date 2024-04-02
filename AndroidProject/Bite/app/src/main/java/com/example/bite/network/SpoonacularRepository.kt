@@ -41,7 +41,9 @@ class SpoonacularRepository {
 
     suspend fun getRandomRecipe(): List<HomeRecipe> {
         val response = api.getRandomRecipe()
-        return response.recipes.map { it.toHomeRecipe()}
+        return response.recipes.map { it.toHomeRecipe() }
+    }
+
     suspend fun getRecipeInfo(recipeId: String): Recipe? {
         return try {
             coroutineScope {
