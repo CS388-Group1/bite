@@ -1,12 +1,7 @@
 package com.example.bite.models
 
-data class Ingredient(
-    val id: Int,
-    val name: String,
-    val image: String,
-    val amount: Double,
-    val unit: String
-)
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 data class IngredientListResponse(
     val results: List<IngredientResponse>,
@@ -14,6 +9,7 @@ data class IngredientListResponse(
     val number: Int,
     val totalResults: Int
 )
+
 data class IngredientResponse(
     val id: Int,
     val name: String,
@@ -39,12 +35,21 @@ data class RecipeIngredients(
         )
     }
 }
+
 data class AmountResponse(
     val us: AmountUsResponse
 )
-data class AmountUsResponse (
+
+data class AmountUsResponse(
     val unit: String,
     val value: Double
 )
 
-
+@Entity(tableName = "ingredients")
+data class Ingredient(
+    @PrimaryKey val id: Int,
+    val name: String,
+    val image: String,
+    val amount: Double,
+    val unit: String
+)

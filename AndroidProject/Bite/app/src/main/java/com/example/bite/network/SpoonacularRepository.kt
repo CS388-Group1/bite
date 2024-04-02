@@ -58,7 +58,7 @@ class SpoonacularRepository {
                 val summaryDeferred =
                     async { api.getRecipeSummary(recipeId) } // Example additional API call
                 val description = summaryDeferred.await().summary?:"Description Unavailable"
-                recipeResponse?.copy(description = description)
+                recipeResponse?.copy(summary = description)
 
                 //val recipe = recipeResponse.toRecipe(recipeInstructionsResponse)
 

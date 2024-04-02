@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bite.R
 import com.example.bite.models.HomeRecipe
-import com.example.bite.models.Recipe
 
 class HomeRecipeAdapter(private var recipes: List<HomeRecipe>, private val onRecipeClicked: (HomeRecipe) -> Unit) :
     RecyclerView.Adapter<HomeRecipeAdapter.HomeRecipeViewHolder>() {
@@ -34,9 +33,9 @@ class HomeRecipeAdapter(private var recipes: List<HomeRecipe>, private val onRec
     override fun onBindViewHolder(holder: HomeRecipeViewHolder, position: Int) {
         val recipe = recipes[position]
         with(holder) {
-            recipeTitle.text = recipe.name
+            recipeTitle.text = recipe.title
             recipeAuthor.text = recipe.author
-            Glide.with(recipeImage.context).load(recipe.imageUrl).centerCrop().into(recipeImage)
+            Glide.with(recipeImage.context).load(recipe.image).fitCenter().into(recipeImage)
             itemView.setOnClickListener { onRecipeClicked(recipe) }
         }
     }
