@@ -49,6 +49,8 @@ class SearchFragment : Fragment() {
         val buttonSearchRecipeByName: Button = view.findViewById(R.id.buttonSearchRecipeByName)
         val buttonSearchIngredientByName: Button = view.findViewById(R.id.buttonSearchIngredientByName)
         val buttonSearchRecipeByIngredient: Button = view.findViewById(R.id.buttonSearchRecipeByIngredient)
+        val buttonSearchByIngredient: Button = view.findViewById(R.id.buttonSearchByIngredient)
+
 
         // Search Recipe by Name
         buttonSearchRecipeByName.setOnClickListener {
@@ -67,6 +69,12 @@ class SearchFragment : Fragment() {
             val ingredient = "onion"
             searchRecipeByIngredient(ingredient)
         }
+
+        buttonSearchByIngredient.setOnClickListener {
+            val intent = Intent(context, SearchByIngredient::class.java)
+            startActivity(intent)
+        }
+
 
         return view
     }
