@@ -51,5 +51,6 @@ data class Ingredient(
     val name: String,
     val image: String,
     val amount: Double,
-    val unit: String
+    val unit: String,
+    val common: Boolean = false // common ingredients
 )
