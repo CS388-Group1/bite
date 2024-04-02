@@ -17,7 +17,7 @@ class HomeRecipeAdapter(private var recipes: List<HomeRecipe>, private val onRec
     inner class HomeRecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val recipeTitle: TextView = itemView.findViewById(R.id.recipeTitleTextView)
         val recipeAuthor: TextView = itemView.findViewById(R.id.authorTextView)
-        val recipeImage: ImageView = itemView.findViewById(R.id.recipeImageView)
+        val recipeImage: ImageView = itemView.findViewById(R.id.recipeImage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeRecipeViewHolder {
