@@ -1,11 +1,13 @@
 package com.example.bite.network
 
+import android.util.Log
+import com.example.bite.models.HomeRecipe
 import com.example.bite.models.IngredientListResponse
 import com.example.bite.models.Recipe
+import com.example.bite.models.RecipeResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlinx.coroutines.*
-
 
 class SpoonacularRepository {
     private val api = Retrofit.Builder()
@@ -30,6 +32,16 @@ class SpoonacularRepository {
     suspend fun searchRecipeByName(query: String): List<Recipe> {
         val response = api.searchRecipeByName(query)
         return response.results.map { it.toRecipe() }
+    }
+
+    suspend fun getTrendingRecipes(): List<HomeRecipe> {
+        val response = api.getTrendingRecipes()
+        return response.recipes.map { it.toHomeRecipe()}
+    }
+
+    suspend fun getRandomRecipe(): List<HomeRecipe> {
+        val response = api.getRandomRecipe()
+        return response.recipes.map { it.toHomeRecipe() }
     }
 
     suspend fun getRecipeInfo(recipeId: String): Recipe? {
@@ -59,7 +71,4 @@ class SpoonacularRepository {
             null // Handle error or return null in case of failure
         }
     }
-
-
-
 }
