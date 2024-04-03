@@ -29,6 +29,7 @@ class SearchByIngredient : AppCompatActivity() {
     private lateinit var searchView: SearchView
     private lateinit var ingredientRepository: IngredientRepository
     private lateinit var commonIngredientsTextView: TextView
+    private var selected: MutableList<Ingredient> = mutableListOf()
 
     private fun hideKeyboard() {
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -72,23 +73,27 @@ class SearchByIngredient : AppCompatActivity() {
             }
         })
 
-        var selected: List<Ingredient> = emptyList()
         selectedRecyclerView.layoutManager = GridLayoutManager(this, 4)
         selectedRecyclerView.adapter = selectedAdapter
 
         ingredientAdapter.setOnClickListener(object : IngredientAdapter.OnClickListener {
             override fun onClick(position: Int, ingredient: Ingredient) {
-                selected = selected + ingredient
-                selectedAdapter.updateIngredients(selected)
-                if (selectedIngredientsLayout.visibility == View.GONE) {
-                    selectedIngredientsLayout.visibility = View.VISIBLE
-                }
+                if (ingredient.id !in selected.map { it.id }) {
+                    selected.add(ingredient)
+                    selectedAdapter.updateIngredients(selected)
+                    if (selectedIngredientsLayout.visibility == View.GONE) {
+                        selectedIngredientsLayout.visibility = View.VISIBLE
+                    }
 
-                // Change the text back to "Common Ingredients" and load common ingredients
-                commonIngredientsTextView.text = "Common Ingredients"
-                lifecycleScope.launch {
-                    val commonIngredients = ingredientRepository.getCommonIngredients()
-                    ingredientAdapter.updateIngredients(commonIngredients)
+                    // Change the text back to "Common Ingredients" and load common ingredients
+                    commonIngredientsTextView.text = "Common Ingredients"
+                    lifecycleScope.launch {
+                        val selectedIngredientIds = selected.map { it.id }
+                        val commonIngredients = ingredientRepository.getCommonIngredients().filter { ingredient ->
+                            ingredient.id !in selectedIngredientIds
+                        }
+                        ingredientAdapter.updateIngredients(commonIngredients)
+                    }
                 }
             }
         })
@@ -107,16 +112,23 @@ class SearchByIngredient : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            val commonIngredients = ingredientRepository.getCommonIngredients()
+            val selectedIngredientIds = selected.map { it.id }
+            val commonIngredients = ingredientRepository.getCommonIngredients().filter { ingredient ->
+                ingredient.id !in selectedIngredientIds
+            }
             ingredientAdapter.updateIngredients(commonIngredients)
         }
     }
+
 
     private fun searchIngredientByName(query: String) {
         lifecycleScope.launch {
             try {
                 val ingredientListResponse = spoonacularRepository.searchIngredientByName(query)
-                val ingredients = ingredientListResponse.results.map { ingredientResponse ->
+                val selectedIngredientIds = selected.map { it.id }
+                val filteredIngredients = ingredientListResponse.results.filter { ingredientResponse ->
+                    ingredientResponse.id !in selectedIngredientIds
+                }.map { ingredientResponse ->
                     val imageUrl = "https://spoonacular.com/cdn/ingredients_100x100/${ingredientResponse.image}"
                     Ingredient(
                         id = ingredientResponse.id,
@@ -127,9 +139,9 @@ class SearchByIngredient : AppCompatActivity() {
                         isCommon = false
                     )
                 }
-                ingredientAdapter.updateIngredients(ingredients)
+                ingredientAdapter.updateIngredients(filteredIngredients)
                 commonIngredientsTextView.text = "Search Results"
-                hideKeyboard() // Hide the keyboard after searching
+                hideKeyboard()
             } catch (e: Exception) {
                 Toast.makeText(this@SearchByIngredient, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
