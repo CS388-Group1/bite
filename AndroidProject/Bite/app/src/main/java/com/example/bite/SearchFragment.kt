@@ -93,16 +93,16 @@ class SearchFragment : Fragment() {
     }
 
     private fun searchIngredientByName(query: String) {
-        currentSearchType = SearchType.INGREDIENT_BY_NAME
-        lifecycleScope.launch {
-            try {
-                val ingredients = spoonacularRepository.searchIngredientByName(query)
-                ingredientAdapter.updateIngredients(ingredients.results)
-                recyclerView.adapter = ingredientAdapter
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-        }
+//        currentSearchType = SearchType.INGREDIENT_BY_NAME
+//        lifecycleScope.launch {
+//            try {
+//                val ingredients = spoonacularRepository.searchIngredientByName(query)
+//                ingredientAdapter.updateIngredients(ingredients.results)
+//                recyclerView.adapter = ingredientAdapter
+//            } catch (e: Exception) {
+//                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+//            }
+//        }
     }
 
     private fun searchRecipeByIngredient(ingredient: String) {

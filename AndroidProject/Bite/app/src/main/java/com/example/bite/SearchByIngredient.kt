@@ -1,19 +1,24 @@
 package com.example.bite
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.SearchView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bite.models.Ingredient
 import com.example.bite.models.IngredientResponse
+import com.example.bite.network.IngredientRepository
 import com.example.bite.network.SpoonacularRepository
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.coroutines.launch
+import android.view.inputmethod.InputMethodManager
 
 class SearchByIngredient : AppCompatActivity() {
     private lateinit var spoonacularRepository: SpoonacularRepository
@@ -22,6 +27,14 @@ class SearchByIngredient : AppCompatActivity() {
     private lateinit var ingredientAdapter: IngredientAdapter
     private lateinit var selectedAdapter: IngredientAdapter
     private lateinit var searchView: SearchView
+    private lateinit var ingredientRepository: IngredientRepository
+    private lateinit var commonIngredientsTextView: TextView
+
+    private fun hideKeyboard() {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +46,7 @@ class SearchByIngredient : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewCommonIngredients)
         selectedRecyclerView = findViewById(R.id.recyclerViewSelectedIngredients)
         val submitSearchButton = findViewById<ExtendedFloatingActionButton>(R.id.SubmitSearchButton)
+        commonIngredientsTextView = findViewById(R.id.CommonIngredients)
 
         ingredientAdapter = IngredientAdapter(emptyList())
         selectedAdapter = IngredientAdapter(emptyList())
@@ -58,19 +72,28 @@ class SearchByIngredient : AppCompatActivity() {
             }
         })
 
-        var selected: List<IngredientResponse> = emptyList()
+        var selected: List<Ingredient> = emptyList()
         selectedRecyclerView.layoutManager = GridLayoutManager(this, 4)
         selectedRecyclerView.adapter = selectedAdapter
 
         ingredientAdapter.setOnClickListener(object : IngredientAdapter.OnClickListener {
-            override fun onClick(position: Int, ingredient: IngredientResponse) {
+            override fun onClick(position: Int, ingredient: Ingredient) {
                 selected = selected + ingredient
                 selectedAdapter.updateIngredients(selected)
                 if (selectedIngredientsLayout.visibility == View.GONE) {
                     selectedIngredientsLayout.visibility = View.VISIBLE
                 }
+
+                // Change the text back to "Common Ingredients" and load common ingredients
+                commonIngredientsTextView.text = "Common Ingredients"
+                lifecycleScope.launch {
+                    val commonIngredients = ingredientRepository.getCommonIngredients()
+                    ingredientAdapter.updateIngredients(commonIngredients)
+                }
             }
         })
+
+        ingredientRepository = IngredientRepository(AppDatabase.getInstance(applicationContext).ingredientDao(), applicationContext)
 
         // TODO: Use Button To Exit Detail
         exitButton.setOnClickListener {
@@ -80,14 +103,33 @@ class SearchByIngredient : AppCompatActivity() {
         submitSearchButton.setOnClickListener {
             val query = searchView.query.toString()
             searchIngredientByName(query)
+            hideKeyboard() // Hide the keyboard when the submit search button is clicked
+        }
+
+        lifecycleScope.launch {
+            val commonIngredients = ingredientRepository.getCommonIngredients()
+            ingredientAdapter.updateIngredients(commonIngredients)
         }
     }
 
     private fun searchIngredientByName(query: String) {
         lifecycleScope.launch {
             try {
-                val ingredients = spoonacularRepository.searchIngredientByName(query)
-                ingredientAdapter.updateIngredients(ingredients.results)
+                val ingredientListResponse = spoonacularRepository.searchIngredientByName(query)
+                val ingredients = ingredientListResponse.results.map { ingredientResponse ->
+                    val imageUrl = "https://spoonacular.com/cdn/ingredients_100x100/${ingredientResponse.image}"
+                    Ingredient(
+                        id = ingredientResponse.id,
+                        name = ingredientResponse.name,
+                        image = imageUrl,
+                        amount = 0.0,
+                        unit = "",
+                        isCommon = false
+                    )
+                }
+                ingredientAdapter.updateIngredients(ingredients)
+                commonIngredientsTextView.text = "Search Results"
+                hideKeyboard() // Hide the keyboard after searching
             } catch (e: Exception) {
                 Toast.makeText(this@SearchByIngredient, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }

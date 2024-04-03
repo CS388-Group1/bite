@@ -17,4 +17,8 @@ interface IngredientDao {
 
     @Query("SELECT * FROM ingredients WHERE name LIKE :query")
     suspend fun searchIngredientsByName(query: String): List<Ingredient>
+
+    @Query("SELECT * FROM ingredients WHERE isCommon = 1")
+    suspend fun getCommonIngredients(): List<Ingredient>
+
 }

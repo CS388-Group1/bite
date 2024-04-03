@@ -2,6 +2,7 @@ package com.example.bite.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 
 @Entity(tableName = "recipes")
 data class Recipe(
@@ -12,6 +13,7 @@ data class Recipe(
     val cookingTime: Int,
     val sourceName: String,
     val isFavorite: Boolean = false,
+    @TypeConverters(InstructionStepConverter::class)
     val instructions: List<InstructionStep>? = null
 )
 

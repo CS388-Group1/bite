@@ -14,7 +14,18 @@ data class IngredientResponse(
     val id: Int,
     val name: String,
     val image: String
-)
+) {
+    fun toIngredient(): Ingredient {
+        return Ingredient(
+            id = id,
+            name = name,
+            image = image,
+            amount = 0.0,
+            unit = "",
+            isCommon = false
+        )
+    }
+}
 
 data class RecipeIngredientsResponse(
     val ingredients: List<RecipeIngredients>
@@ -47,10 +58,10 @@ data class AmountUsResponse(
 
 @Entity(tableName = "ingredients")
 data class Ingredient(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val image: String,
     val amount: Double,
     val unit: String,
-    val isCommon: Boolean = false // common ingredients
+    val isCommon: Boolean = false
 )
