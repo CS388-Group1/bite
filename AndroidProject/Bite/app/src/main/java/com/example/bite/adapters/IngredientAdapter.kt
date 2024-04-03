@@ -13,6 +13,7 @@ import com.google.android.material.imageview.ShapeableImageView
 
 class IngredientAdapter(private var ingredients: List<IngredientResponse>) :
     RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
+
     private var onClickListener: OnClickListener? = null
     inner class IngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val imageView: ShapeableImageView = itemView.findViewById(R.id.imageViewIngredient)

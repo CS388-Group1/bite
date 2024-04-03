@@ -2,6 +2,7 @@ package com.example.bite.network
 
 import android.util.Log
 import com.example.bite.models.HomeRecipe
+import com.example.bite.models.Ingredient
 import com.example.bite.models.IngredientListResponse
 import com.example.bite.models.Recipe
 import com.example.bite.models.RecipeResponse
@@ -46,28 +47,16 @@ class SpoonacularRepository {
         return response.recipes.map { it.toHomeRecipe() }
     }
 
-//    suspend fun getRecipeInstructions(recipeId: String): String? {
-//        return try {
-//            // Make API call to fetch recipe instructions
-//            val jsonResponseArray = api.getRecipeInstructions(recipeId)
-//
-//            // Parse the JSON array manually
-//            val jsonArray = JSONArray(jsonResponseArray)
-//            val stringBuilder = StringBuilder()
-//
-//            for (i in 0 until jsonArray.length()) {
-//                val jsonStepObject = jsonArray.getJSONObject(i)
-//                val number = jsonStepObject.getInt("number")
-//                val step = jsonStepObject.getString("step")
-//                stringBuilder.append("$number. $step\n")
-//            }
-//
-//            return stringBuilder.toString()
-//        } catch (e: Exception) {
-//            null // Handle error or return null in case of failure
-//        }
-//    }
-
+    suspend fun getIngredients(recipeId: String): List<Ingredient>? {
+        try {
+            val recipeIngredientsResponse = api.getRecipeIngredients(recipeId)
+            return recipeIngredientsResponse.ingredients.map { it.toIngredient() }
+        } catch (e: Exception) {
+            // Handle exceptions
+            Log.e("getIngredients", "Exception: ${e.message}", e)
+        }
+        return null
+    }
 
     suspend fun getRecipeInfo(recipeId: String): Recipe? {
         return try {

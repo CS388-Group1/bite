@@ -9,7 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.bite.models.Ingredient
 import com.example.bite.models.Recipe
 import com.example.bite.network.SpoonacularRepository
 import kotlinx.coroutines.launch
@@ -33,6 +36,8 @@ class RecipeDetailActivity : AppCompatActivity() {
             try {
                 val recipe: Recipe? = recipeId?.let { spoonacularRepository.getRecipeInfo(it) }
 
+                val ingredientsList: List<Ingredient>? = recipeId?.let { spoonacularRepository.getIngredients(it) }
+
                 // Update UI with fetched recipe details
                 recipe?.let {
                     findViewById<TextView>(R.id.recipeLabel).text = "Recipe" // Set recipe label
@@ -40,16 +45,20 @@ class RecipeDetailActivity : AppCompatActivity() {
                     findViewById<TextView>(R.id.recipeDescription).text =
                         HtmlCompat.fromHtml(recipe.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
                     findViewById<TextView>(R.id.recipeAuthor).text = "By " + recipe.sourceName
-                    // Set other recipe details like author, description, and image
-                    // Use Glide or any other image loading library to load the image
                     Glide.with(this@RecipeDetailActivity).load(recipe.imageUrl)
                         .into(findViewById(R.id.recipeImage))
-
                     findViewById<TextView>(R.id.recipeInstructions).text = recipe.instructions
-                    Log.e("Instructions:", "Instructions: ${recipe.instructions}")
+
+                    // Update Ingredients RecyclerView
+                    ingredientsList?.let {
+                        val recyclerView: RecyclerView = findViewById(R.id.ingredientsRecyclerView)
+                        val layoutManager = LinearLayoutManager(this@RecipeDetailActivity)
+                        val adapter = RecipeIngredientAdapter(ingredientsList)
+                        recyclerView.layoutManager = layoutManager
+                        recyclerView.adapter = adapter
+                    }
 
                 }
-
             } finally {
                 // Hide loading layout
                 findViewById<View>(R.id.loadingGraphic).visibility = View.GONE
