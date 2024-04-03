@@ -19,6 +19,7 @@ import com.example.bite.network.SpoonacularRepository
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.coroutines.launch
 import android.view.inputmethod.InputMethodManager
+import androidx.recyclerview.widget.DefaultItemAnimator
 
 class SearchByIngredient : AppCompatActivity() {
     private lateinit var spoonacularRepository: SpoonacularRepository
@@ -54,6 +55,7 @@ class SearchByIngredient : AppCompatActivity() {
 
         recyclerView.layoutManager = GridLayoutManager(this, 4)
         recyclerView.adapter = ingredientAdapter
+        recyclerView.itemAnimator = DefaultItemAnimator()
 
         spoonacularRepository = SpoonacularRepository()
 
@@ -81,6 +83,7 @@ class SearchByIngredient : AppCompatActivity() {
                 if (ingredient.id !in selected.map { it.id }) {
                     selected.add(ingredient)
                     selectedAdapter.updateIngredients(selected)
+                    selectedAdapter.notifyDataSetChanged()
                     if (selectedIngredientsLayout.visibility == View.GONE) {
                         selectedIngredientsLayout.visibility = View.VISIBLE
                     }
