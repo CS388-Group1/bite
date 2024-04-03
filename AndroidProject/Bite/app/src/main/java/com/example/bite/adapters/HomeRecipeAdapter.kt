@@ -10,19 +10,16 @@ import com.bumptech.glide.Glide
 import com.example.bite.R
 import com.example.bite.models.HomeRecipe
 
-class HomeRecipeAdapter(private var recipes: List<HomeRecipe>, private val onRecipeClicked: (HomeRecipe) -> Unit) :
-    RecyclerView.Adapter<HomeRecipeAdapter.HomeRecipeViewHolder>() {
-
+class HomeRecipeAdapter(private var recipes: List<HomeRecipe>, private val onRecipeClicked: (HomeRecipe) -> Unit) : RecyclerView.Adapter<HomeRecipeAdapter.HomeRecipeViewHolder>() {
     inner class HomeRecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val recipeTitle: TextView = itemView.findViewById(R.id.recipeTitleTextView)
-        val recipeAuthor: TextView = itemView.findViewById(R.id.authorTextView)
-        val recipeImage: ImageView = itemView.findViewById(R.id.recipeImage)
+        val recipeTitle: TextView = itemView.findViewById(R.id.textViewRecipeName)
+        val recipeImage: ImageView = itemView.findViewById(R.id.imageViewRecipe)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeRecipeViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        val recipeView = inflater.inflate(R.layout.item_home_recipe, parent, false)
+        val recipeView = inflater.inflate(R.layout.item_recipe, parent, false)
         return HomeRecipeViewHolder(recipeView)
     }
 
@@ -34,11 +31,13 @@ class HomeRecipeAdapter(private var recipes: List<HomeRecipe>, private val onRec
         val recipe = recipes[position]
         with(holder) {
             recipeTitle.text = recipe.title
-            recipeAuthor.text = recipe.author
             Glide.with(recipeImage.context).load(recipe.image).fitCenter().into(recipeImage)
-            itemView.setOnClickListener { onRecipeClicked(recipe) }
+            itemView.setOnClickListener {
+                onRecipeClicked(recipe)
+            }
         }
     }
+
     fun updateRecipes(newRecipes: List<HomeRecipe>) {
         recipes = newRecipes
         notifyDataSetChanged()
