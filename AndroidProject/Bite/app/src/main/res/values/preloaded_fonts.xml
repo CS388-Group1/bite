@@ -2,5 +2,9 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/cambo</item>
+        <item>@font/dosis</item>
+        <item>@font/dosis_bold</item>
+        <item>@font/dosis_extralight</item>
+        <item>@font/dosis_semibold</item>
     </array>
 </resources>

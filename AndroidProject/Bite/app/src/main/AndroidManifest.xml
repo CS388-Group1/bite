@@ -17,10 +17,10 @@
         android:theme="@style/Theme.Bite"
         tools:targetApi="31">
         <activity
-            android:name=".PreferencesActivity"
-            android:exported="false" />
+            android:name=".GetStartedActivity"
+            android:exported="true" />
         <activity
-            android:name=".DashboardActivity"
+            android:name=".PreferencesActivity"
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"
@@ -32,7 +32,13 @@
             android:name=".LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Bite"></activity>
+            android:theme="@style/Theme.Bite">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".SearchByIngredient"
             android:exported="true"
@@ -41,16 +47,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".SearchActivity"
-            android:exported="false" />
+            android:theme="@style/AppTheme"/>
 
         <meta-data
             android:name="preloaded_fonts"
