@@ -1,13 +1,20 @@
 package com.example.bite.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+
+@Entity(tableName = "recipes")
 data class Recipe(
-    val id: String,
-    val name: String,
-    val description: String,
-    val imageUrl: String,
+    @PrimaryKey val id: String,
+    val title: String,
+    val summary: String,
+    val image: String,
     val cookingTime: Int,
     val sourceName: String,
-    val instructions: List<InstructionStep>?
+    val isFavorite: Boolean = false,
+    @TypeConverters(InstructionStepConverter::class)
+    val instructions: List<InstructionStep>? = null
 )
 
 data class RecipeResponse(
@@ -22,9 +29,9 @@ data class RecipeResponse(
     fun toRecipe(): Recipe {
         return Recipe(
             id = id.toString(),
-            name = title,
-            description = "Description Unavailable",
-            imageUrl = image,
+            title = title,
+            summary = "Description Unavailable",
+            image = image,
             cookingTime = 0,
             sourceName = "Null",
             instructions = null
@@ -39,21 +46,21 @@ data class RecipeListResponse(
 )
 
 // For GetRecipeInformation Response
-data class DetailedRecipeResponse (
+data class DetailedRecipeResponse(
     val id: Int,
     val title: String,
     val image: String,
     val sourceName: String?,
     val summary: String?
-){
+) {
     fun toRecipe(): Recipe {
         return Recipe(
             id = id.toString(),
-            name = title,
-            description = summary?: "Description Unavailable",
-            imageUrl = image,
+            title = title,
+            summary = summary ?: "Description Unavailable",
+            image = image,
             cookingTime = 0,
-            sourceName = sourceName?: "Null",
+            sourceName = sourceName ?: "Null",
             instructions = null
         )
     }
@@ -63,8 +70,7 @@ data class RecipeInstructionsResponse(
     val steps: List<InstructionStep>
 )
 
-
-data class InstructionStep (
+data class InstructionStep(
     val number: Int,
     val step: String
 )

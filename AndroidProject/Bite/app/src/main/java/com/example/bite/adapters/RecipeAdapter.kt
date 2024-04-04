@@ -26,10 +26,10 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = recipes[position]
         with(holder) {
-            nameView.text = recipe.name
-            descriptionView.text = recipe.description
+            nameView.text = recipe.title
+            descriptionView.text = recipe.summary
 
-            Glide.with(imageView.context).load(recipe.imageUrl).into(imageView)
+            Glide.with(imageView.context).load(recipe.image).into(imageView)
 
             itemView.setOnClickListener { onRecipeClicked(recipe) }
         }
