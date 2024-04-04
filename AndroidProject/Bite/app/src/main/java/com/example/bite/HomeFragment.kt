@@ -1,5 +1,6 @@
 package com.example.bite
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,6 +28,7 @@ class HomeFragment : Fragment() {
     private lateinit var rotdImageView: ImageView
     private lateinit var rotdTitleTextView: TextView
     private lateinit var seeAllButton: Button
+    private lateinit var preferencesButton: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +48,12 @@ class HomeFragment : Fragment() {
         rotdTitleTextView = view.findViewById(R.id.rotdTitleTextView)
 
         seeAllButton = view.findViewById(R.id.seeAllButton)
+        preferencesButton = view.findViewById(R.id.preferencesButton)
+
+        preferencesButton.setOnClickListener{
+            val intent = Intent(requireContext(), PreferencesActivity::class.java)
+            requireContext().startActivity(intent)
+        }
 
         // Fetch random recipe asynchronously
         fetchRandomRecipe()

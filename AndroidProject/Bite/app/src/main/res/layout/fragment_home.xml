@@ -22,14 +22,14 @@
                 android:background="@color/white">
 
                 <TextView
-                    android:id="@+id/logo"
+                    android:id="@+id/biteHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:fontFamily="@font/dosis_semibold"
                     android:text="bite"
                     android:textColor="#000000"
-                    android:textSize="36sp"
-                    android:textStyle="bold" />
+                    android:textSize="36sp" />
 
                 <ImageView
                     android:id="@+id/preferencesButton"
