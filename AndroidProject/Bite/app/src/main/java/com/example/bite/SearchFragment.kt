@@ -85,7 +85,7 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun searchIngredientByName(query: String) {
+//    private fun searchIngredientByName(query: String) {
 //        currentSearchType = SearchType.INGREDIENT_BY_NAME
 //        lifecycleScope.launch {
 //            try {
@@ -96,7 +96,7 @@ class SearchFragment : Fragment() {
 //                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
 //            }
 //        }
-    }
+//    }
 
     private fun searchRecipeByIngredient(ingredient: String) {
         currentSearchType = SearchType.RECIPE_BY_INGREDIENT

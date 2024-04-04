@@ -1,5 +1,6 @@
 package com.example.bite
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.SearchView
@@ -55,7 +56,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         homeFragment = HomeFragment()
-        searchFragment = SearchFragment()
         discoverFragment = DiscoverFragment()
         favoritesFragment = FavoritesFragment()
 
@@ -70,7 +70,8 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_search -> {
-                    loadFragment(searchFragment)
+                    val intent = Intent(this, SearchByIngredient::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.navigation_discover -> {
