@@ -28,6 +28,7 @@ class HomeFragment : Fragment() {
     private lateinit var rotdImageView: ImageView
     private lateinit var rotdTitleTextView: TextView
     private lateinit var seeAllButton: Button
+    private lateinit var preferencesButton: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +50,12 @@ class HomeFragment : Fragment() {
         rotdTitleTextView = view.findViewById(R.id.rotdTitleTextView)
 
         seeAllButton = view.findViewById(R.id.seeAllButton)
+        preferencesButton = view.findViewById(R.id.preferencesButton)
+
+        preferencesButton.setOnClickListener{
+            val intent = Intent(requireContext(), PreferencesActivity::class.java)
+            requireContext().startActivity(intent)
+        }
 
         // Fetch random recipe asynchronously
         fetchRandomRecipe()
@@ -70,10 +77,11 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val recipe = spoonacularRepository.getRandomRecipe()
-                Glide.with(this@HomeFragment).load(recipe[0].imageUrl).centerCrop().into(rotdImageView)
+                Glide.with(this@HomeFragment).load(recipe[0].image).centerCrop().into(rotdImageView)
                 // Assuming you want to set the recipe's name to the TextView
-                rotdTitleTextView.text = recipe[0].name
+                rotdTitleTextView.text = recipe[0].title
                 rotdImageView.tag = recipe[0].id
+
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch random recipe: ${e.message}")
                 Toast.makeText(requireContext(), "Failed to fetch random recipe: ${e.message}", Toast.LENGTH_LONG).show()

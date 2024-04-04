@@ -1,15 +1,23 @@
 package com.example.bite.models
 
+
 import com.google.gson.Gson
 
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+
+@Entity(tableName = "recipes")
 data class Recipe(
-    val id: String,
-    val name: String,
-    val description: String,
-    val imageUrl: String,
+    @PrimaryKey val id: String,
+    val title: String,
+    val summary: String,
+    val image: String,
     val cookingTime: Int,
     val sourceName: String,
-    var instructions: String?
+    var instructions: String? = null,
+    val isFavorite: Boolean = false,
 )
 
 data class RecipeResponse(
@@ -24,9 +32,9 @@ data class RecipeResponse(
     fun toRecipe(): Recipe {
         return Recipe(
             id = id.toString(),
-            name = title,
-            description = "Description Unavailable",
-            imageUrl = image,
+            title = title,
+            summary = "Description Unavailable",
+            image = image,
             cookingTime = 0,
             sourceName = "Null",
             instructions = null
@@ -41,21 +49,21 @@ data class RecipeListResponse(
 )
 
 // For GetRecipeInformation Response
-data class DetailedRecipeResponse (
+data class DetailedRecipeResponse(
     val id: Int,
     val title: String,
     val image: String,
     val sourceName: String?,
     val summary: String?
-){
+) {
     fun toRecipe(): Recipe {
         return Recipe(
             id = id.toString(),
-            name = title,
-            description = summary?: "Description Unavailable",
-            imageUrl = image,
+            title = title,
+            summary = summary ?: "Description Unavailable",
+            image = image,
             cookingTime = 0,
-            sourceName = sourceName?: "Null",
+            sourceName = sourceName ?: "Null",
             instructions = null
         )
     }
@@ -109,5 +117,8 @@ data class RecipeInstruction(
     val steps: List<Step>?
 )
 
-
+data class InstructionStep(
+    val number: Int,
+    val step: String
+)
 

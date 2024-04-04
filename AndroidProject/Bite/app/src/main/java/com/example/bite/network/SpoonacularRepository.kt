@@ -64,14 +64,6 @@ class SpoonacularRepository {
                 val recipeInfoDeferred = async { api.getRecipeById(recipeId) } // First API call to get basic recipe info
                 var recipe = recipeInfoDeferred.await().toRecipe()
 
-                //val recipeInstructionsDeferred = async { api.getRecipeInstructions(recipeId) } // API call to get recipe instructions
-                //val recipeInstructionsResponse = recipeInstructionsDeferred.await()
-
-                // Make additional API calls for extra information
-                    //val summaryDeferred = async { api.getRecipeSummary(recipeId) } // Example additional API call
-                    //val description = summaryDeferred.await().summary?:"Description Unavailable"
-                    //recipeResponse?.copy(description = description)
-                    //val recipe = recipeResponse.toRecipe(recipeInstructionsResponse)
 
                 // Make API call to fetch recipe instructions
                 val response = api.getRecipeInstructions(recipeId)
@@ -100,7 +92,6 @@ class SpoonacularRepository {
                         }
                     }
                 }
-
                 recipe.instructions = stringBuilder.toString()
 
                 recipe

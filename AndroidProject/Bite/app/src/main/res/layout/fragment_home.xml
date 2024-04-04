@@ -9,51 +9,72 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/discoverLabel"
-            android:layout_width="wrap_content"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="32dp"
-            android:text="Discover"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rotdTitleTextView" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/biteHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/dosis_semibold"
+                    android:text="bite"
+                    android:textColor="#000000"
+                    android:textSize="36sp" />
+
+                <ImageView
+                    android:id="@+id/preferencesButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_ellipsis" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <TextView
             android:id="@+id/rotdTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="32dp"
             android:text="Recipe of the Day"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recipeRecyclerView"
-            android:layout_width="416dp"
+            android:layout_width="0dp"
             android:layout_height="324dp"
-            android:layout_marginTop="48dp"
-            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/discoverLabel" />
 
         <ImageView
             android:id="@+id/rotdImageView"
-            android:layout_width="333dp"
-            android:layout_height="183dp"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="12dp"
+            android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rotdTextView"
             tools:srcCompat="@tools:sample/avatars" />
 
@@ -61,30 +82,42 @@
             android:id="@+id/rotdTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:text="Recipe Title"
+            android:maxLength="45"
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rotdImageView" />
 
+        <TextView
+            android:id="@+id/discoverLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Discover"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rotdTitleTextView" />
+
         <Button
             android:id="@+id/seeAllButton"
-            android:layout_width="118dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginStart="176dp"
-            android:layout_marginTop="62dp"
             android:background="?android:attr/selectableItemBackground"
             android:drawableEnd="@drawable/baseline_arrow_forward_24"
-            android:paddingEnd="10dp"
+            android:paddingEnd="16dp"
             android:text="See all"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="#000000"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/discoverLabel"
-            app:layout_constraintTop_toBottomOf="@+id/rotdImageView" />
+            app:layout_constraintBottom_toBottomOf="@+id/discoverLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/discoverLabel" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

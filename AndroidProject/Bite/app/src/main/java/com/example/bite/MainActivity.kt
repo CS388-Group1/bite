@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bite.network.IngredientRepository
 import com.example.bite.network.SpoonacularRepository
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -26,6 +27,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var searchFragment: SearchFragment
     private lateinit var discoverFragment: DiscoverFragment
     private lateinit var favoritesFragment: FavoritesFragment
+
+    private val ingredientRepository: IngredientRepository by lazy {
+        val database = AppDatabase.getInstance(applicationContext)
+        val ingredientDao = database.ingredientDao()
+        IngredientRepository(ingredientDao, applicationContext)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +92,10 @@ class MainActivity : AppCompatActivity() {
 
         fabCreateRecipe.setOnClickListener {
             // Handle "Create Recipe" action
+        }
+
+        lifecycleScope.launch {
+            ingredientRepository.loadCommonIngredients()
         }
     }
 

@@ -47,7 +47,6 @@ class SearchFragment : Fragment() {
         ingredientAdapter = IngredientAdapter(emptyList())
 
         val buttonSearchRecipeByName: Button = view.findViewById(R.id.buttonSearchRecipeByName)
-        val buttonSearchIngredientByName: Button = view.findViewById(R.id.buttonSearchIngredientByName)
         val buttonSearchRecipeByIngredient: Button = view.findViewById(R.id.buttonSearchRecipeByIngredient)
         val buttonSearchByIngredient: Button = view.findViewById(R.id.buttonSearchByIngredient)
 
@@ -56,12 +55,6 @@ class SearchFragment : Fragment() {
         buttonSearchRecipeByName.setOnClickListener {
             val query = "chicken"
             searchRecipeByName(query)
-        }
-
-        // Search Ingredient by Name
-        buttonSearchIngredientByName.setOnClickListener {
-            val query = "tomato"
-            searchIngredientByName(query)
         }
 
         // Search Recipe by Ingredient
@@ -93,16 +86,16 @@ class SearchFragment : Fragment() {
     }
 
     private fun searchIngredientByName(query: String) {
-        currentSearchType = SearchType.INGREDIENT_BY_NAME
-        lifecycleScope.launch {
-            try {
-                val ingredients = spoonacularRepository.searchIngredientByName(query)
-                ingredientAdapter.updateIngredients(ingredients.results)
-                recyclerView.adapter = ingredientAdapter
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-        }
+//        currentSearchType = SearchType.INGREDIENT_BY_NAME
+//        lifecycleScope.launch {
+//            try {
+//                val ingredients = spoonacularRepository.searchIngredientByName(query)
+//                ingredientAdapter.updateIngredients(ingredients.results)
+//                recyclerView.adapter = ingredientAdapter
+//            } catch (e: Exception) {
+//                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+//            }
+//        }
     }
 
     private fun searchRecipeByIngredient(ingredient: String) {
