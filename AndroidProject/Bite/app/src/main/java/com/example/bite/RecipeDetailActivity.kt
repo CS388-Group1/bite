@@ -1,11 +1,9 @@
 package com.example.bite
 
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -36,13 +34,13 @@ class RecipeDetailActivity : AppCompatActivity() {
                 // Update UI with fetched recipe details
                 recipe?.let {
                     findViewById<TextView>(R.id.recipeLabel).text = "Recipe" // Set recipe label
-                    findViewById<TextView>(R.id.recipeTitle).text = recipe.name // Set recipe title
+                    findViewById<TextView>(R.id.recipeTitle).text = recipe.title // Set recipe title
                     findViewById<TextView>(R.id.recipeDescription).text =
-                        HtmlCompat.fromHtml(recipe.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                        HtmlCompat.fromHtml(recipe.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
                     findViewById<TextView>(R.id.recipeAuthor).text = "By " + recipe.sourceName
                     // Set other recipe details like author, description, and image
                     // Use Glide or any other image loading library to load the image
-                    Glide.with(this@RecipeDetailActivity).load(recipe.imageUrl)
+                    Glide.with(this@RecipeDetailActivity).load(recipe.image)
                         .into(findViewById(R.id.recipeImage))
 
 

@@ -38,7 +38,7 @@ class HomeFragment : Fragment() {
         recipesRv = view.findViewById(R.id.recipeRecyclerView)
         recipesRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         homeRecipeAdapter = HomeRecipeAdapter(emptyList()) { recipe ->
-            Toast.makeText(requireContext(), "Clicked on ${recipe.name}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Clicked on ${recipe.title}", Toast.LENGTH_SHORT).show()
         }
         recipesRv.adapter = homeRecipeAdapter
 
@@ -60,9 +60,9 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val recipe = spoonacularRepository.getRandomRecipe()
-                Glide.with(this@HomeFragment).load(recipe[0].imageUrl).centerCrop().into(rotdImageView)
+                Glide.with(this@HomeFragment).load(recipe[0].image).centerCrop().into(rotdImageView)
                 // Assuming you want to set the recipe's name to the TextView
-                rotdTitleTextView.text = recipe[0].name
+                rotdTitleTextView.text = recipe[0].title
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch random recipe: ${e.message}")
                 Toast.makeText(requireContext(), "Failed to fetch random recipe: ${e.message}", Toast.LENGTH_LONG).show()

@@ -106,7 +106,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
-                android:text="Search Results"
+                android:text="Common Ingredients"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"

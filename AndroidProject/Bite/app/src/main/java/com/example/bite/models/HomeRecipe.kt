@@ -2,9 +2,9 @@ package com.example.bite.models
 
 data class HomeRecipe(
     val id: String,
-    val name: String,
+    val title: String,
     val author: String,
-    val imageUrl: String,
+    val image: String,
 )
 
 data class HomeRecipeResponse(
@@ -16,9 +16,9 @@ data class HomeRecipeResponse(
     fun toHomeRecipe(): HomeRecipe{
         return HomeRecipe(
             id = id.toString(),
-            name = title,
+            title = title,
             author = creditsText,
-            imageUrl = image
+            image = image
         )
     }
 }

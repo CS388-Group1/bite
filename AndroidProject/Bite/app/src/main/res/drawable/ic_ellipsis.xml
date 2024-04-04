@@ -1,0 +1,33 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Define the style for the dots -->
+    <group
+        android:translateX="6"
+        android:translateY="12">
+        <!-- Draw first dot -->
+        <path
+            android:fillColor="#000000"
+            android:pathData="M0,0 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0" />
+    </group>
+
+    <group
+        android:translateX="12"
+        android:translateY="12">
+        <path
+            android:fillColor="#000000"
+            android:pathData="M0,0 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0" />
+    </group>
+
+    <group
+        android:translateX="18"
+        android:translateY="12">
+        <path
+            android:fillColor="#000000"
+            android:pathData="M0,0 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0" />
+    </group>
+
+</vector>
