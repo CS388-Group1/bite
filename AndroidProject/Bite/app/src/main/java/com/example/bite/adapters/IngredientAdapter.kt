@@ -14,6 +14,7 @@ import com.google.android.material.imageview.ShapeableImageView
 
 class IngredientAdapter(private var ingredients: List<Ingredient>) :
     RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
+
     private var onClickListener: OnClickListener? = null
 
     inner class IngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

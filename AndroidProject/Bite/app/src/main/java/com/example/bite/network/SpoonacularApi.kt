@@ -1,5 +1,6 @@
 package com.example.bite.network
-
+import okhttp3.ResponseBody
+import retrofit2.Response
 import com.example.bite.BuildConfig
 import com.example.bite.models.HomeRecipe
 import com.example.bite.models.HomeRecipeListResponse
@@ -7,10 +8,12 @@ import com.example.bite.models.IngredientListResponse
 import com.example.bite.models.IngredientResponse
 import com.example.bite.models.Recipe
 import com.example.bite.models.DetailedRecipeResponse
+import com.example.bite.models.InstructionsResponse
 import com.example.bite.models.RecipeIngredientsResponse
-import com.example.bite.models.RecipeInstructionsResponse
+import com.example.bite.models.RecipeInstruction
 import com.example.bite.models.RecipeListResponse
 import com.example.bite.models.RecipeResponse
+import com.google.gson.Gson
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -94,5 +97,6 @@ interface SpoonacularApi {
     suspend fun getRecipeInstructions(
         @Path("id") id: String,
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
-    ): RecipeInstructionsResponse
+    ):Response<ResponseBody>
+
 }

@@ -41,6 +41,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
                 android:text="Recipe"
+                android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
             <!-- Favorite Button
@@ -60,7 +61,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_below="@id/recipeLabel"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:layout_marginTop="8dp"/>
 
             <!-- Recipe Title -->
             <TextView
@@ -70,9 +72,12 @@
                 android:layout_below="@id/recipeImage"
                 android:layout_marginTop="16dp"
                 android:text="Recipe Title"
+                android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:textSize="24sp"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"/>
 
             <!-- Recipe Author -->
             <TextView
@@ -82,6 +87,7 @@
                 android:layout_below="@id/recipeTitle"
                 android:layout_marginTop="8dp"
                 android:text="Recipe Author"
+                android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:layout_centerHorizontal="true"/>
 
@@ -104,6 +110,7 @@
                 android:layout_below="@id/recipeDescription"
                 android:layout_marginTop="16dp"
                 android:text="Ingredients"
+                android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginRight="15dp"
@@ -125,6 +132,7 @@
                 android:layout_below="@id/ingredientsRecyclerView"
                 android:layout_marginTop="16dp"
                 android:text="Instructions"
+                android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:layout_marginRight="15dp"
@@ -136,6 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/instructionsTitle"
                 android:layout_marginTop="8dp"
+                android:textColor="@android:color/black"
                 android:text="Instructions"
                 android:textSize="16dp"
                 android:layout_marginRight="15dp"

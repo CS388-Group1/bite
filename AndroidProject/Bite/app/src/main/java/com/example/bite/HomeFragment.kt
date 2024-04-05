@@ -1,5 +1,6 @@
 package com.example.bite
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,6 +28,7 @@ class HomeFragment : Fragment() {
     private lateinit var rotdImageView: ImageView
     private lateinit var rotdTitleTextView: TextView
     private lateinit var seeAllButton: Button
+    private lateinit var preferencesButton: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +40,9 @@ class HomeFragment : Fragment() {
         recipesRv = view.findViewById(R.id.recipeRecyclerView)
         recipesRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         homeRecipeAdapter = HomeRecipeAdapter(emptyList()) { recipe ->
-            Toast.makeText(requireContext(), "Clicked on ${recipe.title}", Toast.LENGTH_SHORT).show()
+            val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
+            intent.putExtra("RECIPE_ID", recipe.id)
+            startActivity(intent)
         }
         recipesRv.adapter = homeRecipeAdapter
 
@@ -46,9 +50,22 @@ class HomeFragment : Fragment() {
         rotdTitleTextView = view.findViewById(R.id.rotdTitleTextView)
 
         seeAllButton = view.findViewById(R.id.seeAllButton)
+        preferencesButton = view.findViewById(R.id.preferencesButton)
+
+        preferencesButton.setOnClickListener{
+            val intent = Intent(requireContext(), PreferencesActivity::class.java)
+            requireContext().startActivity(intent)
+        }
 
         // Fetch random recipe asynchronously
         fetchRandomRecipe()
+
+        rotdImageView.setOnClickListener{
+            val recipeId = rotdImageView.tag as? String
+            val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
+            intent.putExtra("RECIPE_ID", recipeId)
+            startActivity(intent)
+        }
 
         // Fetch trending recipes asynchronously
         fetchTrendingRecipes()
@@ -63,6 +80,8 @@ class HomeFragment : Fragment() {
                 Glide.with(this@HomeFragment).load(recipe[0].image).centerCrop().into(rotdImageView)
                 // Assuming you want to set the recipe's name to the TextView
                 rotdTitleTextView.text = recipe[0].title
+                rotdImageView.tag = recipe[0].id
+
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch random recipe: ${e.message}")
                 Toast.makeText(requireContext(), "Failed to fetch random recipe: ${e.message}", Toast.LENGTH_LONG).show()
