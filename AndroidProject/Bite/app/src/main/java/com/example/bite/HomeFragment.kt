@@ -74,6 +74,23 @@ class HomeFragment : Fragment() {
         // Fetch trending recipes asynchronously
         fetchTrendingRecipes()
 
+        seeAllButton.setOnClickListener {
+            val discoverFragment = DiscoverFragment()
+            val fragmentManager = requireActivity().supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+
+            fragmentTransaction.setCustomAnimations(
+                R.anim.slide_in_right, // Enter animation
+                R.anim.slide_out_left, // Exit animation
+                R.anim.slide_in_left, // Pop enter animation
+                R.anim.slide_out_right // Pop exit animation
+            )
+
+            fragmentTransaction.replace(R.id.fragment_container, discoverFragment)
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+        }
+
         return view
     }
 
