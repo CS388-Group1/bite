@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.bite.databinding.ActivityLoginBinding
@@ -31,11 +32,31 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // FOR TESTING: Pre-fill login fields for testing. Remove for production.
+        binding.editTextTextEmailAddress.setText("test@test.com")
+        binding.editTextTextPassword.setText("testing123")
+
         auth = FirebaseAuth.getInstance()
         binding.signUpLabel.setOnClickListener{
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+
+
+        // FOR TESTING: Automatically attempt to log in
+        val email = binding.editTextTextEmailAddress.text.toString()
+        val password = binding.editTextTextPassword.text.toString()
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "Invalid login credentials.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        // Remove above code for production
 
         //Login Logic
         binding.loginButton.setOnClickListener{
@@ -74,6 +95,16 @@ class LoginActivity : AppCompatActivity() {
         val passwordEditText = binding.editTextTextPassword
         //Toggle Password Visibility
         val passwordVisibilityIcon = binding.passwordVisibilityIcon
+
+        // Allow user to press "Enter" on keyboard to login (for convenience when testing)
+        binding.editTextTextPassword.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.loginButton.performClick()
+                true
+            } else {
+                false
+            }
+        }
 
         passwordVisibilityIcon.setOnClickListener {
             if (passwordEditText.inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {

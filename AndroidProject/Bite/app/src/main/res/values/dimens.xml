@@ -9,4 +9,5 @@
     <dimen name="button_height">47dp</dimen>
     <dimen name="button_width">330dp</dimen>
     <dimen name="drawable_padding">6dp</dimen>
+    <dimen name="textSize_preferences">16dp</dimen>
 </resources>
