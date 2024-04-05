@@ -72,23 +72,20 @@ class LoginActivity : AppCompatActivity() {
 
 
         val passwordEditText = binding.editTextTextPassword
-
         //Toggle Password Visibility
-        passwordEditText.setOnTouchListener(View.OnTouchListener { v, event ->
-            val DRAWABLE_END = 2
-            if (event.action == MotionEvent.ACTION_UP) {
-                if (event.rawX >= passwordEditText.right - passwordEditText.compoundDrawables[DRAWABLE_END].bounds.width()) {
-                    if (passwordEditText.inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
-                        passwordEditText.inputType =
-                            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-                    } else {
-                        passwordEditText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                    }
-                    return@OnTouchListener true
-                }
+        val passwordVisibilityIcon = binding.passwordVisibilityIcon
+
+        passwordVisibilityIcon.setOnClickListener {
+            if (passwordEditText.inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+                passwordEditText.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                passwordVisibilityIcon.setImageResource(R.drawable.baseline_remove_red_eye_24)
+            } else {
+                passwordEditText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                passwordVisibilityIcon.setImageResource(R.drawable.baseline_remove_red_eye_24)
             }
-            false
-        })
+            passwordEditText.setSelection(passwordEditText.text.length)
+        }
     }
 
     //Google Sign In Functions

@@ -8,4 +8,9 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
+    <style name="GoogleButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">#FE5842</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>

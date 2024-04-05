@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Bite</string>
     <string name="default_web_client_id">88352232259-ur5uvlvel4a3t52r6n24mlfgi455mihk.apps.googleusercontent.com</string>
-    <string name="heart_icon">♡</string>
-</resources>
+    <string name="no_account_text">Don\'t have an account?</string>
+    <string name="welcome_label">Welcome Back!</string>
+    <string name="welcome_back_text">Please enter your account here</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="forgot_password_label">Forgot password?</string>
+    <string name="login_button_text">Login</string>
+    <string name="alt_login_text">Or continue with</string>
+    <string name="sign_up_label">Sign Up</string>
+    <string name="google_button_text">Google</string></resources>
