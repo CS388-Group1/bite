@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bite.adapters.HomeRecipeAdapter
@@ -45,6 +46,9 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
         recipesRv.adapter = homeRecipeAdapter
+
+        val snapHelper = PagerSnapHelper() // or LinearSnapHelper()
+        snapHelper.attachToRecyclerView(recipesRv)
 
         rotdImageView = view.findViewById(R.id.rotdImageView)
         rotdTitleTextView = view.findViewById(R.id.rotdTitleTextView)
