@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GetStartedActivity">
+
+
+    <Button
+        android:id="@+id/getStartedButton"
+        android:layout_width="330dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_black_background"
+        android:fontFamily="sans-serif"
+        android:text="Get Started"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/bite"
+        android:layout_width="146dp"
+        android:layout_height="134dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="36dp"
+        android:fontFamily="@font/dosis"
+        android:gravity="top"
+        android:lineSpacingExtra="13sp"
+        android:text="bite"
+        android:textColor="#000000"
+        android:textSize="96sp"
+        android:textStyle="bold"
+        android:translationY="-6.53sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="197dp"
+        android:layout_height="135dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="132dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bite"
+        app:srcCompat="@drawable/cookie_transparent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

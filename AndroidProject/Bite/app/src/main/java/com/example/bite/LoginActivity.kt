@@ -45,8 +45,7 @@ class LoginActivity : AppCompatActivity() {
             if (email.isNotEmpty() && password.isNotEmpty()){
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener{
                     if (it.isSuccessful){
-                        val intent = Intent(this, DashboardActivity::class.java)
-                        intent.putExtra("email", email)
+                        val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                     }
                     else{
@@ -122,8 +121,7 @@ class LoginActivity : AppCompatActivity() {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener{
             if (it.isSuccessful){
-                val intent = Intent(this, DashboardActivity::class.java)
-                intent.putExtra("email", account.email)
+                val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
             else{
