@@ -79,7 +79,7 @@
         android:layout_gravity="bottom"
         android:layout_margin="10dp"
         android:gravity="center"
-        android:text="Search"
+        android:text="Search Matching Recipes"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         app:backgroundTint="@color/colorAccent"

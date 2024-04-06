@@ -63,5 +63,6 @@ data class Ingredient(
     val image: String,
     val amount: Double,
     val unit: String,
-    val isCommon: Boolean = false
+    val isCommon: Boolean = false,
+    val isSelected: Boolean = false
 )

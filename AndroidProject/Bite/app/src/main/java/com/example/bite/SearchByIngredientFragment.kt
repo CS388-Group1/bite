@@ -20,6 +20,7 @@ import com.example.bite.network.SpoonacularRepository
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.coroutines.launch
 import android.view.inputmethod.InputMethodManager
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -80,6 +81,7 @@ class SearchByIngredientFragment : Fragment() {
 
                     commonIngredientsTextView.text = "Common Ingredients"
                     viewLifecycleOwner.lifecycleScope.launch {
+                        ingredientRepository.updateIngredientSelection(ingredient.id, true)
                         val selectedIngredientIds = selected.map { it.id }
                         val commonIngredients =
                             ingredientRepository.getCommonIngredients().filter { ingredient ->
@@ -99,6 +101,13 @@ class SearchByIngredientFragment : Fragment() {
         )
 
         viewLifecycleOwner.lifecycleScope.launch {
+            selected = ingredientRepository.getSelectedIngredients().toMutableList()
+            selectedAdapter.updateIngredients(selected)
+            selectedAdapter.notifyDataSetChanged()
+            if (selected.isNotEmpty()) {
+                selectedIngredientsLayout.visibility = View.VISIBLE
+            }
+
             val selectedIngredientIds = selected.map { it.id }
             val commonIngredients =
                 ingredientRepository.getCommonIngredients().filter { ingredient ->
@@ -106,6 +115,7 @@ class SearchByIngredientFragment : Fragment() {
                 }
             ingredientAdapter.updateIngredients(commonIngredients)
         }
+
 
         return view
     }
@@ -216,6 +226,13 @@ class SearchByIngredientFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        showSearchBar()
         (requireActivity() as SearchActivity).updateTitle("Search By Ingredient", "Search ingredients")
     }
+
+    private fun showSearchBar() {
+        val searchBar = requireActivity().findViewById<ConstraintLayout>(R.id.ingredientSearchBar)
+        searchBar.visibility = View.VISIBLE
+    }
+
 }
