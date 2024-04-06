@@ -44,18 +44,18 @@ class LoginActivity : AppCompatActivity() {
 
 
         // FOR TESTING: Automatically attempt to log in
-        val email = binding.editTextTextEmailAddress.text.toString()
-        val password = binding.editTextTextPassword.text.toString()
-        if (email.isNotEmpty() && password.isNotEmpty()) {
-            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "Invalid login credentials.", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+//        val email = binding.editTextTextEmailAddress.text.toString()
+//        val password = binding.editTextTextPassword.text.toString()
+//        if (email.isNotEmpty() && password.isNotEmpty()) {
+//            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    val intent = Intent(this, MainActivity::class.java)
+//                    startActivity(intent)
+//                } else {
+//                    Toast.makeText(this, "Invalid login credentials.", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }
         // Remove above code for production
 
         //Login Logic

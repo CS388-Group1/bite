@@ -19,6 +19,7 @@ import com.example.bite.network.SpoonacularRepository
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.coroutines.launch
 import android.view.inputmethod.InputMethodManager
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.DefaultItemAnimator
 
 class SearchByIngredient : AppCompatActivity() {
@@ -30,6 +31,7 @@ class SearchByIngredient : AppCompatActivity() {
     private lateinit var searchView: SearchView
     private lateinit var ingredientRepository: IngredientRepository
     private lateinit var commonIngredientsTextView: TextView
+    private lateinit var nestedScrollView: NestedScrollView
     private var selected: MutableList<Ingredient> = mutableListOf()
 
     private fun hideKeyboard() {
@@ -56,6 +58,8 @@ class SearchByIngredient : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this, 4)
         recyclerView.adapter = ingredientAdapter
         recyclerView.itemAnimator = DefaultItemAnimator()
+
+        nestedScrollView = findViewById(R.id.nestedScrollView)
 
         spoonacularRepository = SpoonacularRepository()
 
@@ -97,6 +101,9 @@ class SearchByIngredient : AppCompatActivity() {
                         }
                         ingredientAdapter.updateIngredients(commonIngredients)
                     }
+
+                    // Scroll to the top of the page
+                    nestedScrollView.smoothScrollTo(0, 0)
                 }
             }
         })
