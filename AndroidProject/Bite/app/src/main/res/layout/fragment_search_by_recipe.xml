@@ -4,17 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/recipeSearchLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include
-            android:id="@+id/recipeListLayout"
-            layout="@layout/fragment_recipe_list" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/SubmitSearchButton"
         android:layout_width="match_parent"

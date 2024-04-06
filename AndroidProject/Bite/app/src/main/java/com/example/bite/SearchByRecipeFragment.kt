@@ -1,11 +1,13 @@
 package com.example.bite
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,16 +22,10 @@ import kotlinx.coroutines.withContext
 
 class SearchByRecipeFragment : Fragment() {
     private lateinit var recipeAdapter: RecipeAdapter
-    private lateinit var recipeRecyclerView: RecyclerView
     private lateinit var searchView: SearchView
     private lateinit var searchButton: ExtendedFloatingActionButton
-    private val spoonacularRepository = SpoonacularRepository()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_search_by_recipe, container, false)
         searchButton = view.findViewById(R.id.SubmitSearchButton)
         return view
@@ -44,16 +40,14 @@ class SearchByRecipeFragment : Fragment() {
             startActivity(intent)
         }
 
-        val recipeListLayout = view.findViewById<View>(R.id.recipeListLayout)
-        recipeRecyclerView = recipeListLayout.findViewById(R.id.recipeRecyclerView)
-        recipeRecyclerView.adapter = recipeAdapter
-        recipeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-
         searchView = requireActivity().findViewById(R.id.SearchInput)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchRecipes(query)
-                hideSearchButton()
+                query?.let {
+                    navigateToSearchResults(it)
+                    hideKeyboard()
+                    searchView.clearFocus()
+                }
                 return true
             }
 
@@ -68,25 +62,29 @@ class SearchByRecipeFragment : Fragment() {
         })
 
         searchButton.setOnClickListener {
-            val query = searchView.query.toString()
-            searchRecipes(query)
-            hideSearchButton()
+            searchView.query.toString().let {
+                if (it.isNotEmpty()) {
+                    navigateToSearchResults(it)
+                }
+            }
+            hideKeyboard()
+            searchView.clearFocus()
         }
     }
 
-    private fun searchRecipes(query: String?) {
-        query?.let {
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val searchResults = spoonacularRepository.searchRecipeByName(query)
-                    withContext(Dispatchers.Main) {
-                        recipeAdapter.updateRecipes(searchResults)
-                    }
-                } catch (e: Exception) {
-                    // Handle exception
-                }
-            }
-        }
+    private fun navigateToSearchResults(query: String) {
+        val searchResultsFragment = SearchResultsFragment.newInstance(query)
+        parentFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
+            .replace(R.id.fragment_container, searchResultsFragment)
+            .addToBackStack(null)
+            .commit()
+        // Removed hideSearchButton call here
     }
 
     override fun onResume() {
@@ -118,5 +116,11 @@ class SearchByRecipeFragment : Fragment() {
                 searchButton.visibility = View.GONE
             }
             .start()
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(searchView.windowToken, 0)
     }
 }

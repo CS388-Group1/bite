@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -45,15 +43,6 @@ class SearchResultsFragment : Fragment() {
         }
         recyclerView.adapter = recipeAdapter
         spoonacularRepository = SpoonacularRepository()
-
-        val searchView = requireActivity().findViewById<SearchView>(R.id.SearchInput)
-        searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                navigateToSearchByIngredientFragment()
-            }
-        }
-
-        hideSearchBar()
         return view
     }
 
@@ -74,21 +63,4 @@ class SearchResultsFragment : Fragment() {
             }
         }
     }
-
-    private fun navigateToSearchByIngredientFragment() {
-        val searchByIngredientFragment = SearchByIngredientFragment()
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, searchByIngredientFragment)
-            .addToBackStack(null)
-            .commit()
-
-        val searchView = requireActivity().findViewById<SearchView>(R.id.SearchInput)
-        searchView.clearFocus()
-    }
-
-    private fun hideSearchBar() {
-        val searchBar = requireActivity().findViewById<ConstraintLayout>(R.id.ingredientSearchBar)
-        searchBar.visibility = View.GONE
-    }
-
 }

@@ -131,14 +131,13 @@ class SearchByIngredientFragment : Fragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 searchIngredientByName(query)
-                hideSearchButton()
+                hideKeyboard()
+                searchView.clearFocus()
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.isNullOrEmpty()) {
-                    hideSearchButton()
-                } else if (searchButton.visibility != View.VISIBLE) {
+                if (searchButton.visibility != View.VISIBLE) {
                     showSearchButton()
                 }
                 return true
@@ -148,7 +147,8 @@ class SearchByIngredientFragment : Fragment() {
         searchButton.setOnClickListener {
             val query = searchView.query.toString()
             searchIngredientByName(query)
-            hideSearchButton()
+            hideKeyboard()
+            searchView.clearFocus()
         }
 
         searchButton = view.findViewById(R.id.SubmitSearchButton)
@@ -192,7 +192,7 @@ class SearchByIngredientFragment : Fragment() {
     private fun hideKeyboard() {
         val inputMethodManager =
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
+        inputMethodManager.hideSoftInputFromWindow(searchView.windowToken, 0)
     }
 
     private fun searchIngredientByName(query: String) {

@@ -10,4 +10,6 @@
     <string name="login_button_text">Login</string>
     <string name="alt_login_text">Or continue with</string>
     <string name="sign_up_label">Sign Up</string>
-    <string name="google_button_text">Google</string></resources>
+    <string name="google_button_text">Google</string>
+    <string name="back">Back</string>
+</resources>
