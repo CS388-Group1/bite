@@ -19,16 +19,21 @@ class SearchActivity : AppCompatActivity() {
 
         val searchDropdownButton = findViewById<ImageButton>(R.id.SearchByDropdown)
         val fragmentContainer = findViewById<FrameLayout>(R.id.fragment_container)
+        val exitButton = findViewById<ImageButton>(R.id.exit)
 
         searchByIngredientFragment = SearchByIngredientFragment()
         searchByRecipeFragment = SearchByRecipeFragment()
-
         loadFragment(searchByIngredientFragment)
 
         searchDropdownButton.setOnClickListener {
             showSearchOptionDialog()
         }
+
+        exitButton.setOnClickListener {
+            finish()
+        }
     }
+
     private fun showSearchOptionDialog() {
         val options = arrayOf("Search By Ingredient", "Search By Recipe Name")
         AlertDialog.Builder(this)
@@ -45,9 +50,9 @@ class SearchActivity : AppCompatActivity() {
             }
             .show()
     }
+
     private fun loadFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-
         // sliding animations based on the fragment being loaded
         when (fragment) {
             is HomeFragment -> {
@@ -75,7 +80,6 @@ class SearchActivity : AppCompatActivity() {
                 )
             }
         }
-
         transaction.replace(R.id.fragment_container, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
@@ -87,5 +91,4 @@ class SearchActivity : AppCompatActivity() {
         titleTextView.text = title
         searchInputSearchView.queryHint = searchInput
     }
-
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.SearchView
@@ -24,7 +25,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 
 class SearchByIngredientFragment : Fragment() {
-    private lateinit var searchByRecipeFragment: SearchByRecipeFragment
     private lateinit var spoonacularRepository: SpoonacularRepository
     private lateinit var recyclerView: RecyclerView
     private lateinit var selectedRecyclerView: RecyclerView
@@ -34,6 +34,7 @@ class SearchByIngredientFragment : Fragment() {
     private lateinit var ingredientRepository: IngredientRepository
     private lateinit var commonIngredientsTextView: TextView
     private lateinit var nestedScrollView: NestedScrollView
+    private lateinit var searchButton: ExtendedFloatingActionButton
     private var selected: MutableList<Ingredient> = mutableListOf()
 
     override fun onCreateView(
@@ -55,6 +56,8 @@ class SearchByIngredientFragment : Fragment() {
         recyclerView.itemAnimator = DefaultItemAnimator()
 
         nestedScrollView = view.findViewById(R.id.nestedScrollView)
+
+        searchButton = view.findViewById(R.id.SubmitSearchButton)
 
         spoonacularRepository = SpoonacularRepository()
 
@@ -118,25 +121,64 @@ class SearchByIngredientFragment : Fragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 searchIngredientByName(query)
+                hideSearchButton()
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    hideSearchButton()
+                } else if (searchButton.visibility != View.VISIBLE) {
+                    showSearchButton()
+                }
                 return true
             }
         })
 
-        submitSearchButton.setOnClickListener {
+        searchButton.setOnClickListener {
             val query = searchView.query.toString()
             searchIngredientByName(query)
-            hideKeyboard()
+            hideSearchButton()
         }
 
-        exitButton.setOnClickListener {
-            // Handle exit button click
+        searchButton = view.findViewById(R.id.SubmitSearchButton)
+        searchButton.setOnClickListener {
+            val selectedIngredientNames = selected.map { it.name }
+            val ingredientString = selectedIngredientNames.joinToString(",")
+
+            val searchResultsFragment = SearchResultsFragment.newInstance(ingredientString)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, searchResultsFragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 
+    private fun showSearchButton() {
+        searchButton.apply {
+            visibility = View.VISIBLE
+            alpha = 0f
+            translationY = height.toFloat()
+            animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(300)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .start()
+        }
+    }
+
+    private fun hideSearchButton() {
+        searchButton.animate()
+            .alpha(0f)
+            .translationY(searchButton.height.toFloat())
+            .setDuration(300)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .withEndAction {
+                searchButton.visibility = View.GONE
+            }
+            .start()
+    }
     private fun hideKeyboard() {
         val inputMethodManager =
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
