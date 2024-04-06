@@ -31,7 +31,6 @@ class SearchByRecipeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search_by_recipe, container, false)
-        recipeRecyclerView = view.findViewById(R.id.recipeRecyclerView)
         searchButton = view.findViewById(R.id.SubmitSearchButton)
         return view
     }
@@ -45,6 +44,8 @@ class SearchByRecipeFragment : Fragment() {
             startActivity(intent)
         }
 
+        val recipeListLayout = view.findViewById<View>(R.id.recipeListLayout)
+        recipeRecyclerView = recipeListLayout.findViewById(R.id.recipeRecyclerView)
         recipeRecyclerView.adapter = recipeAdapter
         recipeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 

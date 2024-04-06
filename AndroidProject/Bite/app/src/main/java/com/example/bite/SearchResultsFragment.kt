@@ -34,8 +34,8 @@ class SearchResultsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_search_results, container, false)
-        recyclerView = view.findViewById(R.id.recyclerViewSearchResults)
+        val view = inflater.inflate(R.layout.fragment_recipe_list, container, false)
+        recyclerView = view.findViewById(R.id.recipeRecyclerView)
         recipeAdapter = RecipeAdapter(emptyList()) { recipe ->
             val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE_ID", recipe.id)
