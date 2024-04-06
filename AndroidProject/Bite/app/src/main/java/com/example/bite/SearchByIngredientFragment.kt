@@ -174,6 +174,6 @@ class SearchByIngredientFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        (requireActivity() as SearchActivity).updateTitle("Search ingredient")
+        (requireActivity() as SearchActivity).updateTitle("Search By Ingredient", "Search ingredients")
     }
 }

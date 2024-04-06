@@ -81,11 +81,11 @@ class SearchActivity : AppCompatActivity() {
         transaction.commit()
     }
 
-    fun updateTitle(title: String) {
+    fun updateTitle(title: String, searchInput: String) {
         val titleTextView = findViewById<TextView>(R.id.titleSearchByIngredients)
         val searchInputSearchView = findViewById<SearchView>(R.id.SearchInput)
         titleTextView.text = title
-        searchInputSearchView.queryHint = "$title"
+        searchInputSearchView.queryHint = searchInput
     }
 
 }
