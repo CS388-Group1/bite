@@ -2,13 +2,9 @@ package com.example.bite
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.bite.network.IngredientRepository
 import com.example.bite.network.SpoonacularRepository
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -25,7 +21,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var homeFragment: HomeFragment
-    private lateinit var searchFragment: SearchFragment
     private lateinit var discoverFragment: DiscoverFragment
     private lateinit var favoritesFragment: FavoritesFragment
 
@@ -70,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_search -> {
-                    val intent = Intent(this, SearchByIngredient::class.java)
+                    val intent = Intent(this, SearchActivity::class.java)
                     startActivity(intent)
                     true
                 }
