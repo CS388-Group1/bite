@@ -1,6 +1,8 @@
 package com.example.bite.network
 
 import android.util.Log
+import com.example.bite.BuildConfig
+import com.example.bite.models.DiscoverRecipe
 import com.example.bite.models.HomeRecipe
 import com.example.bite.models.Ingredient
 import com.example.bite.models.IngredientListResponse
@@ -46,7 +48,6 @@ class SpoonacularRepository {
         val response = api.getRandomRecipe()
         return response.recipes.map { it.toHomeRecipe() }
     }
-
     suspend fun getIngredients(recipeId: String): List<Ingredient>? {
         try {
             val recipeIngredientsResponse = api.getRecipeIngredients(recipeId)
@@ -104,4 +105,10 @@ class SpoonacularRepository {
             null // Handle error or return null in case of failure
         }
     }
+    suspend fun getDiscoverRecipes(pageSize: Int = 10): List<Recipe> {
+        val response = api.getDiscoverRecipes(number = pageSize, tags = "vegetarian", apiKey = BuildConfig.SPOONACULAR_API_KEY)
+        return response.recipes.map { it.toRecipeModel() }
+    }
+
+
 }
