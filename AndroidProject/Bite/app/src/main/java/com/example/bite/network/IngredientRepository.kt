@@ -76,4 +76,13 @@ class IngredientRepository(private val ingredientDao: IngredientDao, private val
             }
         }
     }
+
+    suspend fun updateIngredientSelection(id: Int, isSelected: Boolean) {
+        ingredientDao.updateIngredientSelection(id, isSelected)
+    }
+
+    suspend fun getSelectedIngredients(): List<Ingredient> {
+        return ingredientDao.getSelectedIngredients()
+    }
+
 }
