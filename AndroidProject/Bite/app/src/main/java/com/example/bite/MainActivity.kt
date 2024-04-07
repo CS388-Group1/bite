@@ -1,13 +1,9 @@
 package com.example.bite
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.bite.network.IngredientRepository
 import com.example.bite.network.SpoonacularRepository
 import com.google.android.material.bottomnavigation.BottomNavigationView
