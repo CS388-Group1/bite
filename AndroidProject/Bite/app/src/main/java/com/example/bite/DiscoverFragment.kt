@@ -12,15 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bite.adapters.DiscoverAdapter
-import com.example.bite.models.HomeRecipe
 import com.example.bite.models.Recipe
 import com.example.bite.network.SpoonacularRepository
 import kotlinx.coroutines.launch
 
 class DiscoverFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: DiscoverAdapter
+    private lateinit var adapter: RecipeAdapter
     private val spoonacularRepository = SpoonacularRepository()
 
     private var recipes = mutableListOf<Recipe>()
@@ -41,17 +39,14 @@ class DiscoverFragment : Fragment() {
         return view
     }
 
-
     private fun setupRecyclerView(view: View) {
-        recyclerView = view.findViewById(R.id.discoverCardRecycler)
+        recyclerView = view.findViewById(R.id.discoverRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = DiscoverAdapter(mutableListOf(), object : DiscoverAdapter.OnRecipeClickListener {
-            override fun onRecipeClicked(recipeId: String) {
-                val intent = Intent(context, RecipeDetailActivity::class.java)
-                intent.putExtra("RECIPE_ID", recipeId)
-                startActivity(intent)
-            }
-        })
+        adapter = RecipeAdapter(mutableListOf()) { recipe ->
+            val intent = Intent(context, RecipeDetailActivity::class.java)
+            intent.putExtra("RECIPE_ID", recipe.id)
+            startActivity(intent)
+        }
         recyclerView.adapter = adapter
     }
 
@@ -74,13 +69,11 @@ class DiscoverFragment : Fragment() {
     }
     private fun fetchRecipesPaginated() {
         if (isLoading) return
-
         isLoading = true
         lifecycleScope.launch {
             try {
                 val newRecipes = spoonacularRepository.getDiscoverRecipes(pageSize)
-                recipes.addAll(newRecipes)
-                adapter.addItems(newRecipes)
+                adapter.updateRecipes(newRecipes)
                 currentPage++
             } catch (e: Exception) {
                 Toast.makeText(context, "Failed to fetch recipes: ${e.message}", Toast.LENGTH_LONG).show()
@@ -90,4 +83,3 @@ class DiscoverFragment : Fragment() {
         }
     }
 }
-

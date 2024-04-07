@@ -19,6 +19,7 @@ data class RecipeResponse(
     val id: Int,
     val title: String,
     val image: String,
+    val cookingTime: Int,
     val missedIngredientCount: Int,
     val missedIngredients: List<Ingredient>,
     val usedIngredientCount: Int,
@@ -28,9 +29,9 @@ data class RecipeResponse(
         return Recipe(
             id = id.toString(),
             title = title,
-            summary = "Description Unavailable",
+            summary = "",
             image = image,
-            cookingTime = 0,
+            cookingTime = cookingTime ?: 0,
             sourceName = "Null",
             instructions = null
         )
@@ -49,15 +50,16 @@ data class DetailedRecipeResponse(
     val title: String,
     val image: String,
     val sourceName: String?,
-    val summary: String?
+    val summary: String?,
+    val cookingTime: Int
 ) {
     fun toRecipe(): Recipe {
         return Recipe(
             id = id.toString(),
             title = title,
-            summary = summary ?: "Description Unavailable",
+            summary = summary ?: "",
             image = image,
-            cookingTime = 0,
+            cookingTime = cookingTime ?: 0,
             sourceName = sourceName ?: "Null",
             instructions = null
         )

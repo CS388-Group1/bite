@@ -48,8 +48,9 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
                 }
             }
         }
-
+        val cookingTimeView: TextView = itemView.findViewById(R.id.textViewCookingTime)
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe, parent, false)
@@ -62,6 +63,14 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
         with(holder) {
             nameView.text = recipe.title
             descriptionView.text = recipe.summary
+
+            // Bind the cooking time
+            val cookingTime = recipe.cookingTime
+            cookingTimeView.text = if (cookingTime > 0) {
+                "$cookingTime min"
+            } else {
+                ""
+            }
             //get database
             buttonFavorite.setOnClickListener{
                 //update favorite
@@ -90,7 +99,8 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
     override fun getItemCount() = recipes.size
 
     fun updateRecipes(newRecipes: List<Recipe>) {
-        recipes = newRecipes
-        notifyDataSetChanged()
+        val oldSize = recipes.size
+        recipes = recipes + newRecipes
+        notifyItemRangeInserted(oldSize, newRecipes.size)
     }
 }
