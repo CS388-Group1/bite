@@ -8,6 +8,7 @@ import com.example.bite.models.IngredientListResponse
 import com.example.bite.models.IngredientResponse
 import com.example.bite.models.Recipe
 import com.example.bite.models.DetailedRecipeResponse
+import com.example.bite.models.DiscoverRecipeListResponse
 import com.example.bite.models.InstructionsResponse
 import com.example.bite.models.RecipeIngredientsResponse
 import com.example.bite.models.RecipeInstruction
@@ -61,6 +62,13 @@ interface SpoonacularApi {
         @Query("tags") tags: String = "vegetarian",
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
     ): HomeRecipeListResponse
+
+    @GET("recipes/random")
+    suspend fun getDiscoverRecipes(
+        @Query("number") number: Int = 50,
+        @Query("tags") tags: String = "vegetarian",
+        @Query("apiKey") apiKey: String
+    ): DiscoverRecipeListResponse
 
     @GET("recipes/complexSearch")
     suspend fun searchRecipeByName(
