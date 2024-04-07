@@ -6,6 +6,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.bite.daos.IngredientDao
 import com.example.bite.daos.RecipeDao
 import com.example.bite.daos.UserPreferencesDao
@@ -14,7 +16,7 @@ import com.example.bite.models.Recipe
 import com.example.bite.models.UserPreferences
 
 // AppDatabase.kt
-@Database(entities = [Ingredient::class, Recipe::class, UserPreferences::class], version = 1, exportSchema = false)
+@Database(entities = [Ingredient::class, Recipe::class, UserPreferences::class], version = 2, exportSchema = false)
 @TypeConverters(InstructionStepConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun ingredientDao(): IngredientDao
@@ -32,11 +34,21 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context): AppDatabase {
+            val MIGRATION_1_2 = object : Migration(1, 2) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    // Perform the necessary schema changes here
+                    // For example, adding a new column to the ingredients table
+                    database.execSQL("ALTER TABLE ingredients ADD COLUMN isSelected INTEGER NOT NULL DEFAULT 0")
+                }
+            }
             return Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java,
                 "bite_database"
-            ).build()
+            )    .addMigrations(MIGRATION_1_2)
+                .build()
         }
     }
+
+
 }

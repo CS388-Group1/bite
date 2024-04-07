@@ -10,30 +10,39 @@
     <View
         android:id="@+id/bottomSeparator"
         android:layout_width="350dp"
-        android:layout_height=".5dp"
+        android:layout_height="1dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="16dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logOutButton" />
 
+    <ImageView
+        android:id="@+id/logOutIcon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="28dp"
+        android:src="@drawable/ic_log_out"
+        app:layout_constraintBottom_toBottomOf="@+id/logOutButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/logOutButton" />
+
     <TextView
         android:id="@+id/logOutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="84dp"
         android:text="Log Out"
         android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="@dimen/textSize_preferences"
+        app:layout_constraintStart_toEndOf="@+id/logOutIcon"
         app:layout_constraintTop_toBottomOf="@+id/myRecipesButton" />
 
     <View
         android:id="@+id/middleSeparator"
         android:layout_width="350dp"
-        android:layout_height=".5dp"
+        android:layout_height="1dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="16dp"
         android:background="@android:color/darker_gray"
@@ -59,8 +68,7 @@
                 android:layout_gravity="center"
                 android:text="Preferences"
                 android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <ImageView
                 android:id="@+id/backToHomeButton"
@@ -77,37 +85,55 @@
     <View
         android:id="@+id/topSeparator"
         android:layout_width="350dp"
-        android:layout_height=".5dp"
+        android:layout_height="1dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="16dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dietaryPreferencesButton" />
 
+    <ImageView
+        android:id="@+id/dietaryPreferencesIcon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="28dp"
+        android:src="@drawable/ic_dietary_preferences"
+        app:layout_constraintBottom_toBottomOf="@+id/dietaryPreferencesButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dietaryPreferencesButton" />
+
     <TextView
         android:id="@+id/dietaryPreferencesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:text="Dietary Preferences"
         android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="@dimen/textSize_preferences"
+        app:layout_constraintStart_toEndOf="@+id/dietaryPreferencesIcon"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+    <ImageView
+        android:id="@+id/myRecipesIcon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="28dp"
+        android:src="@drawable/ic_notes"
+        app:layout_constraintBottom_toBottomOf="@+id/myRecipesButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/myRecipesButton" />
 
     <TextView
         android:id="@+id/myRecipesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="34dp"
         android:text="My Recipes"
         android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="@dimen/textSize_preferences"
+        app:layout_constraintStart_toEndOf="@+id/myRecipesIcon"
         app:layout_constraintTop_toBottomOf="@+id/dietaryPreferencesButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

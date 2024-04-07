@@ -1,12 +1,7 @@
 package com.example.bite.models
 
-
-import com.google.gson.Gson
-
-
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
 
 @Entity(tableName = "recipes")
 data class Recipe(

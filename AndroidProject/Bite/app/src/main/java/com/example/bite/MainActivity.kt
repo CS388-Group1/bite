@@ -1,5 +1,6 @@
 package com.example.bite
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -20,7 +21,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var homeFragment: HomeFragment
-    private lateinit var searchFragment: SearchFragment
     private lateinit var discoverFragment: DiscoverFragment
     private lateinit var favoritesFragment: FavoritesFragment
 
@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         homeFragment = HomeFragment()
-        searchFragment = SearchFragment()
         discoverFragment = DiscoverFragment()
         favoritesFragment = FavoritesFragment()
 
@@ -66,7 +65,8 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_search -> {
-                    loadFragment(searchFragment)
+                    val intent = Intent(this, SearchActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.navigation_discover -> {
@@ -97,7 +97,37 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
+
+        // sliding animations based on the fragment being loaded
+        when (fragment) {
+            is HomeFragment -> {
+                transaction.setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
+            }
+            is DiscoverFragment -> {
+                transaction.setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
+            }
+            is FavoritesFragment -> {
+                transaction.setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
+            }
+        }
+
         transaction.replace(R.id.fragment_container, fragment)
+        transaction.addToBackStack(null)
         transaction.commit()
     }
 
