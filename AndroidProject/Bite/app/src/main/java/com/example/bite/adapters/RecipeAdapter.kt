@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bite.models.Recipe
 import com.example.bite.models.RecipeLocalData
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -26,12 +27,24 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
         val descriptionView: TextView = itemView.findViewById(R.id.textViewDescription)
         val buttonFavorite: ImageButton = itemView.findViewById(R.id.favoriteButton)
 
-        fun updateFavorite(favorite: Boolean, id: String){
+        @OptIn(DelicateCoroutinesApi::class)
+        fun updateFavorite(recipe: Recipe, favorite: Boolean, id: String){
             GlobalScope.launch {
-                itemView.context.let {
+                val exists = (itemView.context.let {
                     AppDatabase.getInstance(it.applicationContext).recipeDao()
                 }.let { RecipeLocalData(it, itemView.context.applicationContext) }
-                    .updateRecipe(favorite, id)
+                    .isRowIsExist(id))
+                if (exists) {
+                    (itemView.context.let {
+                        AppDatabase.getInstance(it.applicationContext).recipeDao()
+                    }.let { RecipeLocalData(it, itemView.context.applicationContext) }
+                        .updateRecipe(favorite, id))
+                } else {
+                    (itemView.context.let {
+                        AppDatabase.getInstance(it.applicationContext).recipeDao()
+                    }.let { RecipeLocalData(it, itemView.context.applicationContext) }
+                        .insertRecipe(recipe))
+                }
             }
         }
 
@@ -51,9 +64,13 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
             //get database
             buttonFavorite.setOnClickListener{
                 //update favorite
-                recipe.isFavorite = true
-                updateFavorite(recipe.isFavorite,recipe.id)
-                //cant find method to execute query within adapter
+                recipe.isFavorite = !recipe.isFavorite
+                updateFavorite(recipe, recipe.isFavorite,recipe.id)
+                if(recipe.isFavorite){
+                    Toast.makeText(itemView.context,"Item Added to Favorites",Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(itemView.context,"Item Removed from Favorites",Toast.LENGTH_SHORT).show()
+                }
 
             }
 

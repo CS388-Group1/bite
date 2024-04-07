@@ -18,9 +18,6 @@ class FavoritesFragment : Fragment() {
     private val favRecipes = mutableListOf<Recipe>()
     private lateinit var favoritesRecyclerView: RecyclerView
     private lateinit var favoriteAdapter: RecipeAdapter
-    private val favoriteRepository = activity?.let {
-        AppDatabase.getInstance(it.applicationContext).recipeDao()
-    }?.let { RecipeLocalData(it, requireActivity().applicationContext) }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,18 +25,6 @@ class FavoritesFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_favorites, container, false)
         favoritesRecyclerView = view.findViewById(R.id.favorites)
-
-        lifecycleScope.launch {
-           val dataList = favoriteRepository?.getFavoriteRecipes()
-
-            Toast.makeText(requireActivity().applicationContext,dataList.toString(), Toast.LENGTH_LONG).show()
-
-            if (dataList != null) {
-                favRecipes.addAll(dataList)
-                favoriteAdapter.updateRecipes(favRecipes)
-                favoritesRecyclerView.adapter = favoriteAdapter
-            }
-        }
 
         favoriteAdapter = RecipeAdapter(favRecipes) { recipe ->
             val intent = android.content.Intent(
@@ -55,9 +40,20 @@ class FavoritesFragment : Fragment() {
             val dividerItemDecoration = DividerItemDecoration(context, it.orientation)
             favoritesRecyclerView.addItemDecoration(dividerItemDecoration)
         }
-
-        //Allow button to remove favorites
-
+        retrieveFavorite()
         return view;
+    }
+
+    private fun retrieveFavorite(){
+        lifecycleScope.launch {
+            val favoriteRepository = activity?.let {
+                AppDatabase.getInstance(it.applicationContext).recipeDao()
+            }?.let { RecipeLocalData(it, requireActivity().applicationContext) }
+            val dataList = favoriteRepository?.getFavoriteRecipes()
+            if (dataList != null) {
+                favoriteAdapter.updateRecipes(dataList)
+            }
+            favoritesRecyclerView.adapter = favoriteAdapter
+        }
     }
 }
