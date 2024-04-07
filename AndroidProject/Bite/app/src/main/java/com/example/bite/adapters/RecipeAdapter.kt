@@ -1,5 +1,6 @@
 package com.example.bite
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,12 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
             Glide.with(imageView.context).load(recipe.image).into(imageView)
 
             itemView.setOnClickListener { onRecipeClicked(recipe) }
+
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, RecipeDetailActivity::class.java)
+                intent.putExtra("RECIPE_ID", recipe.id)
+                itemView.context.startActivity(intent)
+            }
         }
     }
 

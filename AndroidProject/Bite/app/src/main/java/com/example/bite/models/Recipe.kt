@@ -2,7 +2,6 @@ package com.example.bite.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
 
 @Entity(tableName = "recipes")
 data class Recipe(
@@ -12,9 +11,8 @@ data class Recipe(
     val image: String,
     val cookingTime: Int,
     val sourceName: String,
+    var instructions: String? = null,
     val isFavorite: Boolean = false,
-    @TypeConverters(InstructionStepConverter::class)
-    val instructions: List<InstructionStep>? = null
 )
 
 data class RecipeResponse(
@@ -66,11 +64,56 @@ data class DetailedRecipeResponse(
     }
 }
 
-data class RecipeInstructionsResponse(
-    val steps: List<InstructionStep>
+
+data class InstructionsResponse(
+    val instructions: List<Instruction>?
+) {
+    fun toJsonString(): String {
+        return this.toString()
+    }
+}
+data class Instruction(
+    val name: String?,
+    val steps: List<Step>?
+)
+data class Step(
+    val equipment: List<Equipment>?,
+    val ingredients: List<Ingr>?,
+    val number: Int?,
+    val step: String?,
+    val length: Length?
+)
+
+data class Equipment(
+    val id: Int?,
+    val image: String?,
+    val name: String?,
+    val temperature: Temperature?
+)
+
+data class Ingr(
+    val id: Int?,
+    val image: String?,
+    val name: String?
+)
+
+data class Length(
+    val number: Int?,
+    val unit: String?
+)
+
+data class Temperature(
+    val number: Double?,
+    val unit: String?
+)
+
+data class RecipeInstruction(
+    val name: String?,
+    val steps: List<Step>?
 )
 
 data class InstructionStep(
     val number: Int,
     val step: String
 )
+
