@@ -5,7 +5,6 @@ import com.example.bite.BuildConfig
 import com.example.bite.models.IngredientListResponse
 import com.example.bite.models.IngredientResponse
 import com.example.bite.models.DetailedRecipeResponse
-import com.example.bite.models.DiscoverRecipeListResponse
 import com.example.bite.models.RecipeIngredientsResponse
 import com.example.bite.models.RecipeListResponse
 import com.example.bite.models.RecipeResponse
@@ -62,7 +61,7 @@ interface SpoonacularApi {
         @Query("number") number: Int = 50,
         @Query("tags") tags: String = "vegetarian",
         @Query("apiKey") apiKey: String
-    ): DiscoverRecipeListResponse
+    ): RecipeListResponse
 
     @GET("recipes/complexSearch")
     suspend fun searchRecipeByName(

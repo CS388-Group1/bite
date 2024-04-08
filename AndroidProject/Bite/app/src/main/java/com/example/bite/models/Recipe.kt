@@ -114,30 +114,3 @@ data class InstructionStep(
     val number: Int,
     val step: String
 )
-
-
-data class DiscoverRecipeListResponse(
-    val recipes: List<DiscoverRecipe>,
-)
-
-data class DiscoverRecipe(
-    val id: Int,
-    val title: String,
-    val image: String,
-    val readyInMinutes: Int
-
-){
-    fun toRecipeModel(): Recipe {
-        return Recipe(
-            id = this.id.toString(),
-            title = this.title,
-            summary = "",
-            image = this.image,
-            cookingTime = this.readyInMinutes,
-            sourceName = "Spoonacular",
-            instructions = null,
-            isFavorite = false
-        )
-    }
-
-}

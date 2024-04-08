@@ -109,7 +109,7 @@ class SpoonacularRepository {
     }
     suspend fun getDiscoverRecipes(pageSize: Int = 10): List<Recipe> {
         val response = api.getDiscoverRecipes(number = pageSize, tags = "vegetarian", apiKey = BuildConfig.SPOONACULAR_API_KEY)
-        return response.recipes.map { it.toRecipeModel() }
+        return response.recipes.map { it.toRecipe() }
     }
 
 
