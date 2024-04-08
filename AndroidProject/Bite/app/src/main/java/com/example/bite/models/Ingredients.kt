@@ -66,3 +66,11 @@ data class Ingredient(
     val isCommon: Boolean = false,
     val isSelected: Boolean = false
 )
+@Entity(tableName = "custom_ingredient")
+data class CustomIngredient(
+    @PrimaryKey(autoGenerate = true) val ingredientId: Int = 0,
+    val name: String,
+    val amount: Double,
+    val unit: String
+)
+

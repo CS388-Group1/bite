@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateRecipeActivity">
+
+    <EditText
+        android:id="@+id/addRecipeDesc"
+        android:layout_width="360dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_gray_background"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Recipe Description"
+        android:inputType="textMultiLine"
+        android:paddingStart="20dp"
+        android:paddingTop="15dp"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addRecipeName" />
+
+
+    <Button
+        android:id="@+id/saveRecipeButton"
+        android:layout_width="360dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_black_background"
+        android:fontFamily="sans-serif"
+        android:text="Save"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addInstructions" />
+
+    <TextView
+        android:id="@+id/instructionsHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="88dp"
+        android:text="Instructions"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/main"
+        app:layout_constraintTop_toBottomOf="@+id/addIngredientsRv" />
+
+    <ImageView
+        android:id="@+id/addImage"
+        android:layout_width="360dp"
+        android:layout_height="101dp"
+        android:layout_marginStart="25dp"
+        android:background="@drawable/dashed_border"
+        android:clickable="true"
+        android:onClick="launchCamera"
+        android:paddingHorizontal="100dp"
+        android:paddingTop="60dp"
+        android:paddingBottom="40dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cover_photo_placeholder"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+    <EditText
+        android:id="@+id/addRecipeName"
+        android:layout_width="360dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_gray_background"
+        android:ems="10"
+        android:hint="Recipe Name"
+        android:inputType="text"
+        android:paddingStart="20dp"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addImage" />
+
+    <EditText
+        android:id="@+id/addInstructions"
+        android:layout_width="362dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_white_outer_gray_background"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Steps"
+        android:inputType="textMultiLine"
+        android:paddingStart="20dp"
+        android:paddingTop="15dp"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/instructionsHeader" />
+
+    <TextView
+        android:id="@+id/addServes"
+        android:layout_width="360dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_gray_background"
+        android:drawableStart="@drawable/small_person_icon"
+        android:drawableEnd="@drawable/baseline_arrow_forward_24"
+        android:ems="10"
+        android:paddingStart="15dp"
+        android:paddingTop="11dp"
+        android:text=" Serves"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addRecipeDesc" />
+
+    <TextView
+        android:id="@+id/addCookTime"
+        android:layout_width="360dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_gray_background"
+        android:drawableStart="@drawable/small_clock_icon"
+        android:drawableEnd="@drawable/baseline_arrow_forward_24"
+        android:paddingStart="15dp"
+        android:paddingTop="11dp"
+        android:text=" Cook time"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addServes" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="33dp"
+        android:text="45 min"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/addCookTime"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="36dp"
+        android:text="01"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/addServes"
+        app:layout_constraintTop_toBottomOf="@+id/addRecipeDesc" />
+
+    <TextView
+        android:id="@+id/ingredientsHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="Ingredients"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/main"
+        app:layout_constraintTop_toBottomOf="@+id/addCookTime" />
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/addImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/appBarLayout">
+
+            <TextView
+                android:id="@+id/createRecipeHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Create Recipe"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/backToHomeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_larrow" />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/addIngredientsRv"
+        android:layout_width="360dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientsHeader" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

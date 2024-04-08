@@ -1,7 +1,11 @@
 package com.example.bite.models
 
+import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Junction
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 
 @Entity(tableName = "recipes")
 data class Recipe(
@@ -13,6 +17,55 @@ data class Recipe(
     val sourceName: String,
     var instructions: String? = null,
     val isFavorite: Boolean = false,
+)
+
+@Entity(tableName = "custom_recipe")
+data class CustomRecipe(
+    @PrimaryKey(autoGenerate = true) val recipeId: Int = 0,
+    val name: String,
+    val image: String,
+    val servings: Int,
+    val readyInMinutes: Int,
+    val instructions: String
+)
+
+@Entity(
+    tableName = "recipe_ingredient_cross_ref",
+    primaryKeys = ["recipeId", "ingredientId"],
+    foreignKeys = [
+        ForeignKey(entity = CustomRecipe::class,
+            parentColumns = arrayOf("recipeId"),
+            childColumns = arrayOf("recipeId"),
+            onDelete = ForeignKey.CASCADE),
+        ForeignKey(entity = CustomIngredient::class,
+            parentColumns = arrayOf("ingredientId"),
+            childColumns = arrayOf("ingredientId"),
+            onDelete = ForeignKey.CASCADE)
+    ]
+)
+data class RecipeIngredientCrossRef(
+    val recipeId: Int,
+    val ingredientId: Int
+)
+
+data class RecipeWithIngredients(
+    @Embedded val customRecipe: CustomRecipe,
+    @Relation(
+        parentColumn = "recipeId",
+        entityColumn = "ingredientId",
+        associateBy = Junction(RecipeIngredientCrossRef::class)
+    )
+    val customIngredients: List<CustomIngredient>
+)
+
+data class IngredientWithRecipes(
+    @Embedded val customIngredient: CustomIngredient,
+    @Relation(
+        parentColumn = "ingredientId",
+        entityColumn = "recipeId",
+        associateBy = Junction(RecipeIngredientCrossRef::class)
+    )
+    val customRecipes: List<CustomRecipe>
 )
 
 data class RecipeResponse(
