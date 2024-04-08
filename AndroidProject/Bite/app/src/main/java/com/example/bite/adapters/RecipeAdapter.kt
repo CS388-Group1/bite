@@ -26,7 +26,6 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
         val imageView: ImageView = itemView.findViewById(R.id.imageViewRecipe)
         val nameView: TextView = itemView.findViewById(R.id.textViewRecipeName)
         val cookingTimeView: TextView = itemView.findViewById(R.id.textViewCookingTime)
-//        val descriptionView: TextView = itemView.findViewById(R.id.textViewDescription)
         val buttonFavorite: ImageButton = itemView.findViewById(R.id.favoriteButton)
 
         @OptIn(DelicateCoroutinesApi::class)

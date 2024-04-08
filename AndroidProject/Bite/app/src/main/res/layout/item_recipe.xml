@@ -8,9 +8,10 @@
 
     <ImageView
         android:id="@+id/imageViewRecipe"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -51,8 +52,8 @@
 
     <ImageButton
         android:id="@+id/favoriteButton"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:scaleType="centerCrop"
         android:background="@drawable/rounded_white_background"
         android:shape="oval"
