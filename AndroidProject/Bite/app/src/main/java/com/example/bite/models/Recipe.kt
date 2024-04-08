@@ -19,21 +19,19 @@ data class RecipeResponse(
     val id: Int,
     val title: String,
     val image: String,
-    val cookingTime: Int,
-    val missedIngredientCount: Int,
-    val missedIngredients: List<Ingredient>,
-    val usedIngredientCount: Int,
-    val usedIngredients: List<Ingredient>
-) {
+    val readyInMinutes: Int
+
+){
     fun toRecipe(): Recipe {
         return Recipe(
-            id = id.toString(),
-            title = title,
+            id = this.id.toString(),
+            title = this.title,
             summary = "",
-            image = image,
-            cookingTime = cookingTime ?: 0,
-            sourceName = "Null",
-            instructions = null
+            image = this.image,
+            cookingTime = this.readyInMinutes,
+            sourceName = "Spoonacular",
+            instructions = null,
+            isFavorite = false
         )
     }
 }
@@ -51,7 +49,7 @@ data class DetailedRecipeResponse(
     val image: String,
     val sourceName: String?,
     val summary: String?,
-    val cookingTime: Int
+    val readyInMinutes: Int,
 ) {
     fun toRecipe(): Recipe {
         return Recipe(
@@ -59,7 +57,7 @@ data class DetailedRecipeResponse(
             title = title,
             summary = summary ?: "",
             image = image,
-            cookingTime = cookingTime ?: 0,
+            cookingTime = readyInMinutes ?: 0,
             sourceName = sourceName ?: "Null",
             instructions = null
         )

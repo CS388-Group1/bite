@@ -21,7 +21,6 @@ class DiscoverFragment : Fragment() {
     private lateinit var adapter: RecipeAdapter
     private val spoonacularRepository = SpoonacularRepository()
 
-    private var recipes = mutableListOf<Recipe>()
     private var isLoading = false
     private var currentPage = 0
     private val pageSize = 10

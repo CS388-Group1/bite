@@ -25,7 +25,8 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
     class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.imageViewRecipe)
         val nameView: TextView = itemView.findViewById(R.id.textViewRecipeName)
-        val descriptionView: TextView = itemView.findViewById(R.id.textViewDescription)
+        val cookingTimeView: TextView = itemView.findViewById(R.id.textViewCookingTime)
+//        val descriptionView: TextView = itemView.findViewById(R.id.textViewDescription)
         val buttonFavorite: ImageButton = itemView.findViewById(R.id.favoriteButton)
 
         @OptIn(DelicateCoroutinesApi::class)
@@ -48,7 +49,6 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
                 }
             }
         }
-        val cookingTimeView: TextView = itemView.findViewById(R.id.textViewCookingTime)
     }
 
 
@@ -62,7 +62,7 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
         val recipe = recipes[position]
         with(holder) {
             nameView.text = recipe.title
-            descriptionView.text = recipe.summary
+//            descriptionView.text = recipe.summary
 
             // Bind the cooking time
             val cookingTime = recipe.cookingTime
@@ -71,6 +71,7 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
             } else {
                 ""
             }
+
             //get database
             buttonFavorite.setOnClickListener{
                 //update favorite

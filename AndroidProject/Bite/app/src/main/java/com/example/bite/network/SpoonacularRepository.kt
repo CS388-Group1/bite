@@ -27,7 +27,13 @@ class SpoonacularRepository {
 
     suspend fun searchRecipesByIngredients(ingredients: String): List<Recipe> {
         val response = api.searchRecipesByIngredients(ingredients)
-        return response.map { it.toRecipe() }
+        val recipeIds = response.map { it.id.toString() }
+
+        val recipes = recipeIds.map { recipeId ->
+            getRecipeInfo(recipeId)
+        }
+
+        return recipes.filterNotNull()
     }
 
     suspend fun searchIngredientByName(query: String): IngredientListResponse {
