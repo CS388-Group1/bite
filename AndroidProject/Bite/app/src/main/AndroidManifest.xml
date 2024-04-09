@@ -25,6 +25,8 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
+        <activity android:name=".DietPrefsActivity"
+            android:exported="false" />
         <activity
             android:name=".RecipeDetailActivity"
             android:exported="false" />

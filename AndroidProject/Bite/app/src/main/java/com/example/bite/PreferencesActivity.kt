@@ -2,6 +2,7 @@ package com.example.bite
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -15,6 +16,7 @@ class PreferencesActivity : AppCompatActivity() {
         private lateinit var backToHomeButton: ImageView
         private lateinit var logOutButton: TextView
         private lateinit var auth: FirebaseAuth
+        private lateinit var dietPrefsButton: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preferences)
@@ -23,14 +25,21 @@ class PreferencesActivity : AppCompatActivity() {
         backToHomeButton = findViewById(R.id.backToHomeButton)
         logOutButton = findViewById(R.id.logOutButton)
 
-            backToHomeButton.setOnClickListener{
-                startActivity(Intent(this@PreferencesActivity, MainActivity::class.java))
-                }
-            logOutButton.setOnClickListener {
-                auth.signOut()
-                startActivity(Intent(this@PreferencesActivity, LoginActivity::class.java))
+        backToHomeButton.setOnClickListener{
+            startActivity(Intent(this@PreferencesActivity, MainActivity::class.java))
             }
+        logOutButton.setOnClickListener {
+            auth.signOut()
+            startActivity(Intent(this@PreferencesActivity, LoginActivity::class.java))
+        }
         //TODO: Dietary Preference and My Recipes routing
-            }
+
+        dietPrefsButton = findViewById<TextView>(R.id.dietaryPreferencesButton)
+        dietPrefsButton.setOnClickListener{
+            startActivity(Intent(this@PreferencesActivity, DietPrefsActivity::class.java))
+        }
+
+
+    }
 
         }
