@@ -58,7 +58,7 @@ class DietPrefsActivity : AppCompatActivity() {
         }
 
         // Handle click events for dietary restrictions
-        handleClicks()
+        handleDietaryRestrictionsClick()
 
         // Handle click events for allergies
         handleAllergiesClick()
@@ -66,32 +66,33 @@ class DietPrefsActivity : AppCompatActivity() {
 
 
 
-    private fun handleClicks() {
+    private fun handleDietaryRestrictionsClick() {
         val frameLayouts = frameLayoutIds.map { findViewById<FrameLayout>(it) }
-        for (frameLayout in frameLayouts) {
+        for (frameLayoutId in frameLayoutIds) {
+            val frameLayout = findViewById<FrameLayout>(frameLayoutId)
             frameLayout.setOnClickListener {
-                // Toggle the isSelected state of the clicked FrameLayout
                 it.isSelected = !it.isSelected
-                // Update user preferences based on the current selected items
-                updateUserPreferences(getSelectedRestrictions(frameLayouts))
+                val selectedRestrictions = getSelectedDietaryRestrictions()
+                // Combine both dietary restrictions and allergies and update preferences
+                val selectedAllergies = getSelectedAllergies() // Get selected allergies
+                updateUserPreferences(
+                    dietaryRestrictions = selectedRestrictions.joinToString(","),
+                    allergies = selectedAllergies.joinToString(",")
+                )
             }
         }
-
     }
 
-    private fun getSelectedRestrictions(frameLayouts: List<FrameLayout>): String {
-        val selectedRestrictions = mutableListOf<String>()
-        for (layout in frameLayouts) {
-            if (layout.isSelected) {
-                val textView = layout.getChildAt(1) as? TextView
-                val restrictionText = textView?.text?.toString() ?: ""
-                layout.tag = restrictionText
-                selectedRestrictions.add(restrictionText)
+    private fun getSelectedAllergies(): List<String> {
+        val buttons = buttonIds.map { findViewById<Button>(it) }
+        val selectedAllergies = mutableListOf<String>()
+        for (button in buttons) {
+            if (button.isSelected) {
+                selectedAllergies.add(button.text.toString())
             }
         }
-        return selectedRestrictions.joinToString(",")
+        return selectedAllergies
     }
-
 
     private fun handleAllergiesClick() {
         val buttons = buttonIds.map { findViewById<Button>(it) }
@@ -99,16 +100,31 @@ class DietPrefsActivity : AppCompatActivity() {
             val button = findViewById<Button>(buttonId)
             button.setOnClickListener {
                 it.isSelected = !it.isSelected
-                val selectedAllergies = mutableListOf<String>()
-                for (button in buttons) {
-                    if (button.isSelected) {
-                        selectedAllergies.add(button.text.toString())
-                    }
-                }
-                updateUserPreferences(allergies = selectedAllergies.joinToString(","))
+                val selectedAllergies = getSelectedAllergies()
+                // Get selected dietary restrictions
+                val selectedRestrictions = getSelectedDietaryRestrictions()
+                // Update preferences with both dietary restrictions and allergies
+                updateUserPreferences(
+                    dietaryRestrictions = selectedRestrictions.joinToString(","),
+                    allergies = selectedAllergies.joinToString(",")
+                )
             }
         }
     }
+
+    private fun getSelectedDietaryRestrictions(): List<String> {
+        val frameLayouts = frameLayoutIds.map { findViewById<FrameLayout>(it) }
+        val selectedRestrictions = mutableListOf<String>()
+        for (layout in frameLayouts) {
+            if (layout.isSelected) {
+                val textView = layout.getChildAt(1) as? TextView
+                val restrictionText = textView?.text?.toString() ?: ""
+                selectedRestrictions.add(restrictionText)
+            }
+        }
+        return selectedRestrictions
+    }
+
 
     private fun updateUserPreferences(dietaryRestrictions: String = "", allergies: String = "") {
         GlobalScope.launch(Dispatchers.IO) {
