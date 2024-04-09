@@ -16,7 +16,7 @@ data class Recipe(
     val cookingTime: Int,
     val sourceName: String,
     var instructions: String? = null,
-    val isFavorite: Boolean = false,
+    var isFavorite: Boolean = false,
 )
 
 @Entity(tableName = "custom_recipe")

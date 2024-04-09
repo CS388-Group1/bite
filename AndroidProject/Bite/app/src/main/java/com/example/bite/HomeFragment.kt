@@ -70,7 +70,13 @@ class HomeFragment : Fragment() {
             intent.putExtra("RECIPE_ID", recipeId)
             startActivity(intent)
         }
-
+        seeAllButton.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()?.apply {
+                replace(R.id.fragment_container, DiscoverFragment())
+                addToBackStack(null)
+                commit()
+            }
+        }
         // Fetch trending recipes asynchronously
         fetchTrendingRecipes()
 
