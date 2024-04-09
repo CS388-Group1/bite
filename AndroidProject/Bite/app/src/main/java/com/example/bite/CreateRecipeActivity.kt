@@ -53,6 +53,7 @@ class CreateRecipeActivity : AppCompatActivity() {
     private lateinit var recipeInstructions: EditText
     private lateinit var saveRecipeButton: Button
     private lateinit var customRecipeViewModel: CustomRecipeViewModel
+    private lateinit var backToHome: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +70,12 @@ class CreateRecipeActivity : AppCompatActivity() {
         recipeDesc = findViewById(R.id.addRecipeDesc)
         recipeInstructions = findViewById(R.id.addInstructions)
         saveRecipeButton = findViewById(R.id.saveRecipeButton)
+        backToHome = findViewById(R.id.backToHomeButton)
+
+        backToHome.setOnClickListener{
+            val intent = Intent(this@CreateRecipeActivity, MainActivity::class.java)
+            startActivity(intent)
+        }
 
         addImage.setOnClickListener {
             dispatchTakePictureIntent()
