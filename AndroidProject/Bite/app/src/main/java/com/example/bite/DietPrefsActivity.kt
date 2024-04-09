@@ -22,11 +22,10 @@ class DietPrefsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dietary_prefs)
 
-        // Obtain the instance of the database
         val appDatabase = AppDatabase.getInstance(applicationContext)
         userPreferencesDao = appDatabase.userPreferencesDao()
 
-        // Retrieve user preferences from Room database
+        // get user preferences from database
         GlobalScope.launch(Dispatchers.IO) {
             var userPreferences = userPreferencesDao.getUserPreferences()
             if (userPreferences == null) {
