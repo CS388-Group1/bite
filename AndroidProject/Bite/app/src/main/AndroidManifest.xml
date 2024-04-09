@@ -40,6 +40,9 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
+        <activity android:name=".DietPrefsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Bite"/>
         <activity
             android:name=".RecipeDetailActivity"
             android:exported="false" />
