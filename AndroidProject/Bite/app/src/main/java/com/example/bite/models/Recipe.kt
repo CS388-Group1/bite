@@ -24,6 +24,7 @@ data class CustomRecipe(
     @PrimaryKey(autoGenerate = true) val recipeId: Int = 0,
     val name: String,
     val image: String,
+    val desc: String,
     val servings: Int,
     val readyInMinutes: Int,
     val instructions: String

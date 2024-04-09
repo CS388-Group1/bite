@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bite.adapters.CustomIngredientAdapter
@@ -33,6 +34,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.example.bite.models.CustomRecipeViewModel
 
 class CreateRecipeActivity : AppCompatActivity() {
 
@@ -50,10 +52,13 @@ class CreateRecipeActivity : AppCompatActivity() {
     private lateinit var recipeDesc: EditText
     private lateinit var recipeInstructions: EditText
     private lateinit var saveRecipeButton: Button
+    private lateinit var customRecipeViewModel: CustomRecipeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_recipe)
+
+        customRecipeViewModel = ViewModelProvider(this).get(CustomRecipeViewModel::class.java)
 
         addImage = findViewById(R.id.addImage)
         servesTextView = findViewById(R.id.addServes)
@@ -128,6 +133,10 @@ class CreateRecipeActivity : AppCompatActivity() {
                 // Now you can use the customCreateRecipe object as needed (e.g., save to database)
                 // For demonstration, you can log the recipe details
                 Log.d("CreateRecipeActivity", "CustomCreateRecipe: $customCreateRecipe")
+                Toast.makeText(this, "Recipe Successfully Created.", Toast.LENGTH_SHORT).show()
+                customRecipeViewModel.insertCustomCreateRecipe(customCreateRecipe)
+                val intent = Intent(this@CreateRecipeActivity, MainActivity::class.java)
+                startActivity(intent)
 
             } else {
                 Toast.makeText(
