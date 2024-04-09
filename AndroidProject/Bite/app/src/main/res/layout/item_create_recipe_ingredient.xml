@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/ingredientTextView"
-        android:layout_width="190dp"
+        android:layout_width="170dp"
         android:layout_height="40dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/portionTextView"
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="40dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
@@ -31,12 +31,16 @@
 
     <ImageView
         android:id="@+id/minusButton"
-        android:layout_width="58dp"
-        android:layout_height="39dp"
-        android:layout_marginTop="5dp"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
         android:scaleType="centerCrop"
+        android:src="@drawable/minus_in_circle"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/portionTextView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/minus_in_circle" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,6 +29,16 @@ data class CustomRecipe(
     val instructions: String
 )
 
+data class CustomCreateRecipe(
+    val name: String,
+    val image: String,
+    val desc: String,
+    val servings: Int,
+    val readyInMinutes: Int,
+    val instructions: String,
+    val ingredients: List<CustomCreateIngredient>
+)
+
 @Entity(
     tableName = "recipe_ingredient_cross_ref",
     primaryKeys = ["recipeId", "ingredientId"],

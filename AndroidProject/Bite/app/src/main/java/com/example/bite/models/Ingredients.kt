@@ -74,3 +74,8 @@ data class CustomIngredient(
     val unit: String
 )
 
+data class CustomCreateIngredient(
+    val name: String,
+    val amount: Double,
+    val unit: String
+)
