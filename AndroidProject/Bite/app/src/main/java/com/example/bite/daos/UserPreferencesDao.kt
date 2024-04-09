@@ -18,6 +18,7 @@ interface UserPreferencesDao {
     @Query("SELECT * FROM user_preferences LIMIT 1")
     suspend fun getUserPreferences(): UserPreferences?
 
+
     @Update
     suspend fun updateUserPreferences(userPreferences: UserPreferences)
 }
