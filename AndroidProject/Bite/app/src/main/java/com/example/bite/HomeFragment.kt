@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bite.adapters.HomeRecipeAdapter
@@ -46,6 +47,9 @@ class HomeFragment : Fragment() {
         }
         recipesRv.adapter = homeRecipeAdapter
 
+        val snapHelper = PagerSnapHelper() // or LinearSnapHelper()
+        snapHelper.attachToRecyclerView(recipesRv)
+
         rotdImageView = view.findViewById(R.id.rotdImageView)
         rotdTitleTextView = view.findViewById(R.id.rotdTitleTextView)
 
@@ -66,9 +70,32 @@ class HomeFragment : Fragment() {
             intent.putExtra("RECIPE_ID", recipeId)
             startActivity(intent)
         }
-
+        seeAllButton.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()?.apply {
+                replace(R.id.fragment_container, DiscoverFragment())
+                addToBackStack(null)
+                commit()
+            }
+        }
         // Fetch trending recipes asynchronously
         fetchTrendingRecipes()
+
+        seeAllButton.setOnClickListener {
+            val discoverFragment = DiscoverFragment()
+            val fragmentManager = requireActivity().supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+
+            fragmentTransaction.setCustomAnimations(
+                R.anim.slide_in_right, // Enter animation
+                R.anim.slide_out_left, // Exit animation
+                R.anim.slide_in_left, // Pop enter animation
+                R.anim.slide_out_right // Pop exit animation
+            )
+
+            fragmentTransaction.replace(R.id.fragment_container, discoverFragment)
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+        }
 
         return view
     }

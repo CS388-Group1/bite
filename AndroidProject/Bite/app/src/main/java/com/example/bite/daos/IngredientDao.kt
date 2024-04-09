@@ -21,4 +21,9 @@ interface IngredientDao {
     @Query("SELECT * FROM ingredients WHERE isCommon = 1")
     suspend fun getCommonIngredients(): List<Ingredient>
 
+    @Query("UPDATE ingredients SET isSelected = :isSelected WHERE id = :id")
+    suspend fun updateIngredientSelection(id: Int, isSelected: Boolean)
+
+    @Query("SELECT * FROM ingredients WHERE isSelected = 1")
+    suspend fun getSelectedIngredients(): List<Ingredient>
 }

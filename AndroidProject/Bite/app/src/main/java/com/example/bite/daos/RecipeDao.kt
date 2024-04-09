@@ -18,8 +18,11 @@ interface RecipeDao {
     fun getAllRecipes(): LiveData<List<Recipe>>
 
     @Query("SELECT * FROM recipes WHERE isFavorite = 1")
-    fun getFavoriteRecipes(): LiveData<List<Recipe>>
+    suspend fun getFavoriteRecipes(): List<Recipe>
 
-    @Update
-    suspend fun updateRecipe(recipe: Recipe)
+    @Query("UPDATE recipes SET isFavorite=:favorite WHERE id = :id")
+    fun updateRecipe(favorite: Boolean, id: String)
+
+    @Query("SELECT EXISTS(SELECT * FROM recipes WHERE id = :id)")
+    fun isRowIsExist(id : String) : Boolean
 }

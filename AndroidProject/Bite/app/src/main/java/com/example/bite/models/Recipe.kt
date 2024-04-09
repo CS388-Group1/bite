@@ -1,12 +1,7 @@
 package com.example.bite.models
 
-
-import com.google.gson.Gson
-
-
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
 
 @Entity(tableName = "recipes")
 data class Recipe(
@@ -17,7 +12,7 @@ data class Recipe(
     val cookingTime: Int,
     val sourceName: String,
     var instructions: String? = null,
-    val isFavorite: Boolean = false,
+    var isFavorite: Boolean = false,
 )
 
 data class RecipeResponse(

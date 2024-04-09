@@ -475,10 +475,8 @@
             android:textAllCaps="false"
             android:background="@drawable/button_background"
             android:clickable="true"/>
+
     </GridLayout>
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
