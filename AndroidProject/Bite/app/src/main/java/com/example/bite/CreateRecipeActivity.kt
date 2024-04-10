@@ -137,8 +137,7 @@ class CreateRecipeActivity : AppCompatActivity() {
                     ingredientList
                 )
 
-                // Now you can use the customCreateRecipe object as needed (e.g., save to database)
-                // For demonstration, you can log the recipe details
+                // Log Recipe Details
                 Log.d("CreateRecipeActivity", "CustomCreateRecipe: $customCreateRecipe")
                 Toast.makeText(this, "Recipe Successfully Created.", Toast.LENGTH_SHORT).show()
                 customRecipeViewModel.insertCustomCreateRecipe(customCreateRecipe)
