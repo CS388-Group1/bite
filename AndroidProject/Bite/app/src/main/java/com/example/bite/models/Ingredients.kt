@@ -66,3 +66,18 @@ data class Ingredient(
     val isCommon: Boolean = false,
     val isSelected: Boolean = false
 )
+// Stores ingredients from recipes created by the user (Generate ids for each ingredient, not to be confused with ingredient ids
+// from the Spoonacular API)
+@Entity(tableName = "custom_ingredient")
+data class CustomIngredient(
+    @PrimaryKey(autoGenerate = true) val ingredientId: Int = 0,
+    val name: String,
+    val amount: Double,
+    val unit: String
+)
+
+data class CustomCreateIngredient(
+    val name: String,
+    val amount: Double,
+    val unit: String
+)
