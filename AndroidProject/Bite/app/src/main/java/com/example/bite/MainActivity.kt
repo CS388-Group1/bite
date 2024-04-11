@@ -87,7 +87,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         fabCreateRecipe.setOnClickListener {
-            // Handle "Create Recipe" action
+            val intent = Intent(this@MainActivity, CreateRecipeActivity::class.java)
+            startActivity(intent)
         }
 
         lifecycleScope.launch {

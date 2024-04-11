@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/rounded_white_outer_gray_background"
+    android:elevation="8dp">
+
+    <EditText
+        android:id="@+id/editServes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Servings"
+        android:inputType="number"
+        android:drawableStart="@drawable/small_person_icon"
+        android:padding="8dp"
+        android:paddingStart="15dp"
+        android:background="@drawable/rounded_gray_background"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/editCookTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_gray_background"
+        android:drawableStart="@drawable/small_clock_icon"
+        android:hint="Cook Time (min)"
+        android:inputType="number"
+        android:padding="8dp"
+        android:paddingStart="15dp"
+        android:layout_marginTop="8dp"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:background="@drawable/rounded_black_background"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

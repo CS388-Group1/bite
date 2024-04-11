@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -19,11 +20,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var fStore: FirebaseFirestore
     private lateinit var googleSignInClient : GoogleSignInClient
 
     @SuppressLint("ClickableViewAccessibility")
@@ -37,6 +40,7 @@ class LoginActivity : AppCompatActivity() {
         binding.editTextTextPassword.setText("testing123")
 
         auth = FirebaseAuth.getInstance()
+        fStore = FirebaseFirestore.getInstance()
         binding.signUpLabel.setOnClickListener{
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
@@ -149,6 +153,28 @@ class LoginActivity : AppCompatActivity() {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener{
             if (it.isSuccessful){
+                val userId = auth.currentUser?.uid
+                userId?.let { uid ->
+                    val docRef = fStore.collection("users").document(uid)
+                    val userInfo = hashMapOf(
+                        "email" to account.email
+                        // Add more user information if needed later
+                    )
+                    docRef.set(userInfo)
+                        .addOnSuccessListener {
+                            Log.d(
+                                "Firestore",
+                                "Account created for user: " + userId.toString()
+                            )
+                        }
+
+                        .addOnFailureListener { e ->
+                            Log.e(
+                                "Firestore",
+                                "Error storing login info for user: " + userId.toString()
+                            )
+                        }
+                }
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }

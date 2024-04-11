@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View.INVISIBLE
 import android.view.View.OnTouchListener
@@ -15,12 +16,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.bite.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var fStore: FirebaseFirestore
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +34,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
+        fStore = FirebaseFirestore.getInstance()
 
         fun containsNumber(str: String): Boolean {
             val pattern = ".*\\d.*".toRegex()
@@ -43,7 +48,29 @@ class RegisterActivity : AppCompatActivity() {
 
             if (email.isNotEmpty() && password.isNotEmpty() && password.length >=8 && containsNumber(password)){
                 auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener{
-                    if (it.isSuccessful){
+                    if (it.isSuccessful) {
+                        val userId = auth.currentUser?.uid // Get current user's UID
+                        userId?.let { uid ->
+                            val docRef = fStore.collection("users").document(uid)
+                            val userInfo = hashMapOf(
+                                "email" to email
+                                // Add more user information if needed later
+                            )
+                            docRef.set(userInfo)
+                                .addOnSuccessListener {
+                                    Log.d(
+                                        "Firestore",
+                                        "Account created for user: " + userId.toString()
+                                    )
+                                }
+
+                            .addOnFailureListener { e ->
+                                Log.e(
+                                    "Firestore",
+                                    "Error storing login info for user: " + userId.toString()
+                                )
+                            }
+                    }
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                         //TODO: RegisterActivity will start Onboarding Activity once created. For now, RegisterActivity routes back to LoginActivity.
