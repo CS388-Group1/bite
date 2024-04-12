@@ -124,9 +124,9 @@ class SearchByIngredientFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         searchView = requireActivity().findViewById(R.id.SearchInput)
-        val exitButton = requireActivity().findViewById<ImageButton>(R.id.exit)
-        val submitSearchButton =
-            requireActivity().findViewById<ExtendedFloatingActionButton>(R.id.SubmitSearchButton)
+//        val exitButton = requireActivity().findViewById<ImageButton>(R.id.exit)
+//        val submitSearchButton =
+//            requireActivity().findViewById<ExtendedFloatingActionButton>(R.id.SubmitSearchButton)
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {

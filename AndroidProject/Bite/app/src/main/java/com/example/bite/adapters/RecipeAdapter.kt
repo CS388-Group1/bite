@@ -25,7 +25,7 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
     class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.imageViewRecipe)
         val nameView: TextView = itemView.findViewById(R.id.textViewRecipeName)
-        val descriptionView: TextView = itemView.findViewById(R.id.textViewDescription)
+        val cookingTimeView: TextView = itemView.findViewById(R.id.textViewCookingTime)
         val buttonFavorite: ImageButton = itemView.findViewById(R.id.favoriteButton)
 
         @OptIn(DelicateCoroutinesApi::class)
@@ -48,8 +48,8 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
                 }
             }
         }
-
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe, parent, false)
@@ -61,7 +61,16 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
         val recipe = recipes[position]
         with(holder) {
             nameView.text = recipe.title
-            descriptionView.text = recipe.summary
+//            descriptionView.text = recipe.summary
+
+            // Bind the cooking time
+            val cookingTime = recipe.cookingTime
+            cookingTimeView.text = if (cookingTime > 0) {
+                "$cookingTime min"
+            } else {
+                ""
+            }
+
             //get database
             buttonFavorite.setOnClickListener{
                 //update favorite
@@ -90,7 +99,8 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
     override fun getItemCount() = recipes.size
 
     fun updateRecipes(newRecipes: List<Recipe>) {
-        recipes = newRecipes
-        notifyDataSetChanged()
+        val oldSize = recipes.size
+        recipes = recipes + newRecipes
+        notifyItemRangeInserted(oldSize, newRecipes.size)
     }
 }
