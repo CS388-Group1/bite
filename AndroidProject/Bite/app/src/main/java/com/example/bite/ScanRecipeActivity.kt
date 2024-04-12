@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -48,13 +49,20 @@ class ScanRecipeActivity : AppCompatActivity() {
         }
     }
 
+    private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val imageBitmap = result.data?.extras?.get("data") as? Bitmap
+            imageBitmap?.let {
+                uploadImage(it)
+            } ?: run {
+                Toast.makeText(this, "Failed to capture image", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        takePictureIntent.resolveActivity(packageManager)?.let {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        } ?: run {
-            Toast.makeText(this, "Unable to open camera", Toast.LENGTH_SHORT).show()
-        }
+        takePictureLauncher.launch(takePictureIntent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -89,6 +97,7 @@ class ScanRecipeActivity : AppCompatActivity() {
             }
         })
     }
+
     private fun parseCategoryFromResult(result: String): String {
         try {
             // It returns Image classified successfully: { thing in here } So we have to take the substr
@@ -100,6 +109,4 @@ class ScanRecipeActivity : AppCompatActivity() {
             return "Unknown" // If it errors, search unknown. Can also fallback to something like burger.
         }
     }
-
-
 }
