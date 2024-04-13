@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -26,8 +27,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bite.adapters.CustomIngredientAdapter
+import com.example.bite.daos.CustomRecipeDao
 import com.example.bite.models.CustomCreateIngredient
 import com.example.bite.models.CustomCreateRecipe
+import com.example.bite.models.CustomRecipe
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -35,6 +38,12 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import com.example.bite.models.CustomRecipeViewModel
+import android.content.Context
+import android.net.ConnectivityManager
+import androidx.core.content.ContentProviderCompat.requireContext
+import com.example.bite.network.SyncWithFirebase
+import com.google.firebase.auth.FirebaseAuth
+
 
 class CreateRecipeActivity : AppCompatActivity() {
 
@@ -54,6 +63,8 @@ class CreateRecipeActivity : AppCompatActivity() {
     private lateinit var saveRecipeButton: Button
     private lateinit var customRecipeViewModel: CustomRecipeViewModel
     private lateinit var backToHome: ImageView
+    private lateinit var customRecipeList: List<CustomRecipe>
+    private lateinit var database: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -140,7 +151,27 @@ class CreateRecipeActivity : AppCompatActivity() {
                 // Log Recipe Details
                 Log.d("CreateRecipeActivity", "CustomCreateRecipe: $customCreateRecipe")
                 Toast.makeText(this, "Recipe Successfully Created.", Toast.LENGTH_SHORT).show()
+                //Save to Room
                 customRecipeViewModel.insertCustomCreateRecipe(customCreateRecipe)
+
+                //Sync to Firebase
+                val networkAvailable = isInternetAvailable(this)
+                if (networkAvailable) {
+                    Log.v("NetworkConn---->", "Available")
+                    database = AppDatabase.getInstance(this)
+                    val customRecipeDao = database.customRecipeDao()
+                    val syncWithFirebase = SyncWithFirebase(customRecipeDao)
+                    val auth : FirebaseAuth = FirebaseAuth.getInstance()
+                    val userId = auth.currentUser?.uid
+                    Log.v("userId---->", userId.toString())
+                    if (userId != null) {
+                        syncWithFirebase.syncRecipesWithFirestore(userId)
+                    }
+
+                } else {
+                    Log.e("NetworkConn----->", "Network Unavailable.")
+                }
+
                 val intent = Intent(this@CreateRecipeActivity, MainActivity::class.java)
                 startActivity(intent)
 
@@ -251,5 +282,9 @@ class CreateRecipeActivity : AppCompatActivity() {
         }
 
         popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0)
+    }
+    fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        return connectivityManager?.activeNetworkInfo?.isConnected ?: false
     }
 }

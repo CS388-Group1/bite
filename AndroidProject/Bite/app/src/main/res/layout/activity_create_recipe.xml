@@ -98,7 +98,6 @@
                     android:layout_marginTop="8dp"
                     android:background="@drawable/dashed_border"
                     android:clickable="true"
-                    android:onClick="launchCamera"
                     android:paddingHorizontal="100dp"
                     android:paddingTop="60dp"
                     android:paddingBottom="40dp"
@@ -107,7 +106,8 @@
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
+                    app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+                    android:focusable="true" />
 
                 <EditText
                     android:id="@+id/addRecipeName"

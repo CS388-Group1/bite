@@ -1,9 +1,12 @@
 package com.example.bite.daos
 
 import androidx.room.Dao
+import androidx.room.Embedded
 import androidx.room.Insert
+import androidx.room.Junction
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Relation
 import androidx.room.Transaction
 import com.example.bite.models.CustomCreateRecipe
 import com.example.bite.models.CustomIngredient
@@ -13,6 +16,22 @@ import com.example.bite.models.RecipeWithIngredients
 
 @Dao
 interface CustomRecipeDao {
+
+    @Query("SELECT * FROM custom_recipe")
+    suspend fun getAllCustomRecipes(): List<CustomRecipe>
+
+    @Transaction
+    @Query("SELECT * FROM custom_recipe")
+    suspend fun getAllCustomRecipesWithIngredients(): List<CustomRecipeWithIngredients>
+    data class CustomRecipeWithIngredients(
+        @Embedded val recipe: CustomRecipe,
+        @Relation(
+            parentColumn = "recipeId",
+            entityColumn = "ingredientId",
+            associateBy = Junction(RecipeIngredientCrossRef::class)
+        )
+        val ingredients: List<CustomIngredient>
+    )
 
     @Insert
     suspend fun insertCustomRecipe(customRecipe: CustomRecipe): Long

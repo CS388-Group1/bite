@@ -40,7 +40,7 @@ data class CustomCreateRecipe(
     val instructions: String,
     val ingredients: List<CustomCreateIngredient>
 )
-// Referential entity that maps recipes to their ingredients
+// Referential entity that maps recipes to their ingredientsin
 @Entity(
     tableName = "recipe_ingredient_cross_ref",
     primaryKeys = ["recipeId", "ingredientId"],

@@ -11,7 +11,7 @@ class CustomRecipeViewModel(application: Application) : AndroidViewModel(applica
 
     private val customRecipeDao: CustomRecipeDao = AppDatabase.getInstance(application).customRecipeDao()
 
-    // Example function to insert a CustomCreateRecipe
+    // Function to insert a CustomCreateRecipe
     fun insertCustomCreateRecipe(customCreateRecipe: CustomCreateRecipe) {
         viewModelScope.launch {
             customRecipeDao.insertCustomCreateRecipe(customCreateRecipe)
