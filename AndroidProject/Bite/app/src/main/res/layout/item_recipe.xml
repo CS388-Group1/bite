@@ -25,10 +25,9 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:elevation="3dp"
-                android:background="@drawable/rounded_white_background"
+                android:background="@drawable/favorite_bg_selector"
                 android:scaleType="centerCrop"
-                android:shape="oval"
-                android:src="@drawable/ic_favorite"
+                android:src="@drawable/favorite_selector"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
