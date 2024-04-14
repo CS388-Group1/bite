@@ -22,18 +22,18 @@ class InfiniteScrollListener(
 
         val totalItemCount = layoutManager.itemCount
         val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-        Log.d("InfiniteScroll", "Scrolled, totalItemCount: $totalItemCount, lastVisibleItem: $lastVisibleItem, previousTotal: $previousTotal")
+        // Log.d("InfiniteScroll", "Scrolled, totalItemCount: $totalItemCount, lastVisibleItem: $lastVisibleItem, previousTotal: $previousTotal")
 
         if (loading() && (totalItemCount > previousTotal)) {
             setLoading(false)
             previousTotal = totalItemCount
-            Log.d("InfiniteScroll", "Load complete, totalItemCount: $totalItemCount")
+            // Log.d("InfiniteScroll", "Load complete, totalItemCount: $totalItemCount")
         }
 
         if (!loading() && (lastVisibleItem + visibleThreshold) >= totalItemCount) {
             loadMore()
             setLoading(true)
-            Log.d("InfiniteScroll", "Loading more items")
+            // Log.d("InfiniteScroll", "Loading more items")
         }
     }
 }
