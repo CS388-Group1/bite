@@ -39,8 +39,10 @@ interface SpoonacularApi {
         @Query("limitLicense") limitLicense: Boolean = true,
         @Query("ranking") ranking: Int = 1,
         @Query("ignorePantry") ignorePantry: Boolean = true,
+        @Query("offset") offset: Int = 0,
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
     ): List<RecipeResponse>
+
 
     @GET("food/ingredients/search")
     suspend fun searchIngredientByName(

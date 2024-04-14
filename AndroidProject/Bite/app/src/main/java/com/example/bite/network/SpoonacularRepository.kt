@@ -33,8 +33,9 @@ class SpoonacularRepository {
 
     suspend fun parseIngredients(ingredientList: String) = api.parseIngredients(ingredientList)
 
-    suspend fun searchRecipesByIngredients(ingredients: String): List<Recipe> {
-        val response = api.searchRecipesByIngredients(ingredients)
+    suspend fun searchRecipesByIngredients(ingredients: String, number: Int = 10, offset: Int = 0): List<Recipe> {
+        val response = api.searchRecipesByIngredients(ingredients, number, limitLicense = true, ranking = 1, ignorePantry = true, offset = offset)
+//        val response = api.searchRecipesByIngredients(ingredients)
         val recipeIds = response.map { it.id.toString() }
 
         val recipes = recipeIds.map { recipeId ->

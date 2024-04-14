@@ -97,7 +97,11 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
     }
 
     override fun getItemCount() = recipes.size
-
+    fun addRecipes(newRecipes: List<Recipe>) {
+        val oldSize = recipes.size
+        recipes += newRecipes // Append new recipes to the existing list
+        notifyItemRangeInserted(oldSize, newRecipes.size)
+    }
     fun updateRecipes(newRecipes: List<Recipe>) {
         val oldSize = recipes.size
         recipes = recipes + newRecipes
