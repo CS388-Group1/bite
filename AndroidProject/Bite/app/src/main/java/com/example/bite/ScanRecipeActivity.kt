@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -27,8 +28,14 @@ class ScanRecipeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_scan_recipe)
         repository = SpoonacularRepository()
         requestCameraPermission()
+
+        val exitButton = findViewById<ImageButton>(R.id.back)
+        exitButton.setOnClickListener {
+            finish()
+        }
     }
 
     private fun requestCameraPermission() {
@@ -92,33 +99,16 @@ class ScanRecipeActivity : AppCompatActivity() {
         }
     }
 
-    private fun dispatchTakePictureIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        takePictureLauncher.launch(takePictureIntent)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as? Bitmap
-            imageBitmap?.let {
-                uploadImage(it)
-            } ?: run {
-                Toast.makeText(this, "Failed to capture image", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     private fun uploadImage(imageBitmap: Bitmap) {
         repository.uploadImage(imageBitmap, object : SpoonacularRepository.UploadCallback {
             override fun onSuccess(result: String) {
                 runOnUiThread {
                     val category = parseCategoryFromResult(result)
-                    Intent(this@ScanRecipeActivity, SearchActivity::class.java).apply {
-                        putExtra("search_query", category)
-                        startActivity(this)
-                    }
-                    Toast.makeText(this@ScanRecipeActivity, "Category: $category", Toast.LENGTH_LONG).show()
+                    val fragment = ScanResultsFragment.newInstance(category)
+
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit()
                 }
             }
 
@@ -132,13 +122,12 @@ class ScanRecipeActivity : AppCompatActivity() {
 
     private fun parseCategoryFromResult(result: String): String {
         try {
-            // It returns Image classified successfully: { thing in here } So we have to take the substr
             val jsonPart = result.substringAfter(":")
             val jsonObject = JSONObject(jsonPart)
-            return jsonObject.getString("category") // Extracting the category field ex. {"category":"brownies"}
+            return jsonObject.getString("category")
         } catch (e: Exception) {
             Log.e("ScanRecipeActivity", "Error parsing JSON result", e)
-            return "Unknown" // If it errors, search unknown. Can also fallback to something like burger.
+            return "Unknown"
         }
     }
 }
