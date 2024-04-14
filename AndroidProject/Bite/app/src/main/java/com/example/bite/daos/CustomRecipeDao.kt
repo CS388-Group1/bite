@@ -33,6 +33,9 @@ interface CustomRecipeDao {
         val ingredients: List<CustomIngredient>
     )
 
+    @Query("SELECT * FROM custom_recipe WHERE userId = :userId")
+    fun getCustomRecipesWithIngredientsByUserId(userId: String): List<CustomRecipeWithIngredients>
+
     @Insert
     suspend fun insertCustomRecipe(customRecipe: CustomRecipe): Long
 
@@ -47,6 +50,7 @@ interface CustomRecipeDao {
         // Insert the CustomRecipe
         val recipeId = insertCustomRecipe(
             CustomRecipe(
+                userId = customCreateRecipe.userId,
                 name = customCreateRecipe.name,
                 image = customCreateRecipe.image,
                 desc = customCreateRecipe.desc,

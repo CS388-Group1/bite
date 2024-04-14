@@ -144,9 +144,11 @@ class CreateRecipeActivity : AppCompatActivity() {
                 val servings = servingsText.toIntOrNull() ?: 0
                 val readyInMinutes = minutesText.replace(" min", "").toIntOrNull() ?: 0
 
+                val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
                 val customCreateRecipe = CustomCreateRecipe(
+                    userId,
                     recipeNameText,
-                    imageFilePath ?: "", // Use imageFilePath if available, otherwise empty string
+                    imageFilePath ?: "",
                     recipeDescText,
                     servings,
                     readyInMinutes,
@@ -154,11 +156,15 @@ class CreateRecipeActivity : AppCompatActivity() {
                     ingredientList
                 )
 
+
                 // Log Recipe Details
                 Log.d("CreateRecipeActivity", "CustomCreateRecipe: $customCreateRecipe")
                 Toast.makeText(this, "Recipe Successfully Created.", Toast.LENGTH_SHORT).show()
                 //Save to Room
                 customRecipeViewModel.insertCustomCreateRecipe(customCreateRecipe)
+
+                // Delay to allow Room to save data
+                Thread.sleep(2000)
 
                 //Sync to Firebase
                 val networkAvailable = isInternetAvailable(this)

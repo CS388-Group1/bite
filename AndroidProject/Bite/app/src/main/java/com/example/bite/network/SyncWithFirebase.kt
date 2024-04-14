@@ -11,45 +11,59 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.example.bite.daos.CustomRecipeDao as CustomRecipeDao
 
-
-class SyncWithFirebase (private val customRecipeDao: CustomRecipeDao){
+class SyncWithFirebase(private val customRecipeDao: CustomRecipeDao) {
 
     private var fStore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     fun syncRecipesWithFirestore(userId: String) {
-        Log.v("Sync ---->", "Started.")
-        CoroutineScope(Dispatchers.IO).launch{
-            val recipesWithIngredientsFromRoom = customRecipeDao.getAllCustomRecipesWithIngredients()
+        Log.d("FirebaseSync", "Sync started for user: $userId")
 
-            recipesWithIngredientsFromRoom.forEach { recipeWithIngredients ->
-                val recipe = recipeWithIngredients.recipe
-                val ingredients = recipeWithIngredients.ingredients
+        val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+            Log.e("FirebaseSync", "Exception occurred during Firebase sync: ${exception.message}", exception)
+        }
 
-                val recipeRef = fStore
-                    .collection("users")
-                    .document(userId)
-                    .collection("createdRecipes")
-                    .document(recipe.recipeId.toString())
-                Log.v("Sync ----->", "dbRef created.")
-                recipeRef.get().addOnSuccessListener { documentSnapshot ->
-                    if (!documentSnapshot.exists()) {
-                        // Recipe does not exist in Firestore, store it
-                        val firestoreRecipe = mapRoomRecipeToFirestore(recipe)
-                        recipeRef.set(firestoreRecipe)
-                            .addOnSuccessListener {
-                                // Recipe stored successfully in Firestore, now store ingredients
-                                storeIngredientsInFirestore(userId, recipe.recipeId, ingredients)
-                                Log.v("FirebaseSync", "Firebase recipe sync successful")
-                            }
-                            .addOnFailureListener { e ->
-                                Log.e("FirebaseSync", "Could not sync recipe(s) with Firebase. Error: $e")
-                            }
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            try {
+                val recipesWithIngredientsFromRoom = customRecipeDao.getCustomRecipesWithIngredientsByUserId(userId)
+
+                Log.d("FirebaseSync", "Retrieved ${recipesWithIngredientsFromRoom.size} recipes from Room for user: $userId")
+
+                recipesWithIngredientsFromRoom.forEach { recipeWithIngredients ->
+                    val recipe = recipeWithIngredients.recipe
+                    val ingredients = recipeWithIngredients.ingredients
+
+                    val recipeRef = fStore
+                        .collection("users")
+                        .document(userId)
+                        .collection("createdRecipes")
+                        .document(recipe.recipeId.toString())
+
+                    Log.d("FirebaseSync", "Syncing recipe: ${recipe.recipeId}")
+
+                    recipeRef.get().addOnSuccessListener { documentSnapshot ->
+                        if (!documentSnapshot.exists()) {
+                            // Recipe does not exist in Firestore, store it
+                            val firestoreRecipe = mapRoomRecipeToFirestore(recipe)
+                            recipeRef.set(firestoreRecipe)
+                                .addOnSuccessListener {
+                                    // Recipe stored successfully in Firestore, now store ingredients
+                                    storeIngredientsInFirestore(userId, recipe.recipeId, ingredients)
+                                    Log.d("FirebaseSync", "Recipe sync successful for recipe: ${recipe.recipeId}")
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.e("FirebaseSync", "Could not sync recipe with Firebase. Error: $e")
+                                }
+                        } else {
+                            Log.d("FirebaseSync", "Recipe already exists in Firestore: ${recipe.recipeId}")
+                        }
                     }
                 }
+                Log.d("FirebaseSync", "Sync completed for user: $userId")
+            } catch (e: Exception) {
+                Log.e("FirebaseSync", "Exception occurred during Firebase sync: ${e.message}", e)
             }
         }
     }
-
 
     private fun storeIngredientsInFirestore(
         userId: String,
@@ -69,6 +83,9 @@ class SyncWithFirebase (private val customRecipeDao: CustomRecipeDao){
 
             ingredientsCollectionRef.document(ingredientId)
                 .set(firestoreIngredient)
+                .addOnSuccessListener {
+                    Log.d("FirebaseSync", "Ingredient sync successful for ingredient: $ingredientId")
+                }
                 .addOnFailureListener { e ->
                     Log.e("FirebaseSync", "Could not sync ingredient with Firebase. Error: $e")
                 }
@@ -76,7 +93,7 @@ class SyncWithFirebase (private val customRecipeDao: CustomRecipeDao){
     }
 
     private fun mapRoomRecipeToFirestore(recipe: CustomRecipe): Map<String, Any> {
-        return hashMapOf<String, Any>(
+        return hashMapOf(
             "name" to recipe.name,
             "image" to recipe.image,
             "description" to recipe.desc,
@@ -87,7 +104,7 @@ class SyncWithFirebase (private val customRecipeDao: CustomRecipeDao){
     }
 
     private fun mapRoomIngredientToFirestore(ingredient: CustomIngredient): Map<String, Any> {
-        return hashMapOf<String, Any>(
+        return hashMapOf(
             "name" to ingredient.name,
             "amount" to ingredient.amount,
             "unit" to ingredient.unit
