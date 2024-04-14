@@ -27,6 +27,8 @@ class PreferencesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preferences)
 
+        userEmailLabel = findViewById(R.id.userEmailTextView)
+
 
         auth = FirebaseAuth.getInstance()
         fStore = FirebaseFirestore.getInstance()

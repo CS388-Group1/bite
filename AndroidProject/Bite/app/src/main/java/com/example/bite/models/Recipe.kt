@@ -23,6 +23,7 @@ data class Recipe(
 @Entity(tableName = "custom_recipe")
 data class CustomRecipe(
     @PrimaryKey(autoGenerate = true) val recipeId: Int = 0,
+    val userId: String,
     val name: String,
     val image: String,
     val desc: String,
@@ -32,6 +33,7 @@ data class CustomRecipe(
 )
 // Data class used to hold recipes created by user
 data class CustomCreateRecipe(
+    val userId: String,
     val name: String,
     val image: String,
     val desc: String,
@@ -40,7 +42,7 @@ data class CustomCreateRecipe(
     val instructions: String,
     val ingredients: List<CustomCreateIngredient>
 )
-// Referential entity that maps recipes to their ingredients
+// Referential entity that maps recipes to their ingredientsin
 @Entity(
     tableName = "recipe_ingredient_cross_ref",
     primaryKeys = ["recipeId", "ingredientId"],

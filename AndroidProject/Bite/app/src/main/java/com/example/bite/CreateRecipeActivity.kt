@@ -1,10 +1,18 @@
 package com.example.bite
 
 import android.Manifest
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.READ_MEDIA_IMAGES
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.ConnectivityManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -18,8 +26,9 @@ import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -28,18 +37,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bite.adapters.CustomIngredientAdapter
 import com.example.bite.models.CustomCreateIngredient
 import com.example.bite.models.CustomCreateRecipe
+import com.example.bite.models.CustomRecipeViewModel
+import com.example.bite.network.SyncWithFirebase
+import com.google.firebase.auth.FirebaseAuth
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import com.example.bite.models.CustomRecipeViewModel
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
+
 
 class CreateRecipeActivity : AppCompatActivity() {
 
     private lateinit var addImage: ImageView
     private var imageFilePath: String? = null
+    private val REQUEST_IMAGE_PICK = 101
     private val REQUEST_IMAGE_CAPTURE = 100
     private val IMAGE_FILE_NAME_PREFIX = "recipe_image_"
     private val ingredientList = mutableListOf<CustomCreateIngredient>()
@@ -54,6 +70,7 @@ class CreateRecipeActivity : AppCompatActivity() {
     private lateinit var saveRecipeButton: Button
     private lateinit var customRecipeViewModel: CustomRecipeViewModel
     private lateinit var backToHome: ImageView
+    private lateinit var database: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +95,7 @@ class CreateRecipeActivity : AppCompatActivity() {
         }
 
         addImage.setOnClickListener {
-            requestCameraPermission()
+            showImageSourceChooser()
         }
 
         val addIngredientsRv = findViewById<RecyclerView>(R.id.addIngredientsRv)
@@ -127,9 +144,11 @@ class CreateRecipeActivity : AppCompatActivity() {
                 val servings = servingsText.toIntOrNull() ?: 0
                 val readyInMinutes = minutesText.replace(" min", "").toIntOrNull() ?: 0
 
+                val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
                 val customCreateRecipe = CustomCreateRecipe(
+                    userId,
                     recipeNameText,
-                    imageFilePath ?: "", // Use imageFilePath if available, otherwise empty string
+                    imageFilePath ?: "",
                     recipeDescText,
                     servings,
                     readyInMinutes,
@@ -137,10 +156,34 @@ class CreateRecipeActivity : AppCompatActivity() {
                     ingredientList
                 )
 
+
                 // Log Recipe Details
                 Log.d("CreateRecipeActivity", "CustomCreateRecipe: $customCreateRecipe")
                 Toast.makeText(this, "Recipe Successfully Created.", Toast.LENGTH_SHORT).show()
+                //Save to Room
                 customRecipeViewModel.insertCustomCreateRecipe(customCreateRecipe)
+
+                // Delay to allow Room to save data
+                Thread.sleep(2000)
+
+                //Sync to Firebase
+                val networkAvailable = isInternetAvailable(this)
+                if (networkAvailable) {
+                    Log.v("NetworkConn---->", "Available")
+                    database = AppDatabase.getInstance(this)
+                    val customRecipeDao = database.customRecipeDao()
+                    val syncWithFirebase = SyncWithFirebase(customRecipeDao)
+                    val auth : FirebaseAuth = FirebaseAuth.getInstance()
+                    val userId = auth.currentUser?.uid
+                    Log.v("userId---->", userId.toString())
+                    if (userId != null) {
+                        syncWithFirebase.syncRecipesWithFirestore(userId)
+                    }
+
+                } else {
+                    Log.e("NetworkConn----->", "Network Unavailable.")
+                }
+
                 val intent = Intent(this@CreateRecipeActivity, MainActivity::class.java)
                 startActivity(intent)
 
@@ -168,20 +211,55 @@ class CreateRecipeActivity : AppCompatActivity() {
         }
     }
 
-    private fun dispatchTakePictureIntent() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+    private fun showImageSourceChooser() {
+        val options = arrayOf("Take Photo", "Choose from Gallery")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Select Image Source")
+        builder.setItems(options) { dialog, which ->
+            when (which) {
+                0 -> requestCameraPermission()
+                1 -> requestGalleryPermission()
+            }
+            dialog.dismiss()
+        }
+        builder.show()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                dispatchTakePictureIntent()
+    private fun requestGalleryPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    READ_MEDIA_IMAGES
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(READ_MEDIA_IMAGES),
+                    REQUEST_IMAGE_PICK
+                )
             } else {
-                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+                openGallery()
+            }
+        }else
+        {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(READ_EXTERNAL_STORAGE),
+                    REQUEST_IMAGE_PICK
+                )
+            } else {
+                openGallery()
             }
         }
+    }
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, REQUEST_IMAGE_PICK)
     }
 
     private fun requestCameraPermission() {
@@ -192,16 +270,68 @@ class CreateRecipeActivity : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap?
-            imageBitmap?.let {
-                imageFilePath = saveImageToFile(it)
-                addImage.setBackgroundResource(R.drawable.transparent_background)
-                addImage.setImageBitmap(it)
+    private fun dispatchTakePictureIntent() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_IMAGE_CAPTURE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    dispatchTakePictureIntent()
+                } else {
+                    Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+            REQUEST_IMAGE_PICK -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openGallery()
+                } else {
+                    Toast.makeText(this, "Storage permission denied", Toast.LENGTH_SHORT).show()
+                }
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_IMAGE_CAPTURE -> {
+                    val imageBitmap = data?.extras?.get("data") as Bitmap?
+                    imageBitmap?.let {
+                        val imagePath = saveImageToFile(it)
+                        addImage.setBackgroundResource(R.drawable.transparent_background)
+                        addImage.setImageBitmap(it)
+                        imagePath?.let { convertImage(it) }
+                    }
+                }
+                REQUEST_IMAGE_PICK -> {
+                    val selectedImageUri = data?.data
+                    selectedImageUri?.let {
+                        val imagePath = getImagePathFromUri(selectedImageUri)
+                        imagePath?.let{
+                            val bitmap = BitmapFactory.decodeFile(imagePath)
+                            addImage.setBackgroundResource(R.drawable.transparent_background)
+                            addImage.setImageBitmap(bitmap)
+                            convertImage(it)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getImagePathFromUri(uri: Uri): String? {
+        val cursor = contentResolver.query(uri, null, null, null, null)
+        cursor?.use {
+            it.moveToFirst()
+            val columnIndex = it.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            return it.getString(columnIndex)
+        }
+        return null
     }
 
     private fun saveImageToFile(bitmap: Bitmap): String? {
@@ -218,6 +348,31 @@ class CreateRecipeActivity : AppCompatActivity() {
 
             imageFile.absolutePath
         } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun convertImage(imgPath: String) {
+        Thread {
+            val base64String = encodeFileToBase64(imgPath)
+            base64String?.let {
+                runOnUiThread {
+                    imageFilePath = base64String
+                }
+            }
+        }.start()
+    }
+
+    @OptIn(ExperimentalEncodingApi::class)
+    private fun encodeFileToBase64(filePath: String): String? {
+        return try {
+            val file = File(filePath)
+            val fileInputStream = FileInputStream(file)
+            val bytes = fileInputStream.readBytes()
+            fileInputStream.close()
+            Base64.encode(bytes, 0,bytes.size)
+        } catch (e: Exception) {
             e.printStackTrace()
             null
         }
@@ -252,4 +407,9 @@ class CreateRecipeActivity : AppCompatActivity() {
 
         popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0)
     }
+    fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        return connectivityManager?.activeNetworkInfo?.isConnected ?: false
+    }
+
 }
