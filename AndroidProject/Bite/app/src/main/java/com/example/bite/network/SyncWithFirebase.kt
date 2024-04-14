@@ -30,7 +30,7 @@ class SyncWithFirebase (private val customRecipeDao: CustomRecipeDao){
                     .document(userId)
                     .collection("createdRecipes")
                     .document(recipe.recipeId.toString())
-
+                Log.v("Sync ----->", "dbRef created.")
                 recipeRef.get().addOnSuccessListener { documentSnapshot ->
                     if (!documentSnapshot.exists()) {
                         // Recipe does not exist in Firestore, store it
