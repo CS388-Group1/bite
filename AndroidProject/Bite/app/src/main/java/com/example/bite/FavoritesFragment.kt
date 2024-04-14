@@ -18,6 +18,9 @@ class FavoritesFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecipeAdapter
     private val favRecipes = mutableListOf<Recipe>()
+    private var loading = false
+    private var currentOffset = 0
+    private val pageSize = 10
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,34 +28,39 @@ class FavoritesFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_favorites, container, false)
         setupRecyclerView(view)
-        retrieveFavorite()
+        retrieveFavorite(currentOffset, pageSize)
         return view
     }
-
     private fun setupRecyclerView(view: View) {
         recyclerView = view.findViewById(R.id.favoritesRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = RecipeAdapter(favRecipes) { recipe ->
-            val intent = Intent(context, RecipeDetailActivity::class.java)
-            intent.putExtra("RECIPE_ID", recipe.id)
-            startActivity(intent)
+        adapter = RecipeAdapter(mutableListOf()) { recipe ->
         }
         recyclerView.adapter = adapter
+        recyclerView.addOnScrollListener(InfiniteScrollListener(
+            layoutManager = recyclerView.layoutManager as LinearLayoutManager,
+            loading = { loading },
+            setLoading = { isLoading ->
+                loading = isLoading
+            }
+        ) {
+            retrieveFavorite(currentOffset, pageSize)
+        })
     }
 
-    private fun retrieveFavorite() {
+    private fun retrieveFavorite(offset: Int, limit: Int) {
+        if (loading) return
+        loading = true
         lifecycleScope.launch {
-            val favoriteRepository = activity?.let {
-                AppDatabase.getInstance(it.applicationContext).recipeDao()
-            }?.let {
-                RecipeLocalData(it, requireActivity().applicationContext)
+            val favoriteRepository = RecipeLocalData(AppDatabase.getInstance(requireContext()).recipeDao(), requireContext())
+            val recipes = favoriteRepository.getFavoriteRecipes(limit, offset)
+            if (recipes.isNotEmpty()) {
+                adapter.addRecipes(recipes)
+                currentOffset += recipes.size
+            } else {
+//                Toast.makeText(context, "No more favorites found", Toast.LENGTH_SHORT).show()
             }
-            val dataList = favoriteRepository?.getFavoriteRecipes()
-            if (dataList != null) {
-                favRecipes.clear()
-                favRecipes.addAll(dataList)
-                adapter.updateRecipes(favRecipes)
-            }
+            loading = false
         }
     }
 }

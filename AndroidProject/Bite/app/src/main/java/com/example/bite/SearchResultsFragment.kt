@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bite.models.Recipe
 import com.example.bite.network.SpoonacularRepository
 import kotlinx.coroutines.launch
 
@@ -56,13 +55,12 @@ class SearchResultsFragment : Fragment() {
             loading = { loading },
             setLoading = { isLoading ->
                 loading = isLoading
-            },
-            loadMore = {
-                if (currentIngredients.isNotEmpty()) {
-                    searchRecipesByIngredients(currentIngredients, currentOffset)
-                }
             }
-        ))
+        ) {
+            if (currentIngredients.isNotEmpty()) {
+                searchRecipesByIngredients(currentIngredients, currentOffset)
+            }
+        })
 
         return view
     }

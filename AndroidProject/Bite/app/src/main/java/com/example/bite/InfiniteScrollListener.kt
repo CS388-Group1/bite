@@ -1,11 +1,10 @@
 package com.example.bite
 
-import android.util.Log
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class InfiniteScrollListener(
-    private val layoutManager: GridLayoutManager,
+    private val layoutManager: LinearLayoutManager,
     private var loading: () -> Boolean,
     private val setLoading: (Boolean) -> Unit,
     private val loadMore: () -> Unit

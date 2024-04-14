@@ -17,8 +17,8 @@ interface RecipeDao {
     @Query("SELECT * FROM recipes")
     fun getAllRecipes(): LiveData<List<Recipe>>
 
-    @Query("SELECT * FROM recipes WHERE isFavorite = 1")
-    suspend fun getFavoriteRecipes(): List<Recipe>
+    @Query("SELECT * FROM recipes WHERE isFavorite = 1 LIMIT :limit OFFSET :offset")
+    suspend fun getFavoriteRecipes(limit: Int, offset: Int): List<Recipe>
 
     @Query("UPDATE recipes SET isFavorite=:favorite WHERE id = :id")
     fun updateRecipe(favorite: Boolean, id: String)
