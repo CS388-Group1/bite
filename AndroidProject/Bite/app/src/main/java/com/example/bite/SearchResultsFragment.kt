@@ -61,7 +61,7 @@ class SearchResultsFragment : Fragment() {
                         .setTitle("Bite Favorites")
                         .setText("Item added to Favorites")
                         .setBackgroundColorRes(R.color.green)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }else{
@@ -70,7 +70,7 @@ class SearchResultsFragment : Fragment() {
                         .setTitle("Bite Favorites")
                         .setText("Item removed from Favorites")
                         .setBackgroundColorRes(R.color.green)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }
@@ -123,7 +123,7 @@ class SearchResultsFragment : Fragment() {
                             .setTitle("Bite: Error")
                             .setText("No more recipes found")
                             .setBackgroundColorRes(com.example.bite.R.color.red)
-                            .setDuration(10000)
+                            .setDuration(5000)
                             .show()
                     }
                 }
@@ -135,7 +135,7 @@ class SearchResultsFragment : Fragment() {
                         .setTitle("Bite: Error")
                         .setText("Error: ${e.message}")
                         .setBackgroundColorRes(com.example.bite.R.color.red)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }

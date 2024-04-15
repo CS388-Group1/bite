@@ -60,7 +60,7 @@ class HomeFragment : Fragment() {
                         .setTitle("Bite Favorites")
                         .setText("Item added to Favorites")
                         .setBackgroundColorRes(R.color.green)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }else{
@@ -69,7 +69,7 @@ class HomeFragment : Fragment() {
                         .setTitle("Bite Favorites")
                         .setText("Item removed from Favorites")
                         .setBackgroundColorRes(R.color.green)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }
@@ -161,7 +161,7 @@ class HomeFragment : Fragment() {
                         .setTitle("Bite: Error")
                         .setText("Failed to fetch random recipe: ${e.message}")
                         .setBackgroundColorRes(com.example.bite.R.color.red)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }
@@ -184,7 +184,7 @@ class HomeFragment : Fragment() {
                         .setTitle("Bite: Error")
                         .setText("Failed to fetch trending recipes: ${e.message}")
                         .setBackgroundColorRes(com.example.bite.R.color.red)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }

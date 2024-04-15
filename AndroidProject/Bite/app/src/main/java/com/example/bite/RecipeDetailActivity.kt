@@ -15,6 +15,7 @@ import com.example.bite.models.Ingredient
 import com.example.bite.models.Recipe
 import com.example.bite.network.SpoonacularRepository
 import com.tapadoo.alerter.Alerter
+import com.facebook.shimmer.ShimmerFrameLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -29,10 +30,13 @@ class RecipeDetailActivity : AppCompatActivity() {
 
         spoonacularRepository = SpoonacularRepository()
 
+        val shimmerLayout = findViewById<ShimmerFrameLayout>(R.id.shimmer_layout)
+        shimmerLayout.startShimmer()
+
         // Retrieve recipe ID from Intent
         val recipeId = intent.getStringExtra("RECIPE_ID")
 
-        findViewById<View>(R.id.loadingGraphic).visibility = View.VISIBLE
+//        findViewById<View>(R.id.loadingGraphic).visibility = View.VISIBLE
 
         // Fetch recipe from repository based on ID
         lifecycleScope.launch {
@@ -72,21 +76,24 @@ class RecipeDetailActivity : AppCompatActivity() {
                             .setTitle("Bite Favorites")
                             .setText("Added to Favorites")
                             .setBackgroundColorRes(R.color.green)
-                            .setDuration(10000)
+                            .setDuration(5000)
                             .show()
                     } else {
                         Alerter.create(this@RecipeDetailActivity)
                             .setTitle("Bite Favorites")
                             .setText("Removed from Favorites")
                             .setBackgroundColorRes(R.color.green)
-                            .setDuration(10000)
+                            .setDuration(5000)
                             .show()
                     }
                 }
             } finally {
                 // Hide loading layout
-                findViewById<View>(R.id.loadingGraphic).visibility = View.GONE
-                findViewById<View>(R.id.mainContent).visibility = View.VISIBLE
+                shimmerLayout.stopShimmer()
+                shimmerLayout.visibility = View.GONE
+                findViewById<View>(R.id.loadingGraphic)?.visibility = View.GONE
+                findViewById<View>(R.id.mainContent)?.visibility = View.VISIBLE
+
             }
         }
     }

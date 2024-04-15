@@ -247,7 +247,7 @@ class SearchByIngredientFragment : Fragment() {
                         .setTitle("Bite: Error")
                         .setText("Error: ${e.message}")
                         .setBackgroundColorRes(com.example.bite.R.color.red)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }

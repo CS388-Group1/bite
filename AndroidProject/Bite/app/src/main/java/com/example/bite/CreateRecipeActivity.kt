@@ -124,7 +124,7 @@ class CreateRecipeActivity : AppCompatActivity() {
                     .setTitle("Bite: Warning")
                     .setText("Please enter both ingredient name and portion (quantity with unit).")
                     .setBackgroundColorRes(R.color.yellow)
-                    .setDuration(10000)
+                    .setDuration(5000)
                     .show()
             }
         }
@@ -165,7 +165,7 @@ class CreateRecipeActivity : AppCompatActivity() {
                     .setTitle("Bite: Create Recipe")
                     .setText("Recipe Successfully Created.")
                     .setBackgroundColorRes(R.color.green)
-                    .setDuration(10000)
+                    .setDuration(5000)
                     .show()
                 //Save to Room
                 customRecipeViewModel.insertCustomCreateRecipe(customCreateRecipe)
@@ -199,7 +199,7 @@ class CreateRecipeActivity : AppCompatActivity() {
                     .setTitle("Bite: Error")
                     .setText("Please fill out all required fields to save the recipe.")
                     .setBackgroundColorRes(com.example.bite.R.color.red)
-                    .setDuration(10000)
+                    .setDuration(5000)
                     .show()
             }
         }
@@ -294,7 +294,7 @@ class CreateRecipeActivity : AppCompatActivity() {
                         .setTitle("Bite: Error")
                         .setText("Camera permission denied")
                         .setBackgroundColorRes(com.example.bite.R.color.red)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }
@@ -306,7 +306,7 @@ class CreateRecipeActivity : AppCompatActivity() {
                         .setTitle("Bite: Error")
                         .setText("Storage permission denied")
                         .setBackgroundColorRes(com.example.bite.R.color.red)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }

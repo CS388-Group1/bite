@@ -81,7 +81,7 @@ class RegisterActivity : AppCompatActivity() {
                             .setTitle("Bite: Error")
                             .setText("Failed to register with credentials.")
                             .setBackgroundColorRes(com.example.bite.R.color.red)
-                            .setDuration(10000)
+                            .setDuration(5000)
                             .show()
                     }
                 }
@@ -91,7 +91,7 @@ class RegisterActivity : AppCompatActivity() {
                     .setTitle("Bite: Error")
                     .setText("Please enter a valid username and password.")
                     .setBackgroundColorRes(com.example.bite.R.color.red)
-                    .setDuration(10000)
+                    .setDuration(5000)
                     .show()
             }
         }

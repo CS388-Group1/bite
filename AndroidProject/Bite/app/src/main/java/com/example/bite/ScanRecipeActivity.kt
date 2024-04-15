@@ -57,7 +57,7 @@ class ScanRecipeActivity : AppCompatActivity() {
                     .setTitle("Bite: Error")
                     .setText("Camera permission denied")
                     .setBackgroundColorRes(com.example.bite.R.color.red)
-                    .setDuration(10000)
+                    .setDuration(5000)
                     .show()
             }
         }
@@ -74,7 +74,7 @@ class ScanRecipeActivity : AppCompatActivity() {
                     .setTitle("Bite: Error")
                     .setText("Failed to select image")
                     .setBackgroundColorRes(com.example.bite.R.color.red)
-                    .setDuration(10000)
+                    .setDuration(5000)
                     .show()
             }
         }
@@ -109,7 +109,7 @@ class ScanRecipeActivity : AppCompatActivity() {
                     .setTitle("Bite: Error")
                     .setText("Failed to capture image")
                     .setBackgroundColorRes(com.example.bite.R.color.red)
-                    .setDuration(10000)
+                    .setDuration(5000)
                     .show()
             }
         }
@@ -134,7 +134,7 @@ class ScanRecipeActivity : AppCompatActivity() {
                         .setTitle("Bite: Error")
                         .setText(error)
                         .setBackgroundColorRes(com.example.bite.R.color.red)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }

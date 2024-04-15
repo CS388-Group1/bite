@@ -65,7 +65,7 @@ class FavoritesFragment : Fragment() {
                         .setTitle("Bite Favorites")
                         .setText("Item added to Favorites")
                         .setBackgroundColorRes(R.color.green)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }else{
@@ -74,7 +74,7 @@ class FavoritesFragment : Fragment() {
                         .setTitle("Bite Favorites")
                         .setText("Item removed from Favorites")
                         .setBackgroundColorRes(R.color.green)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }
@@ -117,7 +117,7 @@ class FavoritesFragment : Fragment() {
                         Alerter.create(it)
                             .setTitle("Bite Favorites")
                             .setText("No favorites found")
-                            .setDuration(10000)
+                            .setDuration(5000)
                             .show()
                     }
                 } else {
@@ -125,7 +125,7 @@ class FavoritesFragment : Fragment() {
                         Alerter.create(it)
                             .setTitle("Bite Favorites")
                             .setText("No favorites more found")
-                            .setDuration(10000)
+                            .setDuration(5000)
                             .show()
                     }
                 }
