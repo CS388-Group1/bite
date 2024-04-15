@@ -11,7 +11,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import kotlinx.coroutines.*
 import okhttp3.Call
 import okhttp3.Callback
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -59,9 +58,10 @@ class SpoonacularRepository {
         return response.recipes.map { it.toRecipe()}
     }
 
-    suspend fun getRandomRecipe(): List<Recipe> {
-        val response = api.getRandomRecipe()
-        return response.recipes.map { it.toRecipe() }
+    suspend fun getRandomRecipe(recipeId: String): Recipe {
+        val response = api.getRecipeById(recipeId)
+        Log.v("RRecipe--->", response.toString())
+        return response.toRecipe()
     }
     suspend fun getIngredients(recipeId: String): List<Ingredient>? {
         try {

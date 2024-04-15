@@ -1,6 +1,7 @@
 package com.example.bite
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bite.network.SpoonacularRepository
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class HomeFragment : Fragment() {
     private lateinit var spoonacularRepository: SpoonacularRepository
@@ -106,15 +110,16 @@ class HomeFragment : Fragment() {
         return view
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchRandomRecipe() {
         lifecycleScope.launch {
             try {
-                val recipe = spoonacularRepository.getRandomRecipe()
-                Glide.with(this@HomeFragment).load(recipe[0].image).centerCrop().into(rotdImageView)
-                rotdTitleTextView.text = recipe[0].title
+                val recipe = spoonacularRepository.getRandomRecipe(getDailyNumber())
+                Glide.with(this@HomeFragment).load(recipe.image).centerCrop().into(rotdImageView)
+                rotdTitleTextView.text = recipe.title
 
                 // Set the cooking time to the TextView
-                val cookingTime = recipe[0].cookingTime
+                val cookingTime = recipe.cookingTime
                 val rotdCookingTimeTextView: TextView = view?.findViewById(R.id.textViewCookingTime) ?: return@launch
                 rotdCookingTimeTextView.text = if (cookingTime > 0) {
                     "$cookingTime min"
@@ -122,7 +127,7 @@ class HomeFragment : Fragment() {
                     ""
                 }
 
-                rotdImageView.tag = recipe[0].id
+                rotdImageView.tag = recipe.id
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch random recipe: ${e.message}")
                 Toast.makeText(requireContext(), "Failed to fetch random recipe: ${e.message}", Toast.LENGTH_LONG).show()
@@ -140,5 +145,13 @@ class HomeFragment : Fragment() {
                 Toast.makeText(requireContext(), "Failed to fetch trending recipes: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getDailyNumber(): String {
+        val currentDate = LocalDate.now()
+        val form = DateTimeFormatter.ofPattern("yyyyMMdd")
+        val number = currentDate.format(form).toInt()
+        return (number % 100000).toString()
     }
 }
