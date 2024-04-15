@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.bite.models.Ingredient
 import com.example.bite.models.Recipe
 import com.example.bite.network.SpoonacularRepository
+import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -68,9 +68,19 @@ class RecipeDetailActivity : AppCompatActivity() {
                     updateFavorite(recipe, recipe.isFavorite, recipe.id)
                     favoriteButton.isSelected = recipe.isFavorite
                     if (recipe.isFavorite) {
-                        Toast.makeText(this@RecipeDetailActivity, "Added to Favorites", Toast.LENGTH_SHORT).show()
+                        Alerter.create(this@RecipeDetailActivity)
+                            .setTitle("Bite Favorites")
+                            .setText("Added to Favorites")
+                            .setBackgroundColorRes(R.color.green)
+                            .setDuration(10000)
+                            .show()
                     } else {
-                        Toast.makeText(this@RecipeDetailActivity, "Removed from Favorites", Toast.LENGTH_SHORT).show()
+                        Alerter.create(this@RecipeDetailActivity)
+                            .setTitle("Bite Favorites")
+                            .setText("Removed from Favorites")
+                            .setBackgroundColorRes(R.color.green)
+                            .setDuration(10000)
+                            .show()
                     }
                 }
             } finally {
