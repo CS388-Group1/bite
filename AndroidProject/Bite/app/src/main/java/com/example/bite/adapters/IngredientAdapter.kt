@@ -38,15 +38,15 @@ class IngredientAdapter(private var ingredients: List<Ingredient>) :
             // Load local image for common ingredients
             Glide.with(holder.itemView.context)
                 .load(ingredient.image)
-                .placeholder(R.drawable.placeholder_image)
-                .error(R.drawable.error_image)
+                .placeholder(R.drawable.cookie_transparent)
+                .error(R.drawable.cookie_transparent)
                 .into(holder.imageView)
         } else {
             // Load image from API for searched ingredients
             Glide.with(holder.itemView.context)
                 .load(ingredient.image)
-                .placeholder(R.drawable.placeholder_image)
-                .error(R.drawable.error_image)
+                .placeholder(R.drawable.cookie_transparent)
+                .error(R.drawable.cookie_transparent)
                 .into(holder.imageView)
         }
 
