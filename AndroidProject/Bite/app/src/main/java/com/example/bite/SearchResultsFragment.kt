@@ -53,14 +53,15 @@ class SearchResultsFragment : Fragment() {
         recyclerView.addOnScrollListener(InfiniteScrollListener(
             layoutManager = recyclerView.layoutManager as GridLayoutManager,
             loading = { loading },
-            setLoading = { isLoading ->
-                loading = isLoading
+            setLoading = { isLoading -> loading = isLoading },
+            pageSize = pageSize,
+            loadMore = {
+                if (currentIngredients.isNotEmpty()) {
+                    searchRecipesByIngredients(currentIngredients, currentOffset)
+                }
             }
-        ) {
-            if (currentIngredients.isNotEmpty()) {
-                searchRecipesByIngredients(currentIngredients, currentOffset)
-            }
-        })
+        ))
+
 
         return view
     }

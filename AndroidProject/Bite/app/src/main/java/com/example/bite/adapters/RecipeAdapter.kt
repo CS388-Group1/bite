@@ -61,32 +61,20 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
         val recipe = recipes[position]
         with(holder) {
             nameView.text = recipe.title
-//            descriptionView.text = recipe.summary
-
-            // Bind the cooking time
-            val cookingTime = recipe.cookingTime
-            cookingTimeView.text = if (cookingTime > 0) {
-                "$cookingTime min"
-            } else {
-                ""
-            }
-
-            //get database
-            buttonFavorite.setOnClickListener{
-                //update favorite
-                recipe.isFavorite = !recipe.isFavorite
-                updateFavorite(recipe, recipe.isFavorite,recipe.id)
-                if(recipe.isFavorite){
-                    Toast.makeText(itemView.context,"Item Added to Favorites",Toast.LENGTH_SHORT).show()
-                } else{
-                    Toast.makeText(itemView.context,"Item Removed from Favorites",Toast.LENGTH_SHORT).show()
-                }
-
-            }
-
+            cookingTimeView.text = recipe.cookingTime.takeIf { it > 0 }?.let { "$it min" } ?: ""
             Glide.with(imageView.context).load(recipe.image).into(imageView)
 
-            itemView.setOnClickListener { onRecipeClicked(recipe) }
+            buttonFavorite.isSelected = recipe.isFavorite
+            buttonFavorite.setOnClickListener {
+                recipe.isFavorite = !recipe.isFavorite
+                updateFavorite(recipe, recipe.isFavorite, recipe.id)
+                buttonFavorite.isSelected = recipe.isFavorite
+                if (recipe.isFavorite) {
+                    Toast.makeText(itemView.context, "Item Added to Favorites", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(itemView.context, "Item Removed from Favorites", Toast.LENGTH_SHORT).show()
+                }
+            }
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, RecipeDetailActivity::class.java)

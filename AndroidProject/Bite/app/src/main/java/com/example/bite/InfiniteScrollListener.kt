@@ -7,6 +7,7 @@ class InfiniteScrollListener(
     private val layoutManager: LinearLayoutManager,
     private var loading: () -> Boolean,
     private val setLoading: (Boolean) -> Unit,
+    private val pageSize: Int, // Added pageSize to the constructor
     private val loadMore: () -> Unit
 ) : RecyclerView.OnScrollListener() {
     private var previousTotal = 0
@@ -15,24 +16,23 @@ class InfiniteScrollListener(
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
         if (dy <= 0 || loading()) {
-            // Log.d("InfiniteScroll", "Early exit from onScrolled, dy: $dy, loading: ${loading()}")
             return
         }
 
         val totalItemCount = layoutManager.itemCount
         val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-        // Log.d("InfiniteScroll", "Scrolled, totalItemCount: $totalItemCount, lastVisibleItem: $lastVisibleItem, previousTotal: $previousTotal")
 
         if (loading() && (totalItemCount > previousTotal)) {
             setLoading(false)
             previousTotal = totalItemCount
-            // Log.d("InfiniteScroll", "Load complete, totalItemCount: $totalItemCount")
         }
 
         if (!loading() && (lastVisibleItem + visibleThreshold) >= totalItemCount) {
+            if (totalItemCount % pageSize > 0 && totalItemCount < pageSize) {
+                return
+            }
             loadMore()
             setLoading(true)
-            // Log.d("InfiniteScroll", "Loading more items")
         }
     }
 }
