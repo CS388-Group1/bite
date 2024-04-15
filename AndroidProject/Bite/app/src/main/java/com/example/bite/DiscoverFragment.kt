@@ -58,7 +58,7 @@ class DiscoverFragment : Fragment() {
                         .setTitle("Bite Favorites")
                         .setText("Item added to Favorites")
                         .setBackgroundColorRes(R.color.green)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }else{
@@ -67,7 +67,7 @@ class DiscoverFragment : Fragment() {
                         .setTitle("Bite Favorites")
                         .setText("Item removed from Favorites")
                         .setBackgroundColorRes(R.color.green)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }
@@ -105,7 +105,7 @@ class DiscoverFragment : Fragment() {
                         .setTitle("Bite: Error")
                         .setText("Failed to fetch recipes: ${e.message}")
                         .setBackgroundColorRes(com.example.bite.R.color.red)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             } finally {

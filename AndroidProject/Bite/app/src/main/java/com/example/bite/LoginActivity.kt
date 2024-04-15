@@ -91,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
                             .setTitle("Bite: Error")
                             .setText("Invalid login credentials.")
                             .setBackgroundColorRes(R.color.red)
-                            .setDuration(10000)
+                            .setDuration(5000)
                             .show()
                     }
                 }
@@ -101,7 +101,7 @@ class LoginActivity : AppCompatActivity() {
                     .setTitle("Bite: Error")
                     .setText("Please enter an email and password.")
                     .setBackgroundColorRes(R.color.red)
-                    .setDuration(10000)
+                    .setDuration(5000)
                     .show()
             }
         }
@@ -183,7 +183,7 @@ class LoginActivity : AppCompatActivity() {
                 .setTitle("Bite: Error")
                 .setText(task.exception.toString())
                 .setBackgroundColorRes(com.example.bite.R.color.red)
-                .setDuration(10000)
+                .setDuration(5000)
                 .show()
         }
     }
@@ -227,7 +227,7 @@ class LoginActivity : AppCompatActivity() {
                     .setTitle("Bite: Error")
                     .setText("Unable to sign in with Google Authentication.")
                     .setBackgroundColorRes(com.example.bite.R.color.red)
-                    .setDuration(10000)
+                    .setDuration(5000)
                     .show()
             }
         }

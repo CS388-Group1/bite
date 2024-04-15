@@ -8,8 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import java.text.DecimalFormat
 
 class RecipeIngredientAdapter(private val ingredients: List<Ingredient>) : RecyclerView.Adapter<RecipeIngredientAdapter.ViewHolder>() {
+
+    private val decimalFormat = DecimalFormat("#.##")
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageView: ImageView = itemView.findViewById(R.id.ingredientImg)
@@ -21,8 +24,11 @@ class RecipeIngredientAdapter(private val ingredients: List<Ingredient>) : Recyc
             Glide.with(itemView.context)
                 .load(imageUrl)
                 .into(imageView)
+
             nameTextView.text = ingredient.name.split(" ").joinToString(" ") { it.capitalize() }
-            amountTextView.text = "${ingredient.amount} ${ingredient.unit}"
+
+            val formattedAmount = decimalFormat.format(ingredient.amount)
+            amountTextView.text = "$formattedAmount ${ingredient.unit}"
         }
     }
 

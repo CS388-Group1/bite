@@ -29,11 +29,11 @@ class HomeFragment : Fragment() {
     private lateinit var spoonacularRepository: SpoonacularRepository
     private lateinit var recipesRv: RecyclerView
     private lateinit var recipeAdapter: RecipeAdapter
-    private lateinit var rotdImageView: ImageView
-    private lateinit var rotdRecipe: View
-    private lateinit var rotdTitleTextView: TextView
     private lateinit var seeAllButton: Button
     private lateinit var preferencesButton: ImageView
+    private lateinit var rotdRecyclerView: RecyclerView
+    private lateinit var rotdAdapter: RecipeAdapter
+    private lateinit var rotdShimmerLayout: ShimmerFrameLayout
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -41,8 +41,9 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        val container = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout;
+        val container = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout
         container.startShimmer()
+
         spoonacularRepository = SpoonacularRepository()
         recipesRv = view.findViewById(R.id.recipeRecyclerView)
         recipesRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -60,7 +61,7 @@ class HomeFragment : Fragment() {
                         .setTitle("Bite Favorites")
                         .setText("Item added to Favorites")
                         .setBackgroundColorRes(R.color.green)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }else{
@@ -69,25 +70,47 @@ class HomeFragment : Fragment() {
                         .setTitle("Bite Favorites")
                         .setText("Item removed from Favorites")
                         .setBackgroundColorRes(R.color.green)
-                        .setDuration(10000)
+                        .setDuration(5000)
+                        .show()
+                }
+            }
+        }
+        rotdRecyclerView = view.findViewById(R.id.rotdRecyclerView)
+        rotdRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        rotdAdapter = RecipeAdapter(emptyList()) { recipe ->
+            val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
+            intent.putExtra("RECIPE_ID", recipe.id)
+            startActivity(intent)
+        }
+        rotdRecyclerView.adapter = rotdAdapter
+
+        rotdAdapter.onFavoriteClicked = { recipe ->
+            if(recipeAdapter.onFavoriteClick(recipe)){
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item added to Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(5000)
+                        .show()
+                }
+            }else{
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item removed from Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(5000)
                         .show()
                 }
             }
         }
 
+        rotdShimmerLayout = view.findViewById(R.id.shimmer_layout_rotd)
+        rotdShimmerLayout.startShimmer()
+
         val snapHelper = PagerSnapHelper() // or LinearSnapHelper()
         snapHelper.attachToRecyclerView(recipesRv)
-
-        rotdImageView = view.findViewById(R.id.imageViewRecipe)
-        rotdTitleTextView = view.findViewById(R.id.textViewRecipeName)
-        val rotdCookingTimeTextView: TextView = view.findViewById(R.id.textViewCookingTime)
-
-        view.findViewById<View>(R.id.rotdRecipe).setOnClickListener {
-            val recipeId = rotdImageView.tag as? String
-            val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
-            intent.putExtra("RECIPE_ID", recipeId)
-            startActivity(intent)
-        }
 
         seeAllButton = view.findViewById(R.id.seeAllButton)
         preferencesButton = view.findViewById(R.id.preferencesButton)
@@ -100,12 +123,6 @@ class HomeFragment : Fragment() {
         // Fetch random recipe asynchronously
         fetchRandomRecipe()
 
-        rotdImageView.setOnClickListener{
-            val recipeId = rotdImageView.tag as? String
-            val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
-            intent.putExtra("RECIPE_ID", recipeId)
-            startActivity(intent)
-        }
         seeAllButton.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.apply {
                 replace(R.id.fragment_container, DiscoverFragment())
@@ -141,19 +158,10 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val recipe = spoonacularRepository.getRandomRecipe(getDailyNumber())
-                Glide.with(this@HomeFragment).load(recipe.image).centerCrop().into(rotdImageView)
-                rotdTitleTextView.text = recipe.title
-
-                // Set the cooking time to the TextView
-                val cookingTime = recipe.cookingTime
-                val rotdCookingTimeTextView: TextView = view?.findViewById(R.id.textViewCookingTime) ?: return@launch
-                rotdCookingTimeTextView.text = if (cookingTime > 0) {
-                    "$cookingTime min"
-                } else {
-                    ""
-                }
-
-                rotdImageView.tag = recipe.id
+                rotdShimmerLayout.stopShimmer()
+                rotdShimmerLayout.visibility = View.GONE
+                rotdRecyclerView.visibility = View.VISIBLE
+                rotdAdapter.updateRecipes(listOf(recipe))
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch random recipe: ${e.message}")
                 activity?.let {
@@ -161,7 +169,7 @@ class HomeFragment : Fragment() {
                         .setTitle("Bite: Error")
                         .setText("Failed to fetch random recipe: ${e.message}")
                         .setBackgroundColorRes(com.example.bite.R.color.red)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }
@@ -184,7 +192,7 @@ class HomeFragment : Fragment() {
                         .setTitle("Bite: Error")
                         .setText("Failed to fetch trending recipes: ${e.message}")
                         .setBackgroundColorRes(com.example.bite.R.color.red)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }
