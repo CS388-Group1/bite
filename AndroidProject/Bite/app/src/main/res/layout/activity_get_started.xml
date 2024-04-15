@@ -11,9 +11,9 @@
     <Button
         android:id="@+id/getStartedButton"
         android:layout_width="330dp"
-        android:layout_height="47dp"
+        android:layout_height="50dp"
         android:layout_marginStart="40dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/rounded_black_background"
         android:fontFamily="sans-serif"
         android:text="Get Started"
@@ -25,31 +25,27 @@
 
     <TextView
         android:id="@+id/bite"
-        android:layout_width="146dp"
-        android:layout_height="134dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="132dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:fontFamily="@font/dosis"
         android:gravity="top"
-        android:lineSpacingExtra="13sp"
         android:text="bite"
         android:textColor="#000000"
         android:textSize="96sp"
         android:textStyle="bold"
-        android:translationY="-6.53sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="197dp"
-        android:layout_height="135dp"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="132dp"
+        android:layout_height="197dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bite"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/cookie_transparent" />
 
 
