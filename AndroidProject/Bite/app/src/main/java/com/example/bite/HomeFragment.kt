@@ -35,6 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var seeAllButton: Button
     private lateinit var preferencesButton: ImageView
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
