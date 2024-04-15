@@ -47,13 +47,13 @@ interface SpoonacularApi {
     @GET("food/ingredients/search")
     suspend fun searchIngredientByName(
         @Query("query") query: String,
-        @Query("number") number: Int = 10,
+//        @Query("number") number: Int = 10,
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
     ): IngredientListResponse
 
     @GET("recipes/random")
     suspend fun getTrendingRecipes(
-        @Query("number") number: Int = 10,
+//        @Query("number") number: Int = 10,
         @Query("tags") tags: String = "vegetarian",
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
     ): RecipeListResponse
@@ -68,7 +68,7 @@ interface SpoonacularApi {
     @GET("recipes/complexSearch")
     suspend fun searchRecipeByName(
         @Query("query") query: String,
-        @Query("number") number: Int = 10,
+//        @Query("number") number: Int = 10,
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
     ): RecipeListResponse
 

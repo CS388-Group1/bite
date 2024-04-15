@@ -83,6 +83,29 @@ class RecipeAdapter(private var recipes: List<Recipe>, var onRecipeClicked: (Rec
                 Glide.with(imageView.context).load(recipe.image).into(imageView)
             }
 
+            // Check if the recipe is in favorites
+            val recipeLocalData = RecipeLocalData(itemView.context.let {
+                AppDatabase.getInstance(it.applicationContext).recipeDao()
+            }, itemView.context.applicationContext)
+
+            GlobalScope.launch {
+                val isFavorite = recipeLocalData.isRowIsExist(recipe.id)
+                recipe.isFavorite = isFavorite
+
+                MainScope().launch {
+                    buttonFavorite.isSelected = isFavorite
+                }
+            }
+
+            buttonFavorite.setOnClickListener {
+                recipe.isFavorite = !recipe.isFavorite
+                updateFavorite(recipe, recipe.isFavorite, recipe.id)
+                buttonFavorite.isSelected = recipe.isFavorite
+                onFavoriteClick(recipe)
+                onFavoriteClicked?.invoke(recipe)
+            }
+
+
             buttonFavorite.isSelected = recipe.isFavorite
             buttonFavorite.setOnClickListener {
                 recipe.isFavorite = !recipe.isFavorite
