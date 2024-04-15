@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bite.models.Recipe
 import com.example.bite.network.SpoonacularRepository
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,6 +50,27 @@ class SearchByRecipeFragment : Fragment() {
             val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE_ID", recipe.id)
             startActivity(intent)
+        }
+        recipeAdapter.onFavoriteClicked = { recipe ->
+            if(recipeAdapter.onFavoriteClick(recipe)){
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item added to Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(5000)
+                        .show()
+                }
+            }else{
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item removed from Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(5000)
+                        .show()
+                }
+            }
         }
 
         searchView = requireActivity().findViewById(R.id.SearchInput)

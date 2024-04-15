@@ -11,6 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bite.network.SpoonacularRepository
+import com.facebook.shimmer.ShimmerFrameLayout
+import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
 
 class SearchResultsFragment : Fragment() {
@@ -40,6 +42,8 @@ class SearchResultsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_recipe_list, container, false)
+        val container = view?.findViewById(R.id.shimmer_layout_recipe_list) as ShimmerFrameLayout;
+        container.startShimmer()
         recyclerView = view.findViewById(R.id.recipeRecyclerView)
         recipeAdapter = RecipeAdapter(emptyList()) { recipe ->
             val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
@@ -49,6 +53,28 @@ class SearchResultsFragment : Fragment() {
         recyclerView.adapter = recipeAdapter
         spoonacularRepository = SpoonacularRepository()
         recyclerView.layoutManager = GridLayoutManager(context, 1)
+
+        recipeAdapter.onFavoriteClicked = { recipe ->
+            if(recipeAdapter.onFavoriteClick(recipe)){
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item added to Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(5000)
+                        .show()
+                }
+            }else{
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item removed from Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(5000)
+                        .show()
+                }
+            }
+        }
 
         recyclerView.addOnScrollListener(InfiniteScrollListener(
             layoutManager = recyclerView.layoutManager as GridLayoutManager,
@@ -79,6 +105,10 @@ class SearchResultsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val recipes = SpoonacularRepository().searchRecipesByIngredients(ingredients, pageSize, offset)
+                val container = view?.findViewById(R.id.shimmer_layout_recipe_list) as ShimmerFrameLayout;
+                container.stopShimmer()
+                container.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
                 if (recipes.isNotEmpty()) {
                     if (offset == 0) {
                         recipeAdapter.updateRecipes(recipes)
@@ -88,12 +118,26 @@ class SearchResultsFragment : Fragment() {
                     currentOffset += recipes.size // Ensure to update offset only when data is fetched
                 } else {
                     // Handle case when no more data is available
-                    Toast.makeText(requireContext(), "No more recipes found", Toast.LENGTH_SHORT).show()
+                    activity?.let {
+                        Alerter.create(it)
+                            .setTitle("Bite: Error")
+                            .setText("No more recipes found")
+                            .setBackgroundColorRes(com.example.bite.R.color.red)
+                            .setDuration(5000)
+                            .show()
+                    }
                 }
                 loading = false
             } catch (e: Exception) {
                 loading = false
-                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite: Error")
+                        .setText("Error: ${e.message}")
+                        .setBackgroundColorRes(com.example.bite.R.color.red)
+                        .setDuration(5000)
+                        .show()
+                }
             }
         }
     }

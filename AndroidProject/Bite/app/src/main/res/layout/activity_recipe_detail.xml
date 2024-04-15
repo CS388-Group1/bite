@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecipeDetailActivity">>
+    tools:context=".RecipeDetailActivity">
 
-    <RelativeLayout
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <!-- Views and other elements go here -->
-        <include layout="@layout/loading_layout" />
+        <include layout="@layout/activity_recipe_detail_shimmer" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <ScrollView
+        android:id="@+id/mainContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <RelativeLayout
-            android:id="@+id/mainContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
-            <!-- Back Arrow Button -->
             <ImageButton
                 android:id="@+id/backButton"
                 android:layout_width="72dp"
                 android:layout_height="118dp"
                 android:layout_alignParentStart="true"
-                android:layout_marginStart="37dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:background="?android:attr/selectableItemBackground"
-
                 android:src="@drawable/ic_larrow" />
 
             <TextView
@@ -43,114 +46,137 @@
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
-            <!-- Favorite Button
-            <ImageButton
-                android:id="@+id/favoriteButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:src="@drawable/empty_heart" />
-            -->
-            <!-- Recipe Image -->
-            <ImageView
-                android:id="@+id/recipeImage"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/recipeCardView"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/recipeLabel"
-                android:scaleType="centerCrop"
-                android:layout_marginTop="8dp"/>
-
-            <!-- Recipe Title -->
-            <TextView
-                android:id="@+id/recipeTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/recipeImage"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Recipe Title"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:textSize="24sp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"/>
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
 
-            <!-- Recipe Author -->
-            <TextView
-                android:id="@+id/recipeAuthor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/recipeTitle"
-                android:layout_marginTop="8dp"
-                android:text="Recipe Author"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:layout_centerHorizontal="true"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <!-- Recipe Description -->
-            <TextView
-                android:id="@+id/recipeDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/recipeAuthor"
-                android:layout_marginTop="16dp"
-                android:text="Recipe Description"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"/>
+                    <!-- Recipe Image -->
+                    <ImageView
+                        android:id="@+id/recipeImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop" />
 
-            <!-- Ingredients Section -->
-            <TextView
-                android:id="@+id/ingredientsTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/recipeDescription"
-                android:layout_marginTop="16dp"
-                android:text="Ingredients"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"/>
+                    <!-- Favorite Button -->
+                    <ImageButton
+                        android:id="@+id/favoriteButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignTop="@id/recipeImage"
+                        android:layout_alignEnd="@id/recipeImage"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginEnd="14dp"
+                        android:background="@drawable/favorite_bg_selector"
+                        android:elevation="3dp"
+                        android:padding="6dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/favorite_selector" />
 
-            <!-- Ingredients List -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/ingredientsRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ingredientsTitle"
-                android:layout_marginTop="8dp" />
+                    <!-- Recipe Title -->
+                    <TextView
+                        android:id="@+id/recipeTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/recipeImage"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="15dp"
+                        android:text="Recipe Title"
+                        android:textColor="@android:color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
-            <!-- Instructions Section -->
-            <TextView
-                android:id="@+id/instructionsTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ingredientsRecyclerView"
-                android:layout_marginTop="16dp"
-                android:text="Instructions"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"/>
+                    <!-- Recipe Author -->
+                    <TextView
+                        android:id="@+id/recipeAuthor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/recipeTitle"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="8dp"
+                        android:text="Recipe Author"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/recipeInstructions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/instructionsTitle"
-                android:layout_marginTop="8dp"
-                android:textColor="@android:color/black"
-                android:text="Instructions"
-                android:textSize="16dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"/>
+                    <!-- Recipe Description -->
+                    <TextView
+                        android:id="@+id/recipeDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/recipeAuthor"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="15dp"
+                        android:text="Recipe Description" />
 
+                    <!-- Ingredients Section -->
+                    <TextView
+                        android:id="@+id/ingredientsTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/recipeDescription"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="15dp"
+                        android:text="Ingredients"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <!-- Ingredients List -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/ingredientsRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ingredientsTitle"
+                        android:layout_marginTop="8dp" />
+
+                    <!-- Instructions Section -->
+                    <TextView
+                        android:id="@+id/instructionsTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ingredientsRecyclerView"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="15dp"
+                        android:text="Instructions"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/recipeInstructions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/instructionsTitle"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="Instructions"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
-    </RelativeLayout>
 
-</ScrollView >
+    </ScrollView>
+
+</FrameLayout>

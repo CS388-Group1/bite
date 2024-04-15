@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.bite.network.SpoonacularRepository
+import com.tapadoo.alerter.Alerter
 import org.json.JSONObject
 
 class ScanRecipeActivity : AppCompatActivity() {
@@ -52,7 +53,12 @@ class ScanRecipeActivity : AppCompatActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 dispatchImageIntent()
             } else {
-                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+                Alerter.create(this)
+                    .setTitle("Bite: Error")
+                    .setText("Camera permission denied")
+                    .setBackgroundColorRes(com.example.bite.R.color.red)
+                    .setDuration(5000)
+                    .show()
             }
         }
     }
@@ -64,7 +70,12 @@ class ScanRecipeActivity : AppCompatActivity() {
                 val imageBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, it)
                 uploadImage(imageBitmap)
             } ?: run {
-                Toast.makeText(this, "Failed to select image", Toast.LENGTH_SHORT).show()
+                Alerter.create(this)
+                    .setTitle("Bite: Error")
+                    .setText("Failed to select image")
+                    .setBackgroundColorRes(com.example.bite.R.color.red)
+                    .setDuration(5000)
+                    .show()
             }
         }
     }
@@ -94,7 +105,12 @@ class ScanRecipeActivity : AppCompatActivity() {
             imageBitmap?.let {
                 uploadImage(it)
             } ?: run {
-                Toast.makeText(this, "Failed to capture image", Toast.LENGTH_SHORT).show()
+                Alerter.create(this)
+                    .setTitle("Bite: Error")
+                    .setText("Failed to capture image")
+                    .setBackgroundColorRes(com.example.bite.R.color.red)
+                    .setDuration(5000)
+                    .show()
             }
         }
     }
@@ -114,7 +130,12 @@ class ScanRecipeActivity : AppCompatActivity() {
 
             override fun onFailure(error: String) {
                 runOnUiThread {
-                    Toast.makeText(this@ScanRecipeActivity, error, Toast.LENGTH_LONG).show()
+                    Alerter.create(this@ScanRecipeActivity)
+                        .setTitle("Bite: Error")
+                        .setText(error)
+                        .setBackgroundColorRes(com.example.bite.R.color.red)
+                        .setDuration(5000)
+                        .show()
                 }
             }
         })
