@@ -24,6 +24,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
+import com.tapadoo.alerter.Alerter
 
 class SearchByIngredientFragment : Fragment() {
     private lateinit var spoonacularRepository: SpoonacularRepository
@@ -219,7 +220,14 @@ class SearchByIngredientFragment : Fragment() {
                 commonIngredientsTextView.text = "Search Results"
                 hideKeyboard()
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite: Error")
+                        .setText("Error: ${e.message}")
+                        .setBackgroundColorRes(com.example.bite.R.color.red)
+                        .setDuration(10000)
+                        .show()
+                }
             }
         }
     }

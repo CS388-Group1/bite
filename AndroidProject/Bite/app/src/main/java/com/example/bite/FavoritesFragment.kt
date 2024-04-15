@@ -8,13 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bite.models.Recipe
 import com.example.bite.models.RecipeLocalData
+import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
+
 
 class FavoritesFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -51,6 +54,28 @@ class FavoritesFragment : Fragment() {
             // Handle recipe click
         }
         recyclerView.adapter = adapter
+        adapter.onFavoriteClicked = { recipe ->
+            if(adapter.onFavoriteClick(recipe)){
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item added to Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(10000)
+                        .show()
+                }
+            }else{
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item removed from Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(10000)
+                        .show()
+                }
+            }
+
+        }
         recyclerView.addOnScrollListener(
             InfiniteScrollListener(
                 layoutManager = recyclerView.layoutManager as LinearLayoutManager,
@@ -84,9 +109,21 @@ class FavoritesFragment : Fragment() {
                 currentOffset += recipes.size
             } else {
                 if (offset == 0) {
-                    Toast.makeText(context, "No favorites found", Toast.LENGTH_SHORT).show()
+                    activity?.let {
+                        Alerter.create(it)
+                            .setTitle("Bite Favorites")
+                            .setText("No favorites found")
+                            .setDuration(10000)
+                            .show()
+                    }
                 } else {
-                    Toast.makeText(context, "No more favorites found", Toast.LENGTH_SHORT).show()
+                    activity?.let {
+                        Alerter.create(it)
+                            .setTitle("Bite Favorites")
+                            .setText("No favorites more found")
+                            .setDuration(10000)
+                            .show()
+                    }
                 }
             }
             loading = false

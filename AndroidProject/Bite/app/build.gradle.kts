@@ -58,13 +58,13 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
 }
 
 dependencies {
     implementation("androidx.activity:activity:1.8.0")
     implementation("com.google.firebase:firebase-firestore-ktx:24.11.0")
     val room_version = "2.6.1"
-
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
@@ -100,4 +100,5 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.github.tapadoo:alerter:7.2.4")
 }

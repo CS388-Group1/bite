@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bite.models.Recipe
 import com.example.bite.network.SpoonacularRepository
+import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
 
 class DiscoverFragment : Fragment() {
@@ -47,6 +48,27 @@ class DiscoverFragment : Fragment() {
             startActivity(intent)
         }
         recyclerView.adapter = adapter
+        adapter.onFavoriteClicked = { recipe ->
+            if(adapter.onFavoriteClick(recipe)){
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item added to Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(10000)
+                        .show()
+                }
+            }else{
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item removed from Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(10000)
+                        .show()
+                }
+            }
+        }
     }
 
     private fun setupScrollListener() {
@@ -75,7 +97,14 @@ class DiscoverFragment : Fragment() {
                 adapter.updateRecipes(newRecipes)
                 currentPage++
             } catch (e: Exception) {
-                Toast.makeText(context, "Failed to fetch recipes: ${e.message}", Toast.LENGTH_LONG).show()
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite: Error")
+                        .setText("Failed to fetch recipes: ${e.message}")
+                        .setBackgroundColorRes(com.example.bite.R.color.red)
+                        .setDuration(10000)
+                        .show()
+                }
             } finally {
                 isLoading = false
             }

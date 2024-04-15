@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bite.network.SpoonacularRepository
+import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
 
 class SearchResultsFragment : Fragment() {
@@ -50,6 +51,28 @@ class SearchResultsFragment : Fragment() {
         spoonacularRepository = SpoonacularRepository()
         recyclerView.layoutManager = GridLayoutManager(context, 1)
 
+        recipeAdapter.onFavoriteClicked = { recipe ->
+            if(recipeAdapter.onFavoriteClick(recipe)){
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item added to Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(10000)
+                        .show()
+                }
+            }else{
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item removed from Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(10000)
+                        .show()
+                }
+            }
+        }
+
         recyclerView.addOnScrollListener(InfiniteScrollListener(
             layoutManager = recyclerView.layoutManager as GridLayoutManager,
             loading = { loading },
@@ -88,12 +111,26 @@ class SearchResultsFragment : Fragment() {
                     currentOffset += recipes.size // Ensure to update offset only when data is fetched
                 } else {
                     // Handle case when no more data is available
-                    Toast.makeText(requireContext(), "No more recipes found", Toast.LENGTH_SHORT).show()
+                    activity?.let {
+                        Alerter.create(it)
+                            .setTitle("Bite: Error")
+                            .setText("No more recipes found")
+                            .setBackgroundColorRes(com.example.bite.R.color.red)
+                            .setDuration(10000)
+                            .show()
+                    }
                 }
                 loading = false
             } catch (e: Exception) {
                 loading = false
-                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite: Error")
+                        .setText("Error: ${e.message}")
+                        .setBackgroundColorRes(com.example.bite.R.color.red)
+                        .setDuration(10000)
+                        .show()
+                }
             }
         }
     }

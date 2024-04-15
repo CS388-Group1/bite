@@ -18,6 +18,7 @@ import com.example.bite.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.tapadoo.alerter.Alerter
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -76,12 +77,22 @@ class RegisterActivity : AppCompatActivity() {
                         //TODO: RegisterActivity will start Onboarding Activity once created. For now, RegisterActivity routes back to LoginActivity.
                     }
                     else{
-                        Toast.makeText(this, "Failed to register with credentials.", Toast.LENGTH_SHORT).show()
+                        Alerter.create(this)
+                            .setTitle("Bite: Error")
+                            .setText("Failed to register with credentials.")
+                            .setBackgroundColorRes(com.example.bite.R.color.red)
+                            .setDuration(10000)
+                            .show()
                     }
                 }
             }
             else{
-                Toast.makeText(this, "Please enter a valid username and password.", Toast.LENGTH_LONG).show()
+                Alerter.create(this)
+                    .setTitle("Bite: Error")
+                    .setText("Please enter a valid username and password.")
+                    .setBackgroundColorRes(com.example.bite.R.color.red)
+                    .setDuration(10000)
+                    .show()
             }
         }
 
