@@ -72,12 +72,6 @@ interface SpoonacularApi {
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
     ): RecipeListResponse
 
-    @GET("recipes/random")
-    suspend fun getRandomRecipe(
-        @Query("number") number: Int = 1,
-        @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
-    ): RecipeListResponse
-
     @GET("recipes/{id}/information")
     suspend fun getRecipeById(
         @Path("id") id: String,

@@ -3,6 +3,7 @@ package com.example.bite
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
@@ -28,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var fStore: FirebaseFirestore
     private lateinit var googleSignInClient : GoogleSignInClient
+    val SHARED_PREFS: String = "sharedPrefs"
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +43,9 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         fStore = FirebaseFirestore.getInstance()
+
+        autoLogin()
+
         binding.signUpLabel.setOnClickListener{
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
@@ -70,6 +75,13 @@ class LoginActivity : AppCompatActivity() {
             if (email.isNotEmpty() && password.isNotEmpty()){
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener{
                     if (it.isSuccessful){
+
+                        //initialize auto-login
+                        val sharedPreferences: SharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+                        val editor : SharedPreferences.Editor = sharedPreferences.edit()
+                        editor.putString("name", "true")
+                        editor.apply()
+
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                     }
@@ -120,6 +132,17 @@ class LoginActivity : AppCompatActivity() {
                 passwordVisibilityIcon.setImageResource(R.drawable.baseline_remove_red_eye_24)
             }
             passwordEditText.setSelection(passwordEditText.text.length)
+        }
+    }
+
+    private fun autoLogin() {
+        val sharedPreferences : SharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+        val check: String? = sharedPreferences.getString("name", "")
+        // if logged in, bypass auth
+        if(check.equals("true")){
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -175,6 +198,11 @@ class LoginActivity : AppCompatActivity() {
                             )
                         }
                 }
+                //initialize auto login
+                val sharedPreferences: SharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+                val editor : SharedPreferences.Editor = sharedPreferences.edit()
+                editor.putString("name", "true")
+                editor.apply()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
