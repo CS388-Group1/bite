@@ -49,6 +49,8 @@ class MyRecipesActivity : AppCompatActivity() {
         adapter = RecipeAdapter(emptyList()) { recipe ->
             val intent = Intent(this, RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE_ID", recipe.id.toString())
+            intent.putExtra("UserID", recipe.userId.toString())
+            intent.putExtra("RecipeName", recipe.title.toString())
             startActivity(intent)
         }
         recyclerView.adapter = adapter
@@ -64,6 +66,7 @@ class MyRecipesActivity : AppCompatActivity() {
                     val recipeList = customRecipes.map { customRecipeWithIngredients ->
                         Recipe(
                             id = customRecipeWithIngredients.recipe.recipeId.toString(), // Set the ID as a string
+                            userId = userId,
                             title = customRecipeWithIngredients.recipe.name,
                             image = customRecipeWithIngredients.recipe.image,
                             cookingTime = customRecipeWithIngredients.recipe.readyInMinutes,

@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import com.example.bite.daos.CustomRecipeDao as CustomRecipeDao
 
 class SyncWithFirebase(private val customRecipeDao: CustomRecipeDao) {
@@ -62,6 +63,31 @@ class SyncWithFirebase(private val customRecipeDao: CustomRecipeDao) {
             } catch (e: Exception) {
                 Log.e("FirebaseSync", "Exception occurred during Firebase sync: ${e.message}", e)
             }
+        }
+    }
+
+    suspend fun getRecipeByUserIdAndName(userId: String, recipeName: String): CustomRecipe? {
+        return try {
+            val querySnapshot = fStore
+                .collection("users")
+                .document(userId)
+                .collection("createdRecipes")
+                .whereEqualTo("name", recipeName)
+                .limit(1)
+                .get()
+                .await()
+
+            val documents = querySnapshot.documents
+            if (documents.isNotEmpty()) {
+                val firestoreRecipe = documents[0].toObject(CustomRecipe::class.java)
+                firestoreRecipe?.recipeId = documents[0].id.toInt() // Assuming the recipeId is stored as Firestore document ID
+                firestoreRecipe
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseSync", "Error fetching recipe from Firestore: ${e.message}", e)
+            null
         }
     }
 

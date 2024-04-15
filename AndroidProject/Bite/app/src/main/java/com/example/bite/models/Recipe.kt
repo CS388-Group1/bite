@@ -10,6 +10,7 @@ import androidx.room.Relation
 @Entity(tableName = "recipes")
 data class Recipe(
     @PrimaryKey val id: String,
+    val userId: String?,
     val title: String,
     val summary: String,
     val image: String,
@@ -22,7 +23,7 @@ data class Recipe(
 // Stores recipes created by the user in local database
 @Entity(tableName = "custom_recipe")
 data class CustomRecipe(
-    @PrimaryKey(autoGenerate = true) val recipeId: Int = 0,
+    @PrimaryKey(autoGenerate = true) var recipeId: Int = 0,
     val userId: String,
     val name: String,
     val image: String,
@@ -92,6 +93,7 @@ data class RecipeResponse(
     fun toRecipe(): Recipe {
         return Recipe(
             id = this.id.toString(),
+            userId = null,
             title = this.title,
             summary = "",
             image = this.image,
@@ -119,6 +121,7 @@ data class DetailedRecipeResponse(
     fun toRecipe(): Recipe {
         return Recipe(
             id = id.toString(),
+            userId = null,
             title = title,
             summary = summary ?: "",
             image = image,
