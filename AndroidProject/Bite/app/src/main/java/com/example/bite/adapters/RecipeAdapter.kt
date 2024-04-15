@@ -25,7 +25,7 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
     class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.imageViewRecipe)
         val nameView: TextView = itemView.findViewById(R.id.textViewRecipeName)
-        val descriptionView: TextView = itemView.findViewById(R.id.textViewDescription)
+        val cookingTimeView: TextView = itemView.findViewById(R.id.textViewCookingTime)
         val buttonFavorite: ImageButton = itemView.findViewById(R.id.favoriteButton)
 
         @OptIn(DelicateCoroutinesApi::class)
@@ -48,8 +48,8 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
                 }
             }
         }
-
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe, parent, false)
@@ -61,23 +61,20 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
         val recipe = recipes[position]
         with(holder) {
             nameView.text = recipe.title
-            descriptionView.text = recipe.summary
-            //get database
-            buttonFavorite.setOnClickListener{
-                //update favorite
-                recipe.isFavorite = !recipe.isFavorite
-                updateFavorite(recipe, recipe.isFavorite,recipe.id)
-                if(recipe.isFavorite){
-                    Toast.makeText(itemView.context,"Item Added to Favorites",Toast.LENGTH_SHORT).show()
-                } else{
-                    Toast.makeText(itemView.context,"Item Removed from Favorites",Toast.LENGTH_SHORT).show()
-                }
-
-            }
-
+            cookingTimeView.text = recipe.cookingTime.takeIf { it > 0 }?.let { "$it min" } ?: ""
             Glide.with(imageView.context).load(recipe.image).into(imageView)
 
-            itemView.setOnClickListener { onRecipeClicked(recipe) }
+            buttonFavorite.isSelected = recipe.isFavorite
+            buttonFavorite.setOnClickListener {
+                recipe.isFavorite = !recipe.isFavorite
+                updateFavorite(recipe, recipe.isFavorite, recipe.id)
+                buttonFavorite.isSelected = recipe.isFavorite
+                if (recipe.isFavorite) {
+                    Toast.makeText(itemView.context, "Item Added to Favorites", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(itemView.context, "Item Removed from Favorites", Toast.LENGTH_SHORT).show()
+                }
+            }
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, RecipeDetailActivity::class.java)
@@ -88,9 +85,14 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
     }
 
     override fun getItemCount() = recipes.size
-
+    fun addRecipes(newRecipes: List<Recipe>) {
+        val oldSize = recipes.size
+        recipes += newRecipes // Append new recipes to the existing list
+        notifyItemRangeInserted(oldSize, newRecipes.size)
+    }
     fun updateRecipes(newRecipes: List<Recipe>) {
-        recipes = newRecipes
-        notifyDataSetChanged()
+        val oldSize = recipes.size
+        recipes = recipes + newRecipes
+        notifyItemRangeInserted(oldSize, newRecipes.size)
     }
 }

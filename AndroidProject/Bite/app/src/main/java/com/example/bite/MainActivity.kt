@@ -83,11 +83,13 @@ class MainActivity : AppCompatActivity() {
 
         // Handle clicks for FABs
         fabScanFood.setOnClickListener {
-            // Handle "Scan Food" action
+            val intent = Intent(this@MainActivity, ScanRecipeActivity::class.java)
+            startActivity(intent)
         }
 
         fabCreateRecipe.setOnClickListener {
-            // Handle "Create Recipe" action
+            val intent = Intent(this@MainActivity, CreateRecipeActivity::class.java)
+            startActivity(intent)
         }
 
         lifecycleScope.launch {

@@ -9,4 +9,7 @@
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#000000</color>
+    <color name="red">#FF0000</color>
+    <color name="green">#00B200</color>
+    <color name="light_gray">#BEBEBE</color>
 </resources>

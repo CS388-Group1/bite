@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".DietPrefsActivity">
+
+    <TextView
+        android:id="@+id/dietPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Which diet do you follow?"
+        android:textStyle="bold"
+        android:textSize="26dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <GridLayout
+        android:id="@+id/dietsGrid"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:alignmentMode="alignMargins"
+        android:columnCount="4"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/allergiesPrompt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dietPrompt">
+
+        <!-- Button 1 -->
+        <FrameLayout
+            android:id="@+id/noneButton"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_rowSpan="1"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:paddingStart="2dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="2dp"
+            android:background="@drawable/button_background"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/none" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:gravity="center"
+                android:text="None"
+                android:textColor="@color/black"
+                android:textSize="14sp" /> <!-- Adjust text size as necessary -->
+
+        </FrameLayout>
+
+
+        <!-- Button 2 -->
+        <FrameLayout
+            android:id="@+id/veganButton"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_rowSpan="1"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:paddingStart="2dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="2dp"
+            android:background="@drawable/button_background"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/vegan" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:gravity="center"
+                android:text="Vegan"
+                android:textColor="@color/black"
+                android:textSize="14sp" /> <!-- Adjust text size as necessary -->
+
+        </FrameLayout>
+
+        <!-- Button 3 -->
+        <FrameLayout
+            android:id="@+id/vegetarianButton"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_rowSpan="1"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:paddingStart="2dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="2dp"
+            android:background="@drawable/button_background"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/vegetarian" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:gravity="center"
+                android:text="Vegetarian"
+                android:textColor="@color/black"
+                android:textSize="14sp" /> <!-- Adjust text size as necessary -->
+
+        </FrameLayout>
+
+        <!-- Button 4 -->
+        <FrameLayout
+            android:id="@+id/paleoButton"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_rowSpan="1"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:paddingStart="2dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="2dp"
+            android:background="@drawable/button_background"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/paleo" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:gravity="center"
+                android:text="Paleo"
+                android:textColor="@color/black"
+                android:textSize="14sp" /> <!-- Adjust text size as necessary -->
+
+        </FrameLayout>
+
+        <!-- Button 5 -->
+        <FrameLayout
+            android:id="@+id/glutenButton"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_rowSpan="1"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:paddingStart="4dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="4dp"
+            android:background="@drawable/button_background"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/glutenfree" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:gravity="center"
+                android:text="Gluten Free"
+                android:textColor="@color/black"
+                android:textSize="14sp" /> <!-- Adjust text size as necessary -->
+
+        </FrameLayout>
+
+        <!-- Button 6 -->
+        <FrameLayout
+            android:id="@+id/ketoButton"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_rowSpan="1"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:paddingStart="4dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="4dp"
+            android:background="@drawable/button_background"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/keto" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:gravity="center"
+                android:text="Keto"
+                android:textColor="@color/black"
+                android:textSize="14sp" /> <!-- Adjust text size as necessary -->
+
+        </FrameLayout>
+
+        <!-- Button 7 -->
+        <FrameLayout
+            android:id="@+id/primalButton"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_rowSpan="1"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:paddingStart="4dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="4dp"
+            android:background="@drawable/button_background"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/primal" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:gravity="center"
+                android:text="Primal"
+                android:textColor="@color/black"
+                android:textSize="14sp" /> <!-- Adjust text size as necessary -->
+
+        </FrameLayout>
+
+        <!-- Button 8 -->
+        <FrameLayout
+            android:id="@+id/pescetarianButton"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_rowSpan="1"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:paddingStart="4dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="4dp"
+            android:background="@drawable/button_background"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/pescatarian" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:gravity="center"
+                android:text="Pescetarian"
+                android:textColor="@color/black"
+                android:textSize="14sp" /> <!-- Adjust text size as necessary -->
+
+        </FrameLayout>
+
+    </GridLayout>
+
+    <TextView
+        android:id="@+id/allergiesPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Allergies or Intolerances?"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/dietsGrid"
+        app:layout_constraintBottom_toTopOf="@id/allergiesGrid"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <GridLayout
+        android:id="@+id/allergiesGrid"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:alignmentMode="alignMargins"
+        android:columnCount="4"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/allergiesPrompt">
+
+
+        <Button
+            android:id="@+id/dairy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:text="Dairy"
+            android:textAllCaps="false"
+            android:background="@drawable/button_background"
+            android:clickable="true"/>
+
+        <Button
+            android:id="@+id/peanut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:text="Peanut"
+            android:textAllCaps="false"
+            android:background="@drawable/button_background"
+            android:clickable="true"/>
+
+        <Button
+            android:id="@+id/soy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:text="Soy"
+            android:textAllCaps="false"
+            android:background="@drawable/button_background"
+            android:clickable="true"/>
+
+        <Button
+            android:id="@+id/egg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="3"
+            android:text="Egg"
+            android:textAllCaps="false"
+            android:background="@drawable/button_background"
+            android:clickable="true"/>
+
+        <Button
+            android:id="@+id/seafood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:text="Seafood"
+            android:textAllCaps="false"
+            android:background="@drawable/button_background"
+            android:clickable="true"/>
+
+        <Button
+            android:id="@+id/sulfite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:text="Sulfite"
+            android:textAllCaps="false"
+            android:background="@drawable/button_background"
+            android:clickable="true"/>
+
+        <Button
+            android:id="@+id/gluten"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="2"
+            android:text="Gluten"
+            android:textAllCaps="false"
+            android:background="@drawable/button_background"
+            android:clickable="true"/>
+
+        <Button
+            android:id="@+id/sesame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="3"
+            android:text="Sesame"
+            android:textAllCaps="false"
+            android:background="@drawable/button_background"
+            android:clickable="true"/>
+
+        <Button
+            android:id="@+id/treeNut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:text="Tree Nut"
+            android:textAllCaps="false"
+            android:background="@drawable/button_background"
+            android:clickable="true"/>
+
+        <Button
+            android:id="@+id/grain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:text="Grain"
+            android:textAllCaps="false"
+            android:background="@drawable/button_background"
+            android:clickable="true"/>
+
+        <Button
+            android:id="@+id/shellfish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="2"
+            android:text="Shellfish"
+            android:textAllCaps="false"
+            android:background="@drawable/button_background"
+            android:clickable="true"/>
+
+        <Button
+            android:id="@+id/wheat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="3"
+            android:text="Wheat"
+            android:textAllCaps="false"
+            android:background="@drawable/button_background"
+            android:clickable="true"/>
+
+    </GridLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

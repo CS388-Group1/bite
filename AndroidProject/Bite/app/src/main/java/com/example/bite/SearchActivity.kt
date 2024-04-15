@@ -16,7 +16,13 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
+        val searchQuery = intent.getStringExtra("search_query")
+        if (searchQuery != null) {
+            val fragment = SearchByRecipeFragment.newInstance(searchQuery)
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit()
+        }
         val searchDropdownButton = findViewById<ImageButton>(R.id.SearchByDropdown)
         val fragmentContainer = findViewById<FrameLayout>(R.id.fragment_container)
         val exitButton = findViewById<ImageButton>(R.id.exit)

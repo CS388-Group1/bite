@@ -16,17 +16,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.bite.adapters.HomeRecipeAdapter
-import com.example.bite.models.Recipe
 import com.example.bite.network.SpoonacularRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private lateinit var spoonacularRepository: SpoonacularRepository
     private lateinit var recipesRv: RecyclerView
-    private lateinit var homeRecipeAdapter: HomeRecipeAdapter
+    private lateinit var recipeAdapter: RecipeAdapter
     private lateinit var rotdImageView: ImageView
+    private lateinit var rotdRecipe: View
     private lateinit var rotdTitleTextView: TextView
     private lateinit var seeAllButton: Button
     private lateinit var preferencesButton: ImageView
@@ -40,23 +38,31 @@ class HomeFragment : Fragment() {
         spoonacularRepository = SpoonacularRepository()
         recipesRv = view.findViewById(R.id.recipeRecyclerView)
         recipesRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        homeRecipeAdapter = HomeRecipeAdapter(emptyList()) { recipe ->
+        recipeAdapter = RecipeAdapter(emptyList()) { recipe ->
             val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE_ID", recipe.id)
             startActivity(intent)
         }
-        recipesRv.adapter = homeRecipeAdapter
+        recipesRv.adapter = recipeAdapter
 
         val snapHelper = PagerSnapHelper() // or LinearSnapHelper()
         snapHelper.attachToRecyclerView(recipesRv)
 
-        rotdImageView = view.findViewById(R.id.rotdImageView)
-        rotdTitleTextView = view.findViewById(R.id.rotdTitleTextView)
+        rotdImageView = view.findViewById(R.id.imageViewRecipe)
+        rotdTitleTextView = view.findViewById(R.id.textViewRecipeName)
+        val rotdCookingTimeTextView: TextView = view.findViewById(R.id.textViewCookingTime)
+
+        view.findViewById<View>(R.id.rotdRecipe).setOnClickListener {
+            val recipeId = rotdImageView.tag as? String
+            val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
+            intent.putExtra("RECIPE_ID", recipeId)
+            startActivity(intent)
+        }
 
         seeAllButton = view.findViewById(R.id.seeAllButton)
         preferencesButton = view.findViewById(R.id.preferencesButton)
 
-        preferencesButton.setOnClickListener{
+        preferencesButton.setOnClickListener {
             val intent = Intent(requireContext(), PreferencesActivity::class.java)
             requireContext().startActivity(intent)
         }
@@ -70,7 +76,13 @@ class HomeFragment : Fragment() {
             intent.putExtra("RECIPE_ID", recipeId)
             startActivity(intent)
         }
-
+        seeAllButton.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()?.apply {
+                replace(R.id.fragment_container, DiscoverFragment())
+                addToBackStack(null)
+                commit()
+            }
+        }
         // Fetch trending recipes asynchronously
         fetchTrendingRecipes()
 
@@ -99,10 +111,18 @@ class HomeFragment : Fragment() {
             try {
                 val recipe = spoonacularRepository.getRandomRecipe()
                 Glide.with(this@HomeFragment).load(recipe[0].image).centerCrop().into(rotdImageView)
-                // Assuming you want to set the recipe's name to the TextView
                 rotdTitleTextView.text = recipe[0].title
-                rotdImageView.tag = recipe[0].id
 
+                // Set the cooking time to the TextView
+                val cookingTime = recipe[0].cookingTime
+                val rotdCookingTimeTextView: TextView = view?.findViewById(R.id.textViewCookingTime) ?: return@launch
+                rotdCookingTimeTextView.text = if (cookingTime > 0) {
+                    "$cookingTime min"
+                } else {
+                    ""
+                }
+
+                rotdImageView.tag = recipe[0].id
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch random recipe: ${e.message}")
                 Toast.makeText(requireContext(), "Failed to fetch random recipe: ${e.message}", Toast.LENGTH_LONG).show()
@@ -114,7 +134,7 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val recipes = spoonacularRepository.getTrendingRecipes()
-                homeRecipeAdapter.updateRecipes(recipes)
+                recipeAdapter.updateRecipes(recipes)
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch trending recipes: ${e.message}")
                 Toast.makeText(requireContext(), "Failed to fetch trending recipes: ${e.message}", Toast.LENGTH_LONG).show()

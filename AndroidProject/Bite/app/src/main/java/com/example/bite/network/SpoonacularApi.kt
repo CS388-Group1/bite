@@ -2,18 +2,12 @@ package com.example.bite.network
 import okhttp3.ResponseBody
 import retrofit2.Response
 import com.example.bite.BuildConfig
-import com.example.bite.models.HomeRecipe
-import com.example.bite.models.HomeRecipeListResponse
 import com.example.bite.models.IngredientListResponse
 import com.example.bite.models.IngredientResponse
-import com.example.bite.models.Recipe
 import com.example.bite.models.DetailedRecipeResponse
-import com.example.bite.models.InstructionsResponse
 import com.example.bite.models.RecipeIngredientsResponse
-import com.example.bite.models.RecipeInstruction
 import com.example.bite.models.RecipeListResponse
 import com.example.bite.models.RecipeResponse
-import com.google.gson.Gson
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -45,8 +39,10 @@ interface SpoonacularApi {
         @Query("limitLicense") limitLicense: Boolean = true,
         @Query("ranking") ranking: Int = 1,
         @Query("ignorePantry") ignorePantry: Boolean = true,
+        @Query("offset") offset: Int = 0,
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
     ): List<RecipeResponse>
+
 
     @GET("food/ingredients/search")
     suspend fun searchIngredientByName(
@@ -60,7 +56,14 @@ interface SpoonacularApi {
         @Query("number") number: Int = 10,
         @Query("tags") tags: String = "vegetarian",
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
-    ): HomeRecipeListResponse
+    ): RecipeListResponse
+
+    @GET("recipes/random")
+    suspend fun getDiscoverRecipes(
+        @Query("number") number: Int = 50,
+        @Query("tags") tags: String = "vegetarian",
+        @Query("apiKey") apiKey: String
+    ): RecipeListResponse
 
     @GET("recipes/complexSearch")
     suspend fun searchRecipeByName(
@@ -73,7 +76,7 @@ interface SpoonacularApi {
     suspend fun getRandomRecipe(
         @Query("number") number: Int = 1,
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
-    ): HomeRecipeListResponse
+    ): RecipeListResponse
 
     @GET("recipes/{id}/information")
     suspend fun getRecipeById(

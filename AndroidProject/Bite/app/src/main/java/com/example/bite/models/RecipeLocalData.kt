@@ -17,8 +17,8 @@ class RecipeLocalData(private val recipeDao: RecipeDao, private val context: Con
         return null;
     }
 
-    suspend fun getFavoriteRecipes(): List<Recipe> {
-        return recipeDao.getFavoriteRecipes()
+    suspend fun getFavoriteRecipes(limit: Int, offset: Int): List<Recipe> {
+        return recipeDao.getFavoriteRecipes(limit, offset)
     }
 
     fun updateRecipe(favorite: Boolean, id: String) {
