@@ -371,7 +371,8 @@ class CreateRecipeActivity : AppCompatActivity() {
             val fileInputStream = FileInputStream(file)
             val bytes = fileInputStream.readBytes()
             fileInputStream.close()
-            Base64.encode(bytes, 0,bytes.size)
+            val base64String = Base64.encode(bytes, 0, bytes.size)
+            "data:image/jpeg;base64,$base64String"
         } catch (e: Exception) {
             e.printStackTrace()
             null
