@@ -24,7 +24,15 @@ class SearchByRecipeFragment : Fragment() {
     private lateinit var recipeAdapter: RecipeAdapter
     private lateinit var searchView: SearchView
     private lateinit var searchButton: ExtendedFloatingActionButton
-
+    companion object {
+        fun newInstance(query: String): SearchByRecipeFragment {
+            val fragment = SearchByRecipeFragment()
+            val args = Bundle()
+            args.putString("query", query)
+            fragment.arguments = args
+            return fragment
+        }
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_search_by_recipe, container, false)
         searchButton = view.findViewById(R.id.SubmitSearchButton)
@@ -33,6 +41,9 @@ class SearchByRecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        arguments?.getString("query")?.let {
+            navigateToSearchResults(it)
+        }
 
         recipeAdapter = RecipeAdapter(emptyList()) { recipe ->
             val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
