@@ -3,6 +3,7 @@ package com.example.bite
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
@@ -21,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
+import com.tapadoo.alerter.Alerter
 
 class LoginActivity : AppCompatActivity() {
 
@@ -28,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var fStore: FirebaseFirestore
     private lateinit var googleSignInClient : GoogleSignInClient
+    val SHARED_PREFS: String = "sharedPrefs"
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +44,9 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         fStore = FirebaseFirestore.getInstance()
+
+        autoLogin()
+
         binding.signUpLabel.setOnClickListener{
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
@@ -70,16 +76,33 @@ class LoginActivity : AppCompatActivity() {
             if (email.isNotEmpty() && password.isNotEmpty()){
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener{
                     if (it.isSuccessful){
+
+                        //initialize auto-login
+                        val sharedPreferences: SharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+                        val editor : SharedPreferences.Editor = sharedPreferences.edit()
+                        editor.putString("name", "true")
+                        editor.apply()
+
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                     }
                     else{
-                        Toast.makeText(this, "Invalid login credentials.", Toast.LENGTH_SHORT).show()
+                        Alerter.create(this)
+                            .setTitle("Bite: Error")
+                            .setText("Invalid login credentials.")
+                            .setBackgroundColorRes(R.color.red)
+                            .setDuration(10000)
+                            .show()
                     }
                 }
             }
             else{
-                Toast.makeText(this, "Please enter an email and password.", Toast.LENGTH_SHORT).show()
+                Alerter.create(this)
+                    .setTitle("Bite: Error")
+                    .setText("Please enter an email and password.")
+                    .setBackgroundColorRes(R.color.red)
+                    .setDuration(10000)
+                    .show()
             }
         }
 
@@ -123,6 +146,17 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun autoLogin() {
+        val sharedPreferences : SharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+        val check: String? = sharedPreferences.getString("name", "")
+        // if logged in, bypass auth
+        if(check.equals("true")){
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+
     //Google Sign In Functions
     private fun signInGoogle() {
         val signInIntent = googleSignInClient.signInIntent
@@ -145,7 +179,12 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         else{
-            Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
+            Alerter.create(this)
+                .setTitle("Bite: Error")
+                .setText(task.exception.toString())
+                .setBackgroundColorRes(com.example.bite.R.color.red)
+                .setDuration(10000)
+                .show()
         }
     }
 
@@ -175,11 +214,21 @@ class LoginActivity : AppCompatActivity() {
                             )
                         }
                 }
+                //initialize auto login
+                val sharedPreferences: SharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+                val editor : SharedPreferences.Editor = sharedPreferences.edit()
+                editor.putString("name", "true")
+                editor.apply()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
             else{
-                Toast.makeText(this, "Unable to sign in with Google Authentication.", Toast.LENGTH_SHORT).show()
+                Alerter.create(this)
+                    .setTitle("Bite: Error")
+                    .setText("Unable to sign in with Google Authentication.")
+                    .setBackgroundColorRes(com.example.bite.R.color.red)
+                    .setDuration(10000)
+                    .show()
             }
         }
     }

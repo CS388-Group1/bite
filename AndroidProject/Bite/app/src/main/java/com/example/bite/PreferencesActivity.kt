@@ -1,6 +1,7 @@
 package com.example.bite
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -16,6 +17,7 @@ class PreferencesActivity : AppCompatActivity() {
     private lateinit var fStore: FirebaseFirestore
     private lateinit var dietPrefsButton: TextView
     private lateinit var myRecipesButton: TextView
+        val SHARED_PREFS: String = "sharedPrefs"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,12 +54,17 @@ class PreferencesActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
-        logOutButton.setOnClickListener {
-            auth.signOut()
-            val intent = Intent(this@PreferencesActivity, LoginActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-        }
+            logOutButton.setOnClickListener {
+                val sharedPreferences: SharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+                val editor : SharedPreferences.Editor = sharedPreferences.edit()
+                editor.putString("name", "")
+                editor.apply()
+                auth.signOut()
+                val intent = Intent(this@PreferencesActivity, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            }
 
         dietPrefsButton.setOnClickListener {
             startActivity(Intent(this@PreferencesActivity, DietPrefsActivity::class.java))

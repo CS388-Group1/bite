@@ -40,6 +40,7 @@ import com.example.bite.models.CustomCreateRecipe
 import com.example.bite.models.CustomRecipeViewModel
 import com.example.bite.network.SyncWithFirebase
 import com.google.firebase.auth.FirebaseAuth
+import com.tapadoo.alerter.Alerter
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -119,11 +120,12 @@ class CreateRecipeActivity : AppCompatActivity() {
                 portionInput.text = null
                 ingredientInput.text = null
             } else {
-                Toast.makeText(
-                    this,
-                    "Please enter both ingredient name and portion (quantity with unit).",
-                    Toast.LENGTH_LONG
-                ).show()
+                Alerter.create(this)
+                    .setTitle("Bite: Warning")
+                    .setText("Please enter both ingredient name and portion (quantity with unit).")
+                    .setBackgroundColorRes(R.color.yellow)
+                    .setDuration(10000)
+                    .show()
             }
         }
 
@@ -159,7 +161,12 @@ class CreateRecipeActivity : AppCompatActivity() {
 
                 // Log Recipe Details
                 Log.d("CreateRecipeActivity", "CustomCreateRecipe: $customCreateRecipe")
-                Toast.makeText(this, "Recipe Successfully Created.", Toast.LENGTH_SHORT).show()
+                Alerter.create(this)
+                    .setTitle("Bite: Create Recipe")
+                    .setText("Recipe Successfully Created.")
+                    .setBackgroundColorRes(R.color.green)
+                    .setDuration(10000)
+                    .show()
                 //Save to Room
                 customRecipeViewModel.insertCustomCreateRecipe(customCreateRecipe)
 
@@ -188,11 +195,12 @@ class CreateRecipeActivity : AppCompatActivity() {
                 startActivity(intent)
 
             } else {
-                Toast.makeText(
-                    this,
-                    "Please fill out all required fields to save the recipe.",
-                    Toast.LENGTH_LONG
-                ).show()
+                Alerter.create(this)
+                    .setTitle("Bite: Error")
+                    .setText("Please fill out all required fields to save the recipe.")
+                    .setBackgroundColorRes(com.example.bite.R.color.red)
+                    .setDuration(10000)
+                    .show()
             }
         }
     }
@@ -282,14 +290,24 @@ class CreateRecipeActivity : AppCompatActivity() {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     dispatchTakePictureIntent()
                 } else {
-                    Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+                    Alerter.create(this)
+                        .setTitle("Bite: Error")
+                        .setText("Camera permission denied")
+                        .setBackgroundColorRes(com.example.bite.R.color.red)
+                        .setDuration(10000)
+                        .show()
                 }
             }
             REQUEST_IMAGE_PICK -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openGallery()
                 } else {
-                    Toast.makeText(this, "Storage permission denied", Toast.LENGTH_SHORT).show()
+                    Alerter.create(this)
+                        .setTitle("Bite: Error")
+                        .setText("Storage permission denied")
+                        .setBackgroundColorRes(com.example.bite.R.color.red)
+                        .setDuration(10000)
+                        .show()
                 }
             }
         }

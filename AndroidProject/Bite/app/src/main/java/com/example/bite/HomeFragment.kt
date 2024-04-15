@@ -1,6 +1,7 @@
 package com.example.bite
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +19,11 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bite.network.SpoonacularRepository
+import com.facebook.shimmer.ShimmerFrameLayout
+import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class HomeFragment : Fragment() {
     private lateinit var spoonacularRepository: SpoonacularRepository
@@ -29,12 +35,14 @@ class HomeFragment : Fragment() {
     private lateinit var seeAllButton: Button
     private lateinit var preferencesButton: ImageView
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-
+        val container = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout;
+        container.startShimmer()
         spoonacularRepository = SpoonacularRepository()
         recipesRv = view.findViewById(R.id.recipeRecyclerView)
         recipesRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -44,6 +52,28 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
         recipesRv.adapter = recipeAdapter
+        recipesRv.visibility = View.VISIBLE
+        recipeAdapter.onFavoriteClicked = { recipe ->
+            if(recipeAdapter.onFavoriteClick(recipe)){
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item added to Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(10000)
+                        .show()
+                }
+            }else{
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item removed from Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(10000)
+                        .show()
+                }
+            }
+        }
 
         val snapHelper = PagerSnapHelper() // or LinearSnapHelper()
         snapHelper.attachToRecyclerView(recipesRv)
@@ -106,15 +136,16 @@ class HomeFragment : Fragment() {
         return view
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchRandomRecipe() {
         lifecycleScope.launch {
             try {
-                val recipe = spoonacularRepository.getRandomRecipe()
-                Glide.with(this@HomeFragment).load(recipe[0].image).centerCrop().into(rotdImageView)
-                rotdTitleTextView.text = recipe[0].title
+                val recipe = spoonacularRepository.getRandomRecipe(getDailyNumber())
+                Glide.with(this@HomeFragment).load(recipe.image).centerCrop().into(rotdImageView)
+                rotdTitleTextView.text = recipe.title
 
                 // Set the cooking time to the TextView
-                val cookingTime = recipe[0].cookingTime
+                val cookingTime = recipe.cookingTime
                 val rotdCookingTimeTextView: TextView = view?.findViewById(R.id.textViewCookingTime) ?: return@launch
                 rotdCookingTimeTextView.text = if (cookingTime > 0) {
                     "$cookingTime min"
@@ -122,10 +153,17 @@ class HomeFragment : Fragment() {
                     ""
                 }
 
-                rotdImageView.tag = recipe[0].id
+                rotdImageView.tag = recipe.id
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch random recipe: ${e.message}")
-                Toast.makeText(requireContext(), "Failed to fetch random recipe: ${e.message}", Toast.LENGTH_LONG).show()
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite: Error")
+                        .setText("Failed to fetch random recipe: ${e.message}")
+                        .setBackgroundColorRes(com.example.bite.R.color.red)
+                        .setDuration(10000)
+                        .show()
+                }
             }
         }
     }
@@ -134,11 +172,30 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val recipes = spoonacularRepository.getTrendingRecipes()
+                val container = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout;
+                container.stopShimmer()
+                container.visibility = View.GONE
+                recipesRv.visibility = View.VISIBLE
                 recipeAdapter.updateRecipes(recipes)
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch trending recipes: ${e.message}")
-                Toast.makeText(requireContext(), "Failed to fetch trending recipes: ${e.message}", Toast.LENGTH_LONG).show()
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite: Error")
+                        .setText("Failed to fetch trending recipes: ${e.message}")
+                        .setBackgroundColorRes(com.example.bite.R.color.red)
+                        .setDuration(10000)
+                        .show()
+                }
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getDailyNumber(): String {
+        val currentDate = LocalDate.now()
+        val form = DateTimeFormatter.ofPattern("yyyyMMdd")
+        val number = currentDate.format(form).toInt()
+        return (number % 100000).toString()
     }
 }
