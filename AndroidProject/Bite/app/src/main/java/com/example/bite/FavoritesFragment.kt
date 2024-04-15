@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bite.models.Recipe
 import com.example.bite.models.RecipeLocalData
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
 
@@ -32,7 +33,10 @@ class FavoritesFragment : Fragment() {
     ): View {
         Log.d("FavoritesFragment", "onCreateView called")
         val view = inflater.inflate(R.layout.fragment_favorites, container, false)
+        val container = view.findViewById(R.id.shimmer_layout) as ShimmerFrameLayout;
+        container.startShimmer()
         setupRecyclerView(view)
+
 
         // Reset the current offset every time the view is created
         currentOffset = 0
@@ -48,7 +52,11 @@ class FavoritesFragment : Fragment() {
 
     private fun setupRecyclerView(view: View) {
         Log.d("FavoritesFragment", "Setting up RecyclerView")
+        val container = view.findViewById(R.id.shimmer_layout) as ShimmerFrameLayout;
+        container.stopShimmer()
+        container.visibility = View.INVISIBLE
         recyclerView = view.findViewById(R.id.favoritesRecyclerView)
+        recyclerView.visibility = View.VISIBLE
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = RecipeAdapter(mutableListOf()) { recipe ->
             // Handle recipe click

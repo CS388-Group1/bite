@@ -101,4 +101,5 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.github.tapadoo:alerter:7.2.4")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 }

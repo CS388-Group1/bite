@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bite.network.SpoonacularRepository
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
 
@@ -45,6 +46,11 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
         recipesRv.adapter = recipeAdapter
+        //val container = view.findViewById(R.id.shimmer_layout) as ShimmerFrameLayout;
+        //container.startShimmer()
+        //container.stopShimmer()
+        //container.visibility = View.INVISIBLE
+        recipesRv.visibility = View.VISIBLE
         recipeAdapter.onFavoriteClicked = { recipe ->
             if(recipeAdapter.onFavoriteClick(recipe)){
                 activity?.let {

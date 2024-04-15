@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bite.models.Recipe
 import com.example.bite.network.SpoonacularRepository
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
 
@@ -27,6 +28,8 @@ class DiscoverFragment : Fragment() {
     private val pageSize = 10
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_discover, container, false)
+        val container = view.findViewById(R.id.shimmer_layout) as ShimmerFrameLayout;
+        container.startShimmer()
         setupRecyclerView(view)
         setupScrollListener()
         fetchRecipesPaginated()
@@ -48,6 +51,10 @@ class DiscoverFragment : Fragment() {
             startActivity(intent)
         }
         recyclerView.adapter = adapter
+        val container = view.findViewById(R.id.shimmer_layout) as ShimmerFrameLayout;
+        container.stopShimmer()
+        container.visibility = View.INVISIBLE
+        recyclerView.visibility = View.VISIBLE
         adapter.onFavoriteClicked = { recipe ->
             if(adapter.onFavoriteClick(recipe)){
                 activity?.let {
