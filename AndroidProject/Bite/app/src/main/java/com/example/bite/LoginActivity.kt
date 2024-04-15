@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
+import com.tapadoo.alerter.Alerter
 
 class LoginActivity : AppCompatActivity() {
 
@@ -86,12 +87,22 @@ class LoginActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                     else{
-                        Toast.makeText(this, "Invalid login credentials.", Toast.LENGTH_SHORT).show()
+                        Alerter.create(this)
+                            .setTitle("Bite: Error")
+                            .setText("Invalid login credentials.")
+                            .setBackgroundColorRes(R.color.red)
+                            .setDuration(10000)
+                            .show()
                     }
                 }
             }
             else{
-                Toast.makeText(this, "Please enter an email and password.", Toast.LENGTH_SHORT).show()
+                Alerter.create(this)
+                    .setTitle("Bite: Error")
+                    .setText("Please enter an email and password.")
+                    .setBackgroundColorRes(R.color.red)
+                    .setDuration(10000)
+                    .show()
             }
         }
 
@@ -168,7 +179,12 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         else{
-            Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
+            Alerter.create(this)
+                .setTitle("Bite: Error")
+                .setText(task.exception.toString())
+                .setBackgroundColorRes(com.example.bite.R.color.red)
+                .setDuration(10000)
+                .show()
         }
     }
 
@@ -207,7 +223,12 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             else{
-                Toast.makeText(this, "Unable to sign in with Google Authentication.", Toast.LENGTH_SHORT).show()
+                Alerter.create(this)
+                    .setTitle("Bite: Error")
+                    .setText("Unable to sign in with Google Authentication.")
+                    .setBackgroundColorRes(com.example.bite.R.color.red)
+                    .setDuration(10000)
+                    .show()
             }
         }
     }

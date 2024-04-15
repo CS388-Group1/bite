@@ -14,13 +14,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bite.models.Recipe
 import com.example.bite.models.RecipeLocalData
+import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 
-class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClicked: (Recipe) -> Unit) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+class RecipeAdapter(private var recipes: List<Recipe>, var onRecipeClicked: (Recipe) -> Unit) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
     class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.imageViewRecipe)
@@ -56,7 +57,7 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
         return RecipeViewHolder(itemView)
     }
 
-
+    var onFavoriteClicked: ((Recipe) -> Unit)? = null
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = recipes[position]
         with(holder) {
@@ -69,11 +70,8 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
                 recipe.isFavorite = !recipe.isFavorite
                 updateFavorite(recipe, recipe.isFavorite, recipe.id)
                 buttonFavorite.isSelected = recipe.isFavorite
-                if (recipe.isFavorite) {
-                    Toast.makeText(itemView.context, "Item Added to Favorites", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(itemView.context, "Item Removed from Favorites", Toast.LENGTH_SHORT).show()
-                }
+                onFavoriteClick(recipe)
+                onFavoriteClicked?.invoke(recipe)
             }
 
             itemView.setOnClickListener {
@@ -83,7 +81,9 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onRecipeClick
             }
         }
     }
-
+    fun onFavoriteClick(recipe: Recipe): Boolean {
+        return recipe.isFavorite
+    }
     override fun getItemCount() = recipes.size
     fun addRecipes(newRecipes: List<Recipe>) {
         val oldSize = recipes.size

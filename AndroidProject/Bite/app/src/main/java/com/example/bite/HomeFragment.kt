@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bite.network.SpoonacularRepository
+import com.facebook.shimmer.ShimmerFrameLayout
+import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -33,12 +35,14 @@ class HomeFragment : Fragment() {
     private lateinit var seeAllButton: Button
     private lateinit var preferencesButton: ImageView
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-
+        val container = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout;
+        container.startShimmer()
         spoonacularRepository = SpoonacularRepository()
         recipesRv = view.findViewById(R.id.recipeRecyclerView)
         recipesRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -48,6 +52,28 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
         recipesRv.adapter = recipeAdapter
+        recipesRv.visibility = View.VISIBLE
+        recipeAdapter.onFavoriteClicked = { recipe ->
+            if(recipeAdapter.onFavoriteClick(recipe)){
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item added to Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(10000)
+                        .show()
+                }
+            }else{
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite Favorites")
+                        .setText("Item removed from Favorites")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(10000)
+                        .show()
+                }
+            }
+        }
 
         val snapHelper = PagerSnapHelper() // or LinearSnapHelper()
         snapHelper.attachToRecyclerView(recipesRv)
@@ -130,7 +156,14 @@ class HomeFragment : Fragment() {
                 rotdImageView.tag = recipe.id
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch random recipe: ${e.message}")
-                Toast.makeText(requireContext(), "Failed to fetch random recipe: ${e.message}", Toast.LENGTH_LONG).show()
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite: Error")
+                        .setText("Failed to fetch random recipe: ${e.message}")
+                        .setBackgroundColorRes(com.example.bite.R.color.red)
+                        .setDuration(10000)
+                        .show()
+                }
             }
         }
     }
@@ -139,10 +172,21 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val recipes = spoonacularRepository.getTrendingRecipes()
+                val container = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout;
+                container.stopShimmer()
+                container.visibility = View.GONE
+                recipesRv.visibility = View.VISIBLE
                 recipeAdapter.updateRecipes(recipes)
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch trending recipes: ${e.message}")
-                Toast.makeText(requireContext(), "Failed to fetch trending recipes: ${e.message}", Toast.LENGTH_LONG).show()
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite: Error")
+                        .setText("Failed to fetch trending recipes: ${e.message}")
+                        .setBackgroundColorRes(com.example.bite.R.color.red)
+                        .setDuration(10000)
+                        .show()
+                }
             }
         }
     }
