@@ -28,7 +28,7 @@ class DiscoverFragment : Fragment() {
     private val pageSize = 10
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_discover, container, false)
-        val container = view.findViewById(R.id.shimmer_layout) as ShimmerFrameLayout;
+        val container = view.findViewById(R.id.shimmer_layout_discover) as ShimmerFrameLayout;
         container.startShimmer()
         setupRecyclerView(view)
         setupScrollListener()
@@ -51,10 +51,6 @@ class DiscoverFragment : Fragment() {
             startActivity(intent)
         }
         recyclerView.adapter = adapter
-        val container = view.findViewById(R.id.shimmer_layout) as ShimmerFrameLayout;
-        container.stopShimmer()
-        container.visibility = View.INVISIBLE
-        recyclerView.visibility = View.VISIBLE
         adapter.onFavoriteClicked = { recipe ->
             if(adapter.onFavoriteClick(recipe)){
                 activity?.let {
@@ -114,6 +110,10 @@ class DiscoverFragment : Fragment() {
                 }
             } finally {
                 isLoading = false
+                val container = view?.findViewById(R.id.shimmer_layout_discover) as ShimmerFrameLayout;
+                container.stopShimmer()
+                container.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
             }
         }
     }

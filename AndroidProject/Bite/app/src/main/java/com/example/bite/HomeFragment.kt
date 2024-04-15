@@ -36,7 +36,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-
+        val container = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout;
+        container.startShimmer()
         spoonacularRepository = SpoonacularRepository()
         recipesRv = view.findViewById(R.id.recipeRecyclerView)
         recipesRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -46,10 +47,6 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
         recipesRv.adapter = recipeAdapter
-        //val container = view.findViewById(R.id.shimmer_layout) as ShimmerFrameLayout;
-        //container.startShimmer()
-        //container.stopShimmer()
-        //container.visibility = View.INVISIBLE
         recipesRv.visibility = View.VISIBLE
         recipeAdapter.onFavoriteClicked = { recipe ->
             if(recipeAdapter.onFavoriteClick(recipe)){
@@ -169,6 +166,10 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val recipes = spoonacularRepository.getTrendingRecipes()
+                val container = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout;
+                container.stopShimmer()
+                container.visibility = View.GONE
+                recipesRv.visibility = View.VISIBLE
                 recipeAdapter.updateRecipes(recipes)
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch trending recipes: ${e.message}")

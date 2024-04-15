@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bite.network.SpoonacularRepository
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
 
@@ -41,6 +42,8 @@ class SearchResultsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_recipe_list, container, false)
+        val container = view?.findViewById(R.id.shimmer_layout_recipe_list) as ShimmerFrameLayout;
+        container.startShimmer()
         recyclerView = view.findViewById(R.id.recipeRecyclerView)
         recipeAdapter = RecipeAdapter(emptyList()) { recipe ->
             val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
@@ -102,6 +105,10 @@ class SearchResultsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val recipes = SpoonacularRepository().searchRecipesByIngredients(ingredients, pageSize, offset)
+                val container = view?.findViewById(R.id.shimmer_layout_recipe_list) as ShimmerFrameLayout;
+                container.stopShimmer()
+                container.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
                 if (recipes.isNotEmpty()) {
                     if (offset == 0) {
                         recipeAdapter.updateRecipes(recipes)

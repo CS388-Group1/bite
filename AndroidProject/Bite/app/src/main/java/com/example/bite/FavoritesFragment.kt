@@ -33,7 +33,7 @@ class FavoritesFragment : Fragment() {
     ): View {
         Log.d("FavoritesFragment", "onCreateView called")
         val view = inflater.inflate(R.layout.fragment_favorites, container, false)
-        val container = view.findViewById(R.id.shimmer_layout) as ShimmerFrameLayout;
+        val container = view.findViewById(R.id.shimmer_layout_favorite) as ShimmerFrameLayout;
         container.startShimmer()
         setupRecyclerView(view)
 
@@ -52,11 +52,7 @@ class FavoritesFragment : Fragment() {
 
     private fun setupRecyclerView(view: View) {
         Log.d("FavoritesFragment", "Setting up RecyclerView")
-        val container = view.findViewById(R.id.shimmer_layout) as ShimmerFrameLayout;
-        container.stopShimmer()
-        container.visibility = View.INVISIBLE
         recyclerView = view.findViewById(R.id.favoritesRecyclerView)
-        recyclerView.visibility = View.VISIBLE
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = RecipeAdapter(mutableListOf()) { recipe ->
             // Handle recipe click
@@ -135,6 +131,10 @@ class FavoritesFragment : Fragment() {
                 }
             }
             loading = false
+            val container = view?.findViewById(R.id.shimmer_layout_favorite) as ShimmerFrameLayout;
+            container.stopShimmer()
+            container.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
         }
     }
 }
