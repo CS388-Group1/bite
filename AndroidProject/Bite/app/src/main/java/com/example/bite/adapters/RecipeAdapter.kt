@@ -69,18 +69,22 @@ class RecipeAdapter(private var recipes: List<Recipe>, var onRecipeClicked: (Rec
             nameView.text = recipe.title
             cookingTimeView.text = recipe.cookingTime.takeIf { it > 0 }?.let { "$it min" } ?: ""
 
-            // Check if the image is a base64 string or a URL
-            if (recipe.image.startsWith("data:image/")) {
-                // Decode the base64 image and set it to the ImageView
-                Log.d("RecipeAdapter", "Loading image from base64: ${recipe.image}")
-                val imageData = recipe.image.substringAfter(",")
-                val imageBytes = android.util.Base64.decode(imageData, android.util.Base64.DEFAULT)
-                val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-                imageView.setImageBitmap(decodedImage)
-            } else {
-                // Load the image from the URL using Glide
-                Log.d("RecipeAdapter", "Loading image from URL: ${recipe.image}")
-                Glide.with(imageView.context).load(recipe.image).into(imageView)
+            recipe.image?.let { imageUrl ->
+                // Check if the image is a base64 string or a URL
+                if (recipe.image.startsWith("data:image/")) {
+                    // Decode the base64 image and set it to the ImageView
+                    Log.d("RecipeAdapter", "Loading image from base64: ${recipe.image}")
+                    val imageData = recipe.image.substringAfter(",")
+                    val imageBytes = android.util.Base64.decode(imageData, android.util.Base64.DEFAULT)
+                    val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                    imageView.setImageBitmap(decodedImage)
+                } else {
+                    // Load the image from the URL using Glide
+                    Log.d("RecipeAdapter", "Loading image from URL: ${recipe.image}")
+                    Glide.with(imageView.context).load(recipe.image).into(imageView)
+                }
+            } ?: run {
+                imageView.setImageResource(R.drawable.cookie_transparent)
             }
 
             // Check if the recipe is in favorites

@@ -21,7 +21,7 @@ import com.example.bite.models.RecipeIngredientCrossRef
 import com.example.bite.models.UserPreferences
 
 // AppDatabase.kt
-@Database(entities = [Ingredient::class, Recipe::class, UserPreferences::class, CustomRecipe::class, CustomIngredient::class, RecipeIngredientCrossRef::class], version = 5, exportSchema = false)
+@Database(entities = [Ingredient::class, Recipe::class, UserPreferences::class, CustomRecipe::class, CustomIngredient::class, RecipeIngredientCrossRef::class], version = 6, exportSchema = false)
 @TypeConverters(InstructionStepConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun ingredientDao(): IngredientDao
@@ -91,6 +91,25 @@ abstract class AppDatabase : RoomDatabase() {
                     database.execSQL("ALTER TABLE custom_recipe ADD COLUMN desc TEXT NOT NULL")
                 }
             }
+
+
+            val MIGRATION_4_5 = object : Migration(4, 5) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    // Add the userId column to the custom_recipe table
+                    database.execSQL("ALTER TABLE custom_recipe ADD COLUMN userId TEXT NOT NULL DEFAULT ''")
+                }
+            }
+
+            val MIGRATION_5_6 = object : Migration(5, 6) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    // Alter the recipes table to make the image column nullable
+                    database.execSQL("ALTER TABLE recipes RENAME COLUMN image TO temp_image")
+                    database.execSQL("ALTER TABLE recipes ADD COLUMN image TEXT")
+                    database.execSQL("UPDATE recipes SET image = temp_image")
+                    database.execSQL("ALTER TABLE recipes DROP COLUMN temp_image")
+                }
+            }
+
             return Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java,
@@ -99,15 +118,10 @@ abstract class AppDatabase : RoomDatabase() {
                 .addMigrations(MIGRATION_2_3)
                 .addMigrations(MIGRATION_3_4)
                 .addMigrations(MIGRATION_4_5)
+                .addMigrations(MIGRATION_5_6)
                 .build()
         }
 
-        val MIGRATION_4_5 = object : Migration(4, 5) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                // Add the userId column to the custom_recipe table
-                database.execSQL("ALTER TABLE custom_recipe ADD COLUMN userId TEXT NOT NULL DEFAULT ''")
-            }
-        }
     }
 
 
