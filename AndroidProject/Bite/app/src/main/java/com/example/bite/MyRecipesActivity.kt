@@ -62,10 +62,15 @@ class MyRecipesActivity : AppCompatActivity() {
                     val customRecipeDao = AppDatabase.getInstance(this@MyRecipesActivity).customRecipeDao()
                     val customRecipes = customRecipeDao.getCustomRecipesWithIngredientsByUserId(userId)
                     val recipeList = customRecipes.map { customRecipeWithIngredients ->
+                        val imagePath = if (customRecipeWithIngredients.recipe.image.isNullOrEmpty()) {
+                            "android.resource://com.example.bite/drawable/cookie_transparent_wide"
+                        } else {
+                            customRecipeWithIngredients.recipe.image
+                        }
                         Recipe(
-                            id = customRecipeWithIngredients.recipe.recipeId.toString(), // Set the ID as a string
+                            id = customRecipeWithIngredients.recipe.recipeId.toString(),
                             title = customRecipeWithIngredients.recipe.name,
-                            image = customRecipeWithIngredients.recipe.image,
+                            image = imagePath,
                             cookingTime = customRecipeWithIngredients.recipe.readyInMinutes,
                             summary = "",
                             sourceName = "",
@@ -90,8 +95,6 @@ class MyRecipesActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
     override fun onBackPressed() {
         super.onBackPressed()
