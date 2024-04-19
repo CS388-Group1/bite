@@ -16,6 +16,7 @@ import com.example.bite.models.Recipe
 import com.example.bite.network.SpoonacularRepository
 import com.tapadoo.alerter.Alerter
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -23,15 +24,20 @@ class RecipeDetailActivity : AppCompatActivity() {
     private lateinit var spoonacularRepository: SpoonacularRepository
     private lateinit var favoriteButton: ImageButton
     private lateinit var recipe: Recipe
+    private lateinit var collapsingToolbar: CollapsingToolbarLayout
+    private lateinit var recipeTitleTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_detail)
+        recipeTitleTextView = findViewById(R.id.recipeTitle)
 
         spoonacularRepository = SpoonacularRepository()
 
         val shimmerLayout = findViewById<ShimmerFrameLayout>(R.id.shimmer_layout)
         shimmerLayout.startShimmer()
+
+        collapsingToolbar = findViewById(R.id.collapsingToolbar)
 
         // Retrieve recipe ID from Intent
         val recipeId = intent.getStringExtra("RECIPE_ID")
@@ -45,10 +51,10 @@ class RecipeDetailActivity : AppCompatActivity() {
                 val ingredientsList: List<Ingredient>? = recipeId.let { spoonacularRepository.getIngredients(it) }
 
                 // Update UI with fetched recipe details
-                findViewById<TextView>(R.id.recipeLabel).text = "Recipe"
-                findViewById<TextView>(R.id.recipeTitle).text = recipe.title
                 findViewById<TextView>(R.id.recipeDescription).text = HtmlCompat.fromHtml(recipe.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
                 findViewById<TextView>(R.id.recipeAuthor).text = "By ${recipe.sourceName}"
+                findViewById<TextView>(R.id.recipeTitle).text = recipe.title
+
 
                 // Use Glide to load the recipe image
                 Glide.with(this@RecipeDetailActivity).load(recipe.image)
@@ -87,13 +93,11 @@ class RecipeDetailActivity : AppCompatActivity() {
                             .show()
                     }
                 }
+                collapsingToolbar.visibility = View.VISIBLE
             } finally {
-                // Hide loading layout
                 shimmerLayout.stopShimmer()
                 shimmerLayout.visibility = View.GONE
-                findViewById<View>(R.id.loadingGraphic)?.visibility = View.GONE
                 findViewById<View>(R.id.mainContent)?.visibility = View.VISIBLE
-
             }
         }
     }

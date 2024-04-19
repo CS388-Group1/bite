@@ -14,4 +14,9 @@
         <item name="backgroundTint">#FE5842</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
+
+    <style name="CollapsedToolbarTitle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">0sp</item>
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
 </resources>
