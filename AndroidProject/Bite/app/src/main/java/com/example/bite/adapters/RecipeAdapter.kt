@@ -84,7 +84,7 @@ class RecipeAdapter(private var recipes: List<Recipe>, var onRecipeClicked: (Rec
                     Glide.with(imageView.context).load(recipe.image).into(imageView)
                 }
             } ?: run {
-                imageView.setImageResource(R.drawable.cookie_transparent)
+                imageView.setImageResource(R.drawable.cookie_transparent_wide)
             }
 
             // Check if the recipe is in favorites
