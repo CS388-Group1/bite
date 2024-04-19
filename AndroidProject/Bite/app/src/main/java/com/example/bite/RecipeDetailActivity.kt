@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bite.models.Ingredient
 import com.example.bite.models.Recipe
+import com.example.bite.models.RecipeLocalData
 import com.example.bite.network.SpoonacularRepository
 import com.tapadoo.alerter.Alerter
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RecipeDetailActivity : AppCompatActivity() {
     private lateinit var spoonacularRepository: SpoonacularRepository
@@ -76,7 +78,23 @@ class RecipeDetailActivity : AppCompatActivity() {
                     recyclerView.adapter = adapter
                 }
 
-                favoriteButton = findViewById(R.id.favoriteButton)
+                favoriteButton = findViewById(R.id.favoriteButton
+                )
+                val recipeLocalData = RecipeLocalData(
+                    AppDatabase.getInstance(applicationContext).recipeDao(),
+                    applicationContext
+                )
+
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val isFavorite = recipeLocalData.isRowIsExist(recipe.id)
+                    recipe.isFavorite = isFavorite
+
+                    withContext(Dispatchers.Main) {
+                        favoriteButton.isSelected = isFavorite
+                    }
+                }
+
+
                 favoriteButton.isSelected = recipe.isFavorite
                 favoriteButton.setOnClickListener {
                     recipe.isFavorite = !recipe.isFavorite
@@ -109,11 +127,16 @@ class RecipeDetailActivity : AppCompatActivity() {
 
     private fun updateFavorite(recipe: Recipe, favorite: Boolean, id: String) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val exists = AppDatabase.getInstance(applicationContext).recipeDao().isRowIsExist(id)
+            val recipeLocalData = RecipeLocalData(
+                AppDatabase.getInstance(applicationContext).recipeDao(),
+                applicationContext
+            )
+
+            val exists = recipeLocalData.isRowIsExist(id)
             if (exists) {
-                AppDatabase.getInstance(applicationContext).recipeDao().updateRecipe(favorite, id)
+                recipeLocalData.updateRecipe(favorite, id)
             } else {
-                AppDatabase.getInstance(applicationContext).recipeDao().insertRecipe(recipe)
+                recipeLocalData.insertRecipe(recipe)
             }
         }
     }

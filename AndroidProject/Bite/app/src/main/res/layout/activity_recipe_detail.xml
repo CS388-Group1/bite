@@ -87,7 +87,8 @@
                         android:background="@drawable/rounded_white_background"
                         android:padding="6dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_favorite" />
+                        android:src="@drawable/favorite_selector"
+                        />
 
                 </androidx.appcompat.widget.Toolbar>
 
