@@ -32,6 +32,11 @@ class RecipeDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_recipe_detail)
         recipeTitleTextView = findViewById(R.id.recipeTitle)
 
+        val backButton: ImageView = findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            finish()
+        }
+
         spoonacularRepository = SpoonacularRepository()
 
         val shimmerLayout = findViewById<ShimmerFrameLayout>(R.id.shimmer_layout)
