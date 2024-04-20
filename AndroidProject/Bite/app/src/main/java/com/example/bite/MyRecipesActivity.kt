@@ -2,6 +2,7 @@ package com.example.bite
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -51,6 +52,7 @@ class MyRecipesActivity : AppCompatActivity() {
             intent.putExtra("RECIPE_ID", recipe.id.toString())
             intent.putExtra("UserID", recipe.userId.toString())
             intent.putExtra("RecipeName", recipe.title.toString())
+            Log.v("Custom Recipe Clicked", "user id: ${recipe.userId.toString()}")
             startActivity(intent)
         }
         recyclerView.adapter = adapter

@@ -21,7 +21,7 @@ import com.example.bite.models.RecipeIngredientCrossRef
 import com.example.bite.models.UserPreferences
 
 // AppDatabase.kt
-@Database(entities = [Ingredient::class, Recipe::class, UserPreferences::class, CustomRecipe::class, CustomIngredient::class, RecipeIngredientCrossRef::class], version = 5, exportSchema = false)
+@Database(entities = [Ingredient::class, Recipe::class, UserPreferences::class, CustomRecipe::class, CustomIngredient::class, RecipeIngredientCrossRef::class], version = 6, exportSchema = false)
 @TypeConverters(InstructionStepConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun ingredientDao(): IngredientDao
@@ -99,6 +99,7 @@ abstract class AppDatabase : RoomDatabase() {
                 .addMigrations(MIGRATION_2_3)
                 .addMigrations(MIGRATION_3_4)
                 .addMigrations(MIGRATION_4_5)
+                .addMigrations(MIGRATION_5_6)
                 .build()
         }
 
@@ -106,6 +107,14 @@ abstract class AppDatabase : RoomDatabase() {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // Add the userId column to the custom_recipe table
                 database.execSQL("ALTER TABLE custom_recipe ADD COLUMN userId TEXT NOT NULL DEFAULT ''")
+            }
+        }
+
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Perform any necessary schema changes here for the upgrade from version 5 to version 6
+                // For example, alter tables, add columns, etc.
+                database.execSQL("ALTER TABLE custom_recipes ADD COLUMN userId TEXT NOT NULL DEFAULT ''")
             }
         }
     }
