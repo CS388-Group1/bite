@@ -10,6 +10,7 @@ val apikeyPropertiesFile = rootProject.file("apikey.properties")
 val apikeyProperties = Properties()
 apikeyProperties.load(apikeyPropertiesFile.inputStream())
 val spoonacularApiKey: String = apikeyProperties["SPOONACULAR_API"] as String
+val chatGptApiKey: String = apikeyProperties["CHATGPT_API_KEY"] as String
 
 
 android {
@@ -24,6 +25,7 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "SPOONACULAR_API_KEY", "$spoonacularApiKey")
+        buildConfigField("String", "CHATGPT_API_KEY", "\"$chatGptApiKey\"")
         vectorDrawables {
             useSupportLibrary = true
         }

@@ -50,7 +50,7 @@ class ScanResultsFragment : Fragment() {
     }
 
     private fun navigateToSearchResults(query: String) {
-        val searchResultsFragment = SearchResultsFragment.newInstance(query)
+        val searchResultsFragment = SearchResultsFragment.newInstance(query, true) // Pass true for isRecipeName
         parentFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.slide_in_right,

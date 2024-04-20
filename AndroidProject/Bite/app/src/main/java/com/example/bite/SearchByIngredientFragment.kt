@@ -157,7 +157,7 @@ class SearchByIngredientFragment : Fragment() {
             val selectedIngredientNames = selected.map { it.name }
             val ingredientString = selectedIngredientNames.joinToString(",")
 
-            val searchResultsFragment = SearchResultsFragment.newInstance(ingredientString)
+            val searchResultsFragment = SearchResultsFragment.newInstance(ingredientString, false)
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, searchResultsFragment)
                 .addToBackStack(null)

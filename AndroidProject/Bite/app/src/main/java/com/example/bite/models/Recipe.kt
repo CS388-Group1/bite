@@ -107,6 +107,11 @@ data class RecipeListResponse(
     val recipes: List<RecipeResponse>
 )
 
+
+data class RecipeSearchListResponse(
+    val results: List<RecipeResponse>
+)
+
 // For GetRecipeInformation Response
 data class DetailedRecipeResponse(
     val id: Int,

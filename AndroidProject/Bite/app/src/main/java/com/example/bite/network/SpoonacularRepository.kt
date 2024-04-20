@@ -6,6 +6,7 @@ import com.example.bite.BuildConfig
 import com.example.bite.models.Ingredient
 import com.example.bite.models.IngredientListResponse
 import com.example.bite.models.Recipe
+import com.google.gson.Gson
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlinx.coroutines.*
@@ -18,8 +19,11 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.Response
 import org.json.JSONArray
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.IOException
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 class SpoonacularRepository {
     private val api = Retrofit.Builder()
@@ -49,9 +53,24 @@ class SpoonacularRepository {
     }
 
     suspend fun searchRecipeByName(query: String): List<Recipe> {
-        val response = api.searchRecipeByName(query)
-        return response.recipes.map { it.toRecipe() }
+        return try {
+            val response = api.searchRecipeByName(query)
+            Log.d("searchRecipeByName", "API Call made with query: $query")
+            val jsonResponse = Gson().toJson(response)
+            Log.d("searchRecipeByName", "Raw JSON response: $jsonResponse")
+
+            if (response.results != null) {
+                response.results.map { it.toRecipe() }
+            } else {
+                Log.d("searchRecipeByName", "Received null recipes list")
+                emptyList()
+            }
+        } catch (e: Exception) {
+            Log.e("searchRecipeByName", "Exception during API call: ${e.localizedMessage}", e)
+            emptyList()
+        }
     }
+
 
     suspend fun getTrendingRecipes(): List<Recipe> {
         val response = api.getTrendingRecipes()
@@ -132,19 +151,33 @@ class SpoonacularRepository {
         // Converting the bitmap to a byte array
         val outputStream = ByteArrayOutputStream()
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        val imageBytes = outputStream.toByteArray()
 
-        // create a multipart form body, which is used to send image data
-        val requestBody = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart("file", "image.jpg",
-                RequestBody.create("image/jpeg".toMediaTypeOrNull(), outputStream.toByteArray()))
-            .build()
+        // Encode the image as base64
+        val base64Image = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT)
 
-        val apiUrl = "https://api.spoonacular.com/food/images/classify?apiKey=${BuildConfig.SPOONACULAR_API_KEY}"
+        val apiUrl = "https://api.openai.com/v1/chat/completions"
+        val requestBody = JSONObject()
+        requestBody.put("model", "gpt-4-turbo")
+        val messages = JSONArray()
+        val message = JSONObject()
+        message.put("role", "user")
+        val content = JSONArray()
+        content.put(JSONObject().put("type", "text").put("text", "What food item is in this image? (Please provide the name of the food item only avoid using sentences and adding any other information)"))
+        content.put(JSONObject().put("type", "image_url").put("image_url", JSONObject().put("url", "data:image/jpeg;base64,$base64Image").put("detail", "high")))
+        message.put("content", content)
+        messages.put(message)
+        requestBody.put("messages", messages)
+        requestBody.put("max_tokens", 300)
+
         val request = Request.Builder()
             .url(apiUrl)
-            .post(requestBody)
+            .addHeader("Authorization", "Bearer ${BuildConfig.CHATGPT_API_KEY}")
+            .post(RequestBody.create("application/json".toMediaTypeOrNull(), requestBody.toString()))
             .build()
+
+        // Log the message
+        Log.d("UploadImage", "Request body: ${requestBody.toString()}")
 
         OkHttpClient().newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -153,16 +186,21 @@ class SpoonacularRepository {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                response.body?.string()?.let { responseBody ->
-                    Log.d("UploadImage", "Response success: $responseBody")
-                    callback.onSuccess("Image classified successfully: $responseBody")
+                val responseBody = response.body?.string()
+                // Log the response
+                Log.d("UploadImage", "Response: $responseBody")
+
+                responseBody?.let { body ->
+                    if (response.isSuccessful) {
+                        Log.d("UploadImage", "Response success: $body")
+                        callback.onSuccess(body)
+                    } else {
+                        Log.e("UploadImage", "Error classifying image: ${response.message}")
+                        callback.onFailure("Error classifying image: ${response.message}")
+                    }
                 } ?: run {
                     Log.e("UploadImage", "Empty response body")
                     callback.onFailure("Empty response")
-                }
-                if (!response.isSuccessful) {
-                    Log.e("UploadImage", "Error classifying image: ${response.message}")
-                    callback.onFailure("Error classifying image: ${response.message}")
                 }
             }
         })

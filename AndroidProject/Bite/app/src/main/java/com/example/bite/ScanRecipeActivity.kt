@@ -129,6 +129,14 @@ class ScanRecipeActivity : AppCompatActivity() {
                     shimmerLayout.stopShimmer()
                     shimmerLayout.visibility = View.GONE
                     findViewById<FragmentContainerView>(R.id.fragment_container).visibility = View.VISIBLE
+
+                    Alerter.create(this@ScanRecipeActivity)
+                        .setTitle("Bite: Success")
+                        .setText("Image uploaded successfully")
+                        .setBackgroundColorRes(R.color.green)
+                        .setDuration(3000)
+                        .show()
+
                     val category = parseCategoryFromResult(result)
                     val fragment = ScanResultsFragment.newInstance(category)
 
@@ -137,6 +145,7 @@ class ScanRecipeActivity : AppCompatActivity() {
                         .commit()
                 }
             }
+
 
             override fun onFailure(error: String) {
                 runOnUiThread {
@@ -155,12 +164,17 @@ class ScanRecipeActivity : AppCompatActivity() {
 
     private fun parseCategoryFromResult(result: String): String {
         try {
-            val jsonPart = result.substringAfter(":")
-            val jsonObject = JSONObject(jsonPart)
-            return jsonObject.getString("category")
+            val jsonObject = JSONObject(result)
+            val choices = jsonObject.getJSONArray("choices")
+            if (choices.length() > 0) {
+                val firstChoice = choices.getJSONObject(0)
+                val message = firstChoice.getJSONObject("message")
+                val content = message.getString("content")
+                return content.trim()
+            }
         } catch (e: Exception) {
             Log.e("ScanRecipeActivity", "Error parsing JSON result", e)
-            return "Unknown"
         }
+        return "Unknown"
     }
 }
