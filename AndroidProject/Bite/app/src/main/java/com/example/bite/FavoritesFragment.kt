@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.Fragment
@@ -118,30 +119,18 @@ class FavoritesFragment : Fragment() {
             if (recipes.isNotEmpty()) {
                 adapter.addRecipes(recipes)
                 currentOffset += recipes.size
+                recyclerView.visibility = View.VISIBLE
+                view?.findViewById<TextView>(R.id.noFavoritesTextView)?.visibility = View.GONE
             } else {
                 if (offset == 0) {
-                    activity?.let {
-                        Alerter.create(it)
-                            .setTitle("Bite Favorites")
-                            .setText("No favorites found")
-                            .setDuration(5000)
-                            .show()
-                    }
-                } else {
-                    activity?.let {
-                        Alerter.create(it)
-                            .setTitle("Bite Favorites")
-                            .setText("No favorites more found")
-                            .setDuration(5000)
-                            .show()
-                    }
+                    recyclerView.visibility = View.GONE
+                    view?.findViewById<TextView>(R.id.noFavoritesTextView)?.visibility = View.VISIBLE
                 }
             }
             loading = false
-            val container = view?.findViewById(R.id.shimmer_layout_favorite) as ShimmerFrameLayout;
-            container.stopShimmer()
-            container.visibility = View.GONE
-            recyclerView.visibility = View.VISIBLE
+            val container = view?.findViewById<ShimmerFrameLayout>(R.id.shimmer_layout_favorite)
+            container?.stopShimmer()
+            container?.visibility = View.GONE
         }
     }
 
@@ -151,4 +140,5 @@ class FavoritesFragment : Fragment() {
         retrieveFavorite(currentOffset, pageSize)
         swipeRefreshLayout.isRefreshing = false
     }
+
 }
