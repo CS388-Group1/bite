@@ -209,4 +209,4 @@ V4: Partnership with grocery stores for ingredient delivery, premium subscriptio
 
 ## App Demo Video
 
-- Embed the YouTube/Vimeo link of your Completed Demo Day prep video
+[![Watch the video](https://img.youtube.com/vi/juprhXD0Y0U/0.jpg)](https://youtu.be/juprhXD0Y0U)
