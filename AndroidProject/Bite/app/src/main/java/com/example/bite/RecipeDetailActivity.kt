@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
@@ -143,35 +142,42 @@ class RecipeDetailActivity : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.Main) {
             try {
                 val syncWithFirebase = SyncWithFirebase(database.customRecipeDao())
-                val recipe = syncWithFirebase.getRecipeByUserIdAndName(this@RecipeDetailActivity, userId, recipeName)
+                val recipeWithIngredients  = syncWithFirebase.getRecipeByUserIdAndName(this@RecipeDetailActivity, userId, recipeName)
 
                 // Update UI with fetched recipe details
 
-                if (recipe != null) {
-                    Log.d("Recipe Detail", "Recipe found: ${recipe.name}, Desc: ${recipe.desc}, userId: ${recipe.userId}, instr: ${recipe.instructions}, image URL: ${recipe.image}")
-                }
-                findViewById<TextView>(R.id.recipeLabel).text = "Recipe"
-                if (recipe != null) {
-                    findViewById<TextView>(R.id.recipeTitle).text = recipe.name
-                    findViewById<TextView>(R.id.recipeDescription).text =
-                        HtmlCompat.fromHtml(recipe.desc, HtmlCompat.FROM_HTML_MODE_LEGACY)
-                    findViewById<TextView>(R.id.recipeAuthor).text = "By You"
-
-
-                    // Use Glide to load the recipe image on the main thread
-                    withContext(Dispatchers.Main) {
-                        Glide.with(this@RecipeDetailActivity)
-                            .load(recipe.image)
-                            .into(findViewById(R.id.recipeImage))
-                    }
-
+                recipeWithIngredients?.let { rw ->
+                    val recipe = rw.recipe
+                    val ingredients = rw.ingredients
 
                     if (recipe != null) {
+                        Log.d("Recipe Detail", "Recipe found: ${recipe.name}")
+                        findViewById<TextView>(R.id.recipeLabel).text = "Recipe"
+                        findViewById<TextView>(R.id.recipeTitle).text = recipe.name
+                        findViewById<TextView>(R.id.recipeDescription).text =
+                            HtmlCompat.fromHtml(recipe.desc, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                        findViewById<TextView>(R.id.recipeAuthor).text = "By You"
                         findViewById<TextView>(R.id.recipeInstructions).text = recipe.instructions
+
+
+                        // Use Glide to load the recipe image on the main thread
+                        withContext(Dispatchers.Main) {
+                            Glide.with(this@RecipeDetailActivity)
+                                .load(recipe.image)
+                                .into(findViewById(R.id.recipeImage))
+                        }
+
+                    }
+
+                    // Printing Ingredients RecyclerView
+                    ingredients.let {
+                        val recyclerView: RecyclerView = findViewById(R.id.ingredientsRecyclerView)
+                        val layoutManager = LinearLayoutManager(this@RecipeDetailActivity)
+                        val adapter = CustomRecipeIngredientAdapter(it)
+                        recyclerView.layoutManager = layoutManager
+                        recyclerView.adapter = adapter
                     }
                 }
-
-//              add cut code here at end
 
             } catch (e: Exception) {
                 // Handle exception
@@ -257,7 +263,6 @@ class RecipeDetailActivity : AppCompatActivity() {
             }
         }
     }
-
 
 
     private fun updateFavorite(recipe: Recipe, favorite: Boolean, id: String) {

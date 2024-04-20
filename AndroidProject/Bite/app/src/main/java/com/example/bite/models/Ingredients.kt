@@ -74,7 +74,10 @@ data class CustomIngredient(
     val name: String,
     val amount: Double,
     val unit: String
-)
+){
+    // Default constructor
+    constructor() : this(0, "", 0.0, "")
+}
 
 data class CustomCreateIngredient(
     val name: String,

@@ -70,7 +70,7 @@ class SyncWithFirebase(private val customRecipeDao: CustomRecipeDao) {
         }
     }
 
-    suspend fun getRecipeByUserIdAndName(activity: Activity, userId: String, recipeName: String): CustomRecipe? {
+    suspend fun getRecipeByUserIdAndName(activity: Activity, userId: String, recipeName: String): CustomRecipeDao.CustomRecipeWithIngredients? {
         return try {
             val documentSnapshot = withContext(Dispatchers.IO) {
                 Tasks.await(
@@ -83,65 +83,51 @@ class SyncWithFirebase(private val customRecipeDao: CustomRecipeDao) {
                 )
             }
 
-            val recipe = documentSnapshot.documents.firstOrNull()?.let { CustomRecipe.fromSnapshot(it) }
-//
-//            recipe?.let {
-//                Log.d("FirebaseSync", "Recipe found in Firestore for user: $userId, recipe: $recipeName")
-//            } ?: run {
-//                Log.d("FirebaseSync", "Recipe not found in Firestore for user: $userId, recipe: $recipeName")
-//            }
+            val recipe = documentSnapshot.documents.firstOrNull()
 
-            recipe?.let {
-                // Log all the relevant recipe details
-                Log.d("FirebaseSync", "Recipe found in Firestore for user: $userId, recipe: $recipeName")
-                recipe.userId = userId
+
+            recipe?.let { firestoreRecipe ->
+                val ingredientsSnapshot = withContext(Dispatchers.IO) {
+                    Tasks.await(
+                        fStore
+                            .collection("users")
+                            .document(userId)
+                            .collection("createdRecipes")
+                            .document(recipe.id)
+                            .collection("ingredients")
+                            .get()
+                    )
+                }
+                Log.d("Ingredients Retrieval", "Recipe id: ${recipe.id}")
+
+                val ingredients = ingredientsSnapshot.documents.map { doc ->
+                    doc.toObject(CustomIngredient::class.java)
+                }.filterNotNull()
+
+                if (ingredients.isNotEmpty()) {
+                    Log.d("RecipeDetailActivity", "Ingredients found ")
+                } else {
+                    Log.d("RecipeDetailActivity", "No ingredients found ")
+                }
+
+                val recipe = documentSnapshot.documents.firstOrNull()?.let { CustomRecipe.fromSnapshot(it) }
+
+
+                val customRecipeWithIngredients =
+                    recipe?.let { CustomRecipeDao.CustomRecipeWithIngredients(it, ingredients) }
+                Log.d("FirebaseSync", "Recipe with ingredients found in Firestore for user: $userId, recipe: $recipeName")
+
+                customRecipeWithIngredients
             } ?: run {
                 Log.d("FirebaseSync", "Recipe not found in Firestore for user: $userId, recipe: $recipeName")
+                null
             }
 
-            recipe
         } catch (e: Exception) {
             Log.e("FirebaseSync", "Error fetching recipe from Firestore: ${e.message}", e)
             null
         }
     }
-
-    /*suspend fun getRecipeByUserIdAndName(activity: Activity, userId: String, recipeName: String): CustomRecipe? {
-           return withContext(Dispatchers.IO){
-               try {
-                   var recipe: CustomRecipe? = null
-                   activity.runOnUiThread {
-                       try {
-                           val documentSnapshot = fStore
-                               .collection("users")
-                               .document(userId)
-                               .collection("createdRecipes")
-                               .whereEqualTo("name", recipeName)
-                               .get()
-                               .await()
-
-                           recipe = documentSnapshot.documents.firstOrNull()?.toObject(CustomRecipe::class.java)
-
-                           recipe?.let {
-                               Log.d("FirebaseSync", "Recipe found in Firestore for user: $userId, recipe: $recipeName")
-                           } ?: run {
-                               Log.d("FirebaseSync", "Recipe not found in Firestore for user: $userId, recipe: $recipeName")
-                           }
-                           } catch (e: Exception) {
-                               Log.e("FirebaseSync", "Error fetching recipe from Firestore: ${e.message}", e)
-                           }
-                       }
-                        recipe
-
-               } catch (e: Exception) {
-               Log.e("FirebaseSync", "Error running on UI thread: ${e.message}", e)
-               null
-               }
-
-           }
-
-        }
-    */
 
 
 
