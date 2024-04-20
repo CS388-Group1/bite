@@ -83,6 +83,7 @@ class FavoritesFragment : Fragment() {
                         .setDuration(5000)
                         .show()
                 }
+                refreshFavorites()
             }
 
         }
