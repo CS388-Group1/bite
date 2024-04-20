@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,7 +16,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentContainerView
 import com.example.bite.network.SpoonacularRepository
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.tapadoo.alerter.Alerter
 import org.json.JSONObject
 
@@ -26,12 +29,16 @@ class ScanRecipeActivity : AppCompatActivity() {
     }
 
     private lateinit var repository: SpoonacularRepository
+    private lateinit var shimmerLayout: ShimmerFrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_recipe)
         repository = SpoonacularRepository()
         requestCameraPermission()
+
+        shimmerLayout = findViewById(R.id.shimmer_layout)
+        shimmerLayout.startShimmer()
 
         val exitButton = findViewById<ImageButton>(R.id.back)
         exitButton.setOnClickListener {
@@ -119,6 +126,9 @@ class ScanRecipeActivity : AppCompatActivity() {
         repository.uploadImage(imageBitmap, object : SpoonacularRepository.UploadCallback {
             override fun onSuccess(result: String) {
                 runOnUiThread {
+                    shimmerLayout.stopShimmer()
+                    shimmerLayout.visibility = View.GONE
+                    findViewById<FragmentContainerView>(R.id.fragment_container).visibility = View.VISIBLE
                     val category = parseCategoryFromResult(result)
                     val fragment = ScanResultsFragment.newInstance(category)
 
@@ -130,6 +140,8 @@ class ScanRecipeActivity : AppCompatActivity() {
 
             override fun onFailure(error: String) {
                 runOnUiThread {
+                    shimmerLayout.stopShimmer()
+                    shimmerLayout.visibility = View.GONE
                     Alerter.create(this@ScanRecipeActivity)
                         .setTitle("Bite: Error")
                         .setText(error)
