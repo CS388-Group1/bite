@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.bite.models.Recipe
 import com.example.bite.models.RecipeLocalData
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 class FavoritesFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecipeAdapter
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private var loading = false
     private var currentOffset = 0
     private val pageSize = 10
@@ -31,12 +33,16 @@ class FavoritesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("FavoritesFragment", "onCreateView called")
+//        Log.d("FavoritesFragment", "onCreateView called")
         val view = inflater.inflate(R.layout.fragment_favorites, container, false)
         val container = view.findViewById(R.id.shimmer_layout_favorite) as ShimmerFrameLayout;
         container.startShimmer()
         setupRecyclerView(view)
 
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout.setOnRefreshListener {
+            refreshFavorites()
+        }
 
         // Reset the current offset every time the view is created
         currentOffset = 0
@@ -136,5 +142,12 @@ class FavoritesFragment : Fragment() {
             container.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
+    }
+
+    private fun refreshFavorites() {
+        currentOffset = 0
+        adapter.clearRecipes()
+        retrieveFavorite(currentOffset, pageSize)
+        swipeRefreshLayout.isRefreshing = false
     }
 }

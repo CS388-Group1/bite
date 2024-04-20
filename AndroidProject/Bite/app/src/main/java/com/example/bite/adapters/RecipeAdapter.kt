@@ -138,4 +138,9 @@ class RecipeAdapter(private var recipes: List<Recipe>, var onRecipeClicked: (Rec
         recipes = recipes + newRecipes
         notifyItemRangeInserted(oldSize, newRecipes.size)
     }
+
+    fun clearRecipes() {
+        recipes = emptyList()
+        notifyDataSetChanged()
+    }
 }
