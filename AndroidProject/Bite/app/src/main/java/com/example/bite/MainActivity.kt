@@ -2,11 +2,14 @@ package com.example.bite
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.bite.network.IngredientRepository
 import com.example.bite.network.SpoonacularRepository
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
@@ -38,16 +41,12 @@ class MainActivity : AppCompatActivity() {
         fabScanFood = findViewById(R.id.fab_scan_food)
         fabCreateRecipe = findViewById(R.id.fab_create_recipe)
 
-        fabCenterPlus.setOnClickListener {
-            if (!areFabsVisible) {
-                fabScanFood.show()
-                fabCreateRecipe.show()
-                areFabsVisible = true
-            } else {
-                fabScanFood.hide()
-                fabCreateRecipe.hide()
-                areFabsVisible = false
-            }
+        val bottomAppBar = findViewById<BottomAppBar>(R.id.bottomAppBar)
+
+        if (fabCenterPlus.visibility == View.VISIBLE) {
+            (fabCenterPlus.layoutParams as CoordinatorLayout.LayoutParams).anchorId = bottomAppBar.id
+        } else {
+            (fabCenterPlus.layoutParams as CoordinatorLayout.LayoutParams).anchorId = View.NO_ID
         }
 
         homeFragment = HomeFragment()
