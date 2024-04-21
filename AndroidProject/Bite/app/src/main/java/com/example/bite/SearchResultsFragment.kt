@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -47,7 +46,7 @@ class SearchResultsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_recipe_list, container, false)
         val container = view?.findViewById(R.id.shimmer_layout_recipe_list) as ShimmerFrameLayout;
         container.startShimmer()
-        recyclerView = view.findViewById(R.id.recipeRecyclerView)
+        recyclerView = view.findViewById(R.id.trendingRecyclerView)
         recipeAdapter = RecipeAdapter(emptyList()) { recipe ->
             val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE_ID", recipe.id)

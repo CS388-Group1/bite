@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fabCenterPlus: FloatingActionButton
     private lateinit var fabScanFood: FloatingActionButton
     private lateinit var fabCreateRecipe: FloatingActionButton
-    private var areFabsVisible = false
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var homeFragment: HomeFragment
@@ -89,10 +88,10 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container, homeFragment)
-            .add(R.id.fragment_container, discoverFragment)
-            .add(R.id.fragment_container, favoritesFragment)
-            .hide(discoverFragment)
-            .hide(favoritesFragment)
+//            .add(R.id.fragment_container, discoverFragment)
+//            .add(R.id.fragment_container, favoritesFragment)
+//            .hide(discoverFragment)
+//            .hide(favoritesFragment)
             .commit()
 
         // Handle clicks for FABs
@@ -115,13 +114,5 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
-    }
-
-    private fun searchRecipes(query: String) {
-        lifecycleScope.launch {
-            // Load recipes and update the adapter
-            val recipes = repository.searchRecipesByIngredients(query)
-            adapter.updateRecipes(recipes)
-        }
     }
 }
