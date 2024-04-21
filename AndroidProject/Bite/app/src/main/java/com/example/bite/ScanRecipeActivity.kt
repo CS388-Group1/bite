@@ -200,6 +200,6 @@ class ScanRecipeActivity : AppCompatActivity() {
 
     fun updateProcessingText(text: String, subtitle: String) {
         findViewById<TextView>(R.id.processingText).text = text
-        findViewById<TextView>(R.id.subProcessingText).text = text
+        findViewById<TextView>(R.id.subProcessingText).text = subtitle
     }
 }
