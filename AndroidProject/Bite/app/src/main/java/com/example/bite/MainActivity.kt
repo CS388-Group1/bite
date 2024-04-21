@@ -81,6 +81,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container, homeFragment)
+            .add(R.id.fragment_container, discoverFragment)
+            .add(R.id.fragment_container, favoritesFragment)
+            .hide(discoverFragment)
+            .hide(favoritesFragment)
+            .commit()
+
         // Handle clicks for FABs
         fabScanFood.setOnClickListener {
             val intent = Intent(this@MainActivity, ScanRecipeActivity::class.java)
@@ -100,36 +108,31 @@ class MainActivity : AppCompatActivity() {
     private fun loadFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
 
-        // sliding animations based on the fragment being loaded
+        if (homeFragment.isAdded) transaction.hide(homeFragment)
+        if (discoverFragment.isAdded) transaction.hide(discoverFragment)
+        if (favoritesFragment.isAdded) transaction.hide(favoritesFragment)
+
         when (fragment) {
-            is HomeFragment -> {
-                transaction.setCustomAnimations(
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left,
-                    R.anim.slide_in_left,
-                    R.anim.slide_out_right
-                )
+            homeFragment -> {
+                if (!homeFragment.isAdded) {
+                    transaction.add(R.id.fragment_container, homeFragment)
+                }
+                transaction.show(homeFragment)
             }
-            is DiscoverFragment -> {
-                transaction.setCustomAnimations(
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left,
-                    R.anim.slide_in_left,
-                    R.anim.slide_out_right
-                )
+            discoverFragment -> {
+                if (!discoverFragment.isAdded) {
+                    transaction.add(R.id.fragment_container, discoverFragment)
+                }
+                transaction.show(discoverFragment)
             }
-            is FavoritesFragment -> {
-                transaction.setCustomAnimations(
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left,
-                    R.anim.slide_in_left,
-                    R.anim.slide_out_right
-                )
+            favoritesFragment -> {
+                if (!favoritesFragment.isAdded) {
+                    transaction.add(R.id.fragment_container, favoritesFragment)
+                }
+                transaction.show(favoritesFragment)
             }
         }
 
-        transaction.replace(R.id.fragment_container, fragment)
-        transaction.addToBackStack(null)
         transaction.commit()
     }
 
