@@ -56,12 +56,19 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         bottomNavigationView.background = null
-        loadFragment(HomeFragment())
 
+        // Set up the initial fragment
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, HomeFragment())
+                .commit()
+        }
+
+        // Set up the bottom navigation view listener
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> {
-                    loadFragment(homeFragment)
+                    loadFragment(HomeFragment())
                     true
                 }
                 R.id.navigation_search -> {
@@ -70,11 +77,11 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_discover -> {
-                    loadFragment(discoverFragment)
+                    loadFragment(DiscoverFragment())
                     true
                 }
                 R.id.navigation_favorites -> {
-                    loadFragment(favoritesFragment)
+                    loadFragment(FavoritesFragment())
                     true
                 }
                 else -> false
@@ -106,34 +113,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-
-        if (homeFragment.isAdded) transaction.hide(homeFragment)
-        if (discoverFragment.isAdded) transaction.hide(discoverFragment)
-        if (favoritesFragment.isAdded) transaction.hide(favoritesFragment)
-
-        when (fragment) {
-            homeFragment -> {
-                if (!homeFragment.isAdded) {
-                    transaction.add(R.id.fragment_container, homeFragment)
-                }
-                transaction.show(homeFragment)
-            }
-            discoverFragment -> {
-                if (!discoverFragment.isAdded) {
-                    transaction.add(R.id.fragment_container, discoverFragment)
-                }
-                transaction.show(discoverFragment)
-            }
-            favoritesFragment -> {
-                if (!favoritesFragment.isAdded) {
-                    transaction.add(R.id.fragment_container, favoritesFragment)
-                }
-                transaction.show(favoritesFragment)
-            }
-        }
-
-        transaction.commit()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 
     private fun searchRecipes(query: String) {
