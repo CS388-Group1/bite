@@ -10,6 +10,7 @@ val apikeyPropertiesFile = rootProject.file("apikey.properties")
 val apikeyProperties = Properties()
 apikeyProperties.load(apikeyPropertiesFile.inputStream())
 val spoonacularApiKey: String = apikeyProperties["SPOONACULAR_API"] as String
+val chatGptApiKey: String = apikeyProperties["CHATGPT_API_KEY"] as String
 
 
 android {
@@ -24,6 +25,7 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "SPOONACULAR_API_KEY", "$spoonacularApiKey")
+        buildConfigField("String", "CHATGPT_API_KEY", "\"$chatGptApiKey\"")
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -80,6 +82,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("io.coil-kt:coil-compose:2.2.2")
     implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.firebase:firebase-auth:22.3.1")
     implementation("androidx.appcompat:appcompat:1.6.1")

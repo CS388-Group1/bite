@@ -21,7 +21,7 @@
 9016,apple juice,https://img.spoonacular.com/ingredients_100x100/apple-juice.jpg,
 1042035,apple pie spice,https://img.spoonacular.com/ingredients_100x100/apple-pie-spice.jpg,
 19719,apricot preserves,https://img.spoonacular.com/ingredients_100x100/apricot-preserves.jpg,
-9021,apricots,https://img.spoonacular.com/ingredients_100x100/apricots.jpg,TRUE
+9021,apricots,https://img.spoonacular.com/ingredients_100x100/apricots.jpg,
 10020052,arborio rice,https://img.spoonacular.com/ingredients_100x100/arborio-rice.jpg,
 20003,arrowroot powder,https://img.spoonacular.com/ingredients_100x100/arrowroot-powder.jpg,
 93828,artichoke heart quarters,https://img.spoonacular.com/ingredients_100x100/artichoke-heart-quarters.jpg,
@@ -50,12 +50,12 @@
 98998,balsamic glaze,https://img.spoonacular.com/ingredients_100x100/balsamic-glaze.jpg,
 2069,balsamic vinegar,https://img.spoonacular.com/ingredients_100x100/balsamic-vinegar.jpg,
 11028,bamboo shoots,https://img.spoonacular.com/ingredients_100x100/bamboo-shoots.jpg,
-9040,banana,https://img.spoonacular.com/ingredients_100x100/banana.jpg,TRUE
+9040,banana,https://img.spoonacular.com/ingredients_100x100/bananas.jpg,TRUE
 10020444,basmati rice,https://img.spoonacular.com/ingredients_100x100/basmati-rice.jpg,
 2004,bay leaves,https://img.spoonacular.com/ingredients_100x100/bay-leaves.jpg,
 6150,bbq sauce,https://img.spoonacular.com/ingredients_100x100/bbq-sauce.jpg,
 16069,beans,https://img.spoonacular.com/ingredients_100x100/beans.jpg,
-23572,beef,https://img.spoonacular.com/ingredients_100x100/beef.jpg,TRUE
+23572,beef,https://img.spoonacular.com/ingredients_100x100/beef.jpg,
 13023,beef brisket,https://img.spoonacular.com/ingredients_100x100/beef-brisket.jpg,
 6008,beef broth,https://img.spoonacular.com/ingredients_100x100/beef-broth.jpg,
 13786,beef chuck roast,https://img.spoonacular.com/ingredients_100x100/beef-chuck-roast.jpg,
@@ -66,7 +66,7 @@
 11080,beets,https://img.spoonacular.com/ingredients_100x100/beets.jpg,
 10211821,bell pepper,https://img.spoonacular.com/ingredients_100x100/bell-pepper.jpg,
 1009054,berries,https://img.spoonacular.com/ingredients_100x100/berries.jpg,
-18010,biscuit mix,https://img.spoonacular.com/ingredients_100x100/biscuit-mix.jpg,TRUE
+18010,biscuit mix,https://img.spoonacular.com/ingredients_100x100/biscuit-mix.jpg,
 18009,biscuits,https://img.spoonacular.com/ingredients_100x100/biscuits.jpg,
 19903,bittersweet chocolate,https://img.spoonacular.com/ingredients_100x100/bittersweet-chocolate.jpg,
 99210,black bean sauce,https://img.spoonacular.com/ingredients_100x100/black-bean-sauce.jpg,
@@ -141,13 +141,13 @@
 8029,cereal,https://img.spoonacular.com/ingredients_100x100/cereal.jpg,
 10043155,champagne,https://img.spoonacular.com/ingredients_100x100/champagne.jpg,
 99236,chana dal,https://img.spoonacular.com/ingredients_100x100/chana-dal.jpg,
-1009,cheddar,https://img.spoonacular.com/ingredients_100x100/cheddar.jpg,TRUE
+1009,cheddar,https://img.spoonacular.com/ingredients_100x100/cheddar.jpg,
 1041009,cheese,https://img.spoonacular.com/ingredients_100x100/cheese.jpg,
 98921,cheese curds,https://img.spoonacular.com/ingredients_100x100/cheese-curds.jpg,
 1188,cheese dip,https://img.spoonacular.com/ingredients_100x100/cheese-dip.jpg,
 6038,cheese soup,https://img.spoonacular.com/ingredients_100x100/cheese-soup.jpg,
 10093727,cheese tortellini,https://img.spoonacular.com/ingredients_100x100/cheese-tortellini.jpg,
-9070,cherry,https://img.spoonacular.com/ingredients_100x100/cherry.jpg,TRUE
+9070,cherry,https://img.spoonacular.com/ingredients_100x100/cherries.jpg,TRUE
 19314,cherry pie filling,https://img.spoonacular.com/ingredients_100x100/cherry-pie-filling.jpg,
 10311529,cherry tomatoes,https://img.spoonacular.com/ingredients_100x100/cherry-tomatoes.jpg,
 12098,chestnuts,https://img.spoonacular.com/ingredients_100x100/chestnuts.jpg,
@@ -175,7 +175,7 @@
 98839,chipotle chilies,https://img.spoonacular.com/ingredients_100x100/chipotle-chilies.jpg,
 99223,chipotle peppers in adobo,https://img.spoonacular.com/ingredients_100x100/chipotle-peppers-in-adobo.jpg,
 93748,chive & onion cream cheese spread,https://img.spoonacular.com/ingredients_100x100/chive-&-onion-cream-cheese-spread.jpg,
-19081,chocolate,https://img.spoonacular.com/ingredients_100x100/chocolate.jpg,TRUE
+19081,chocolate,https://img.spoonacular.com/ingredients_100x100/milk-chocolate.jpg,TRUE
 28027,chocolate chip cookies,https://img.spoonacular.com/ingredients_100x100/chocolate-chip-cookies.jpg,
 10419903,chocolate chunks,https://img.spoonacular.com/ingredients_100x100/chocolate-chunks.jpg,
 19270,chocolate ice cream,https://img.spoonacular.com/ingredients_100x100/chocolate-ice-cream.jpg,
@@ -238,7 +238,7 @@
 18023,cornbread,https://img.spoonacular.com/ingredients_100x100/cornbread.jpg,
 13346,corned beef,https://img.spoonacular.com/ingredients_100x100/corned-beef.jpg,
 5307,cornish hens,https://img.spoonacular.com/ingredients_100x100/cornish-hens.jpg,
-35137,cornmeal,https://img.spoonacular.com/ingredients_100x100/cornmeal.jpg,
+35137,cornmeal,https://img.spoonacular.com/ingredients_100x100/cornmeal.jpg,TRUE
 20027,cornstarch,https://img.spoonacular.com/ingredients_100x100/cornstarch.jpg,
 1001019,cotija cheese,https://img.spoonacular.com/ingredients_100x100/cotija-cheese.jpg,
 1012,cottage cheese,https://img.spoonacular.com/ingredients_100x100/cottage-cheese.jpg,
@@ -246,7 +246,7 @@
 11477,courgettes,https://img.spoonacular.com/ingredients_100x100/courgettes.jpg,
 20028,couscous,https://img.spoonacular.com/ingredients_100x100/couscous.jpg,
 16063,cow pea,https://img.spoonacular.com/ingredients_100x100/cow-pea.jpg,
-10015136,crabmeat,https://img.spoonacular.com/ingredients_100x100/crabmeat.jpg,
+10015136,crabmeat,https://img.spoonacular.com/ingredients_100x100/crabmeat.jpg,TRUE
 2030,cracked pepper,https://img.spoonacular.com/ingredients_100x100/cracked-pepper.jpg,
 9078,cranberries,https://img.spoonacular.com/ingredients_100x100/cranberries.jpg,
 43382,cranberry juice,https://img.spoonacular.com/ingredients_100x100/cranberry-juice.jpg,
@@ -293,7 +293,7 @@
 99233,dried chorizo,https://img.spoonacular.com/ingredients_100x100/dried-chorizo.jpg,
 9079,dried cranberries,https://img.spoonacular.com/ingredients_100x100/dried-cranberries.jpg,
 2017,dried dill,https://img.spoonacular.com/ingredients_100x100/dried-dill.jpg,
-11284,dried onion,https://img.spoonacular.com/ingredients_100x100/dried-onion.jpg,
+11284,dried onion,https://img.spoonacular.com/ingredients_100x100/dried-onions.jpg,
 10011268,dried porcini mushrooms,https://img.spoonacular.com/ingredients_100x100/dried-porcini-mushrooms.jpg,
 1002038,dried rubbed sage,https://img.spoonacular.com/ingredients_100x100/dried-rubbed-sage.jpg,
 2042,dried thyme,https://img.spoonacular.com/ingredients_100x100/dried-thyme.jpg,
@@ -404,7 +404,7 @@
 11333,green bell pepper,https://img.spoonacular.com/ingredients_100x100/green-bell-pepper.jpg,
 31015,green chili pepper,https://img.spoonacular.com/ingredients_100x100/green-chili-pepper.jpg,
 1441111,green food coloring,https://img.spoonacular.com/ingredients_100x100/green-food-coloring.jpg,
-1019132,green grapes,https://img.spoonacular.com/ingredients_100x100/green-grapes.jpg,TRUE
+1019132,green grapes,https://img.spoonacular.com/ingredients_100x100/grapes.jpg,
 1029195,green olives,https://img.spoonacular.com/ingredients_100x100/green-olives.jpg,
 11291,green onions,https://img.spoonacular.com/ingredients_100x100/green-onions.jpg,
 21052,greens,https://img.spoonacular.com/ingredients_100x100/greens.jpg,
@@ -522,7 +522,7 @@
 16424,low sodium soy sauce,https://img.spoonacular.com/ingredients_100x100/low-sodium-soy-sauce.jpg,
 1006970,low-sodium chicken stock,https://img.spoonacular.com/ingredients_100x100/low-sodium-chicken-stock.jpg,
 10093741,lower sodium beef broth,https://img.spoonacular.com/ingredients_100x100/lower-sodium-beef-broth.jpg,
-10115136,lump crab,https://img.spoonacular.com/ingredients_100x100/lump-crab.jpg,TRUE
+10115136,lump crab,https://img.spoonacular.com/ingredients_100x100/lump-crab.jpg,
 19157,m&m candies,https://img.spoonacular.com/ingredients_100x100/m&m-candies.jpg,
 12131,macadamia nuts,https://img.spoonacular.com/ingredients_100x100/macadamia-nuts.jpg,
 32004,macaroni and cheese mix,https://img.spoonacular.com/ingredients_100x100/macaroni-and-cheese-mix.jpg,
@@ -544,13 +544,13 @@
 99144,mat beans,https://img.spoonacular.com/ingredients_100x100/mat-beans.jpg,
 98932,matcha tea,https://img.spoonacular.com/ingredients_100x100/matcha-tea.jpg,
 4025,mayonnaise,https://img.spoonacular.com/ingredients_100x100/mayonnaise.jpg,
-1015006,meat,https://img.spoonacular.com/ingredients_100x100/meat.jpg,TRUE
+1015006,meat,https://img.spoonacular.com/ingredients_100x100/meat.jpg,
 1065062,meat,https://img.spoonacular.com/ingredients_100x100/meat.jpg,
 10110219,meatballs,https://img.spoonacular.com/ingredients_100x100/meatballs.jpg,
 9421,medjool dates,https://img.spoonacular.com/ingredients_100x100/medjool-dates.jpg,
 93772,mexican cream,https://img.spoonacular.com/ingredients_100x100/mexican-cream.jpg,
 1009152,meyer lemon juice,https://img.spoonacular.com/ingredients_100x100/meyer-lemon-juice.jpg,
-1077,milk,https://img.spoonacular.com/ingredients_100x100/milk.jpg,TRUE
+1077,milk,https://img.spoonacular.com/ingredients_100x100/milk.jpg,
 10019146,milk chocolate chips,https://img.spoonacular.com/ingredients_100x100/milk-chocolate-chips.jpg,
 98991,mint chutney,https://img.spoonacular.com/ingredients_100x100/mint-chutney.jpg,
 20048,minute rice,https://img.spoonacular.com/ingredients_100x100/minute-rice.jpg,
@@ -637,7 +637,7 @@
 10111333,peppers,https://img.spoonacular.com/ingredients_100x100/peppers.jpg,
 93698,pesto,https://img.spoonacular.com/ingredients_100x100/pesto.jpg,
 11944,pickle relish,https://img.spoonacular.com/ingredients_100x100/pickle-relish.jpg,
-11937,pickles,https://img.spoonacular.com/ingredients_100x100/pickles.jpg,TRUE
+11937,pickles,https://img.spoonacular.com/ingredients_100x100/cucumber.jpg,TRUE
 27027,pico de gallo,https://img.spoonacular.com/ingredients_100x100/pico-de-gallo.jpg,
 18334,pie crust,https://img.spoonacular.com/ingredients_100x100/pie-crust.jpg,
 1049195,pimento stuffed olives,https://img.spoonacular.com/ingredients_100x100/pimento-stuffed-olives.jpg,
@@ -653,7 +653,7 @@
 18413,pita,https://img.spoonacular.com/ingredients_100x100/pita.jpg,
 93770,pizza crust,https://img.spoonacular.com/ingredients_100x100/pizza-crust.jpg,
 98924,pizza mix,https://img.spoonacular.com/ingredients_100x100/pizza-mix.jpg,
-1001256,plain greek yogurt,https://img.spoonacular.com/ingredients_100x100/plain-greek-yogurt.jpg,
+1001256,plain greek yogurt,https://img.spoonacular.com/ingredients_100x100/yogurt.jpg,
 1118,plain nonfat yogurt,https://img.spoonacular.com/ingredients_100x100/plain-nonfat-yogurt.jpg,
 1001116,plain yogurt,https://img.spoonacular.com/ingredients_100x100/plain-yogurt.jpg,
 9277,plantain,https://img.spoonacular.com/ingredients_100x100/plantain.jpg,
@@ -912,23 +912,23 @@
 11547,tomato puree,https://img.spoonacular.com/ingredients_100x100/tomato-puree.jpg,
 11549,tomato sauce,https://img.spoonacular.com/ingredients_100x100/tomato-sauce.jpg,
 6159,tomato soup,https://img.spoonacular.com/ingredients_100x100/tomato-soup.jpg,
-11529,tomatoes,https://img.spoonacular.com/ingredients_100x100/tomatoes.jpg,TRUE
+11529,tomatoes,https://img.spoonacular.com/ingredients_100x100/tomato.jpg,TRUE
 13523,top blade steak,https://img.spoonacular.com/ingredients_100x100/top-blade-steak.jpg,
 23636,top round steak,https://img.spoonacular.com/ingredients_100x100/top-round-steak.jpg,
 23584,Top Sirloin,https://img.spoonacular.com/ingredients_100x100/Top-Sirloin.jpg,
-18364,tortilla,https://img.spoonacular.com/ingredients_100x100/tortilla.jpg,TRUE
+18364,tortilla,https://img.spoonacular.com/ingredients_100x100/tortilla.jpg,
 19056,tortilla chips,https://img.spoonacular.com/ingredients_100x100/tortilla-chips.jpg,
 14534,triple sec,https://img.spoonacular.com/ingredients_100x100/triple-sec.jpg,
 1024053,truffle oil,https://img.spoonacular.com/ingredients_100x100/truffle-oil.jpg,
-10015121,tuna,https://img.spoonacular.com/ingredients_100x100/tuna.jpg,TRUE
+10015121,tuna,https://img.spoonacular.com/ingredients_100x100/fish.jpg,
 19908,turbinado sugar,https://img.spoonacular.com/ingredients_100x100/turbinado-sugar.jpg,
-5165,turkey,https://img.spoonacular.com/ingredients_100x100/turkey.jpg,TRUE
+5165,turkey,https://img.spoonacular.com/ingredients_100x100/turkey.jpg,
 5696,turkey breast,https://img.spoonacular.com/ingredients_100x100/turkey-breast.jpg,
 7955,turkey kielbasa,https://img.spoonacular.com/ingredients_100x100/turkey-kielbasa.jpg,
 2043,turmeric,https://img.spoonacular.com/ingredients_100x100/turmeric.jpg,
 11564,turnips,https://img.spoonacular.com/ingredients_100x100/turnips.jpg,
 10020081,unbleached flour,https://img.spoonacular.com/ingredients_100x100/unbleached-flour.jpg,
-1145,unsalted butter,https://img.spoonacular.com/ingredients_100x100/unsalted-butter.jpg,TRUE
+1145,unsalted butter,https://img.spoonacular.com/ingredients_100x100/unsalted-butter.jpg,
 10130,unsmoked back bacon,https://img.spoonacular.com/ingredients_100x100/unsmoked-back-bacon.jpg,
 9019,unsweetened applesauce,https://img.spoonacular.com/ingredients_100x100/unsweetened-applesauce.jpg,
 12117,unsweetened coconut milk,https://img.spoonacular.com/ingredients_100x100/unsweetened-coconut-milk.jpg,
@@ -940,7 +940,7 @@
 10019230,vanilla frosting,https://img.spoonacular.com/ingredients_100x100/vanilla-frosting.jpg,
 19206,vanilla instant pudding mix,https://img.spoonacular.com/ingredients_100x100/vanilla-instant-pudding-mix.jpg,
 99076,vanilla protein powder,https://img.spoonacular.com/ingredients_100x100/vanilla-protein-powder.jpg,
-18609,vanilla wafers,https://img.spoonacular.com/ingredients_100x100/vanilla-wafers.jpg,
+18609,vanilla wafers,https://img.spoonacular.com/ingredients_100x100/vanilla-wafers.jpg,TRUE
 1119,vanilla yogurt,https://img.spoonacular.com/ingredients_100x100/vanilla-yogurt.jpg,
 93701,vegan cheese,https://img.spoonacular.com/ingredients_100x100/vegan-cheese.jpg,
 98848,vegan chocolate chips,https://img.spoonacular.com/ingredients_100x100/vegan-chocolate-chips.jpg,
@@ -950,7 +950,7 @@
 16542,vegetarian bacon,https://img.spoonacular.com/ingredients_100x100/vegetarian-bacon.jpg,
 14132,vermouth,https://img.spoonacular.com/ingredients_100x100/vermouth.jpg,
 4135,vinaigrette,https://img.spoonacular.com/ingredients_100x100/vinaigrette.jpg,
-2053,vinegar,https://img.spoonacular.com/ingredients_100x100/vinegar.jpg,TRUE
+2053,vinegar,https://img.spoonacular.com/ingredients_100x100/vinegar.jpg,
 14051,vodka,https://img.spoonacular.com/ingredients_100x100/vodka.jpg,
 12155,walnuts,https://img.spoonacular.com/ingredients_100x100/walnuts.jpg,TRUE
 14412,water,https://img.spoonacular.com/ingredients_100x100/water.jpg,TRUE
@@ -996,5 +996,5 @@
 11951,yellow bell pepper,https://img.spoonacular.com/ingredients_100x100/yellow-bell-pepper.jpg,
 18144,yellow cake mix,https://img.spoonacular.com/ingredients_100x100/yellow-cake-mix.jpg,
 10511282,yellow onion,https://img.spoonacular.com/ingredients_100x100/yellow-onion.jpg,
-1116,yogurt,https://img.spoonacular.com/ingredients_100x100/yogurt.jpg,TRUE
+1116,yogurt,https://img.spoonacular.com/ingredients_100x100/yogurt.jpg,
 10211362,yukon gold potato,https://img.spoonacular.com/ingredients_100x100/yukon-gold-potato.jpg,

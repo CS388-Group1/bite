@@ -8,6 +8,7 @@ import com.example.bite.models.DetailedRecipeResponse
 import com.example.bite.models.RecipeIngredientsResponse
 import com.example.bite.models.RecipeListResponse
 import com.example.bite.models.RecipeResponse
+import com.example.bite.models.RecipeSearchListResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -68,9 +69,9 @@ interface SpoonacularApi {
     @GET("recipes/complexSearch")
     suspend fun searchRecipeByName(
         @Query("query") query: String,
-        @Query("number") number: Int = 50,
+        @Query("number") number: Int = 10,
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
-    ): RecipeListResponse
+    ): RecipeSearchListResponse
 
     @GET("recipes/{id}/information")
     suspend fun getRecipeById(
