@@ -68,6 +68,7 @@ class MyRecipesActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     val customRecipeDao = AppDatabase.getInstance(this@MyRecipesActivity).customRecipeDao()
+
                     if (isConnectedToInternet(this@MyRecipesActivity)) {
                         // Fetch recipes from Firestore
                         val firestoreRecipes = fetchRecipesFromFirestore(userId)
@@ -105,6 +106,7 @@ class MyRecipesActivity : AppCompatActivity() {
                                 recyclerView.visibility = View.VISIBLE
                                 adapter.updateRecipes(recipeList)
                             }
+
                         }
                     }
                 } catch (e: Exception) {
@@ -115,6 +117,7 @@ class MyRecipesActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun isConnectedToInternet(context: Context): Boolean {
         val connectivityManager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager?
@@ -173,6 +176,7 @@ class MyRecipesActivity : AppCompatActivity() {
             adapter.updateRecipes(recipeList)
         }
     }
+
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)

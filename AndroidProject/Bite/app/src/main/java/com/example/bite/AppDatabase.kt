@@ -91,6 +91,25 @@ abstract class AppDatabase : RoomDatabase() {
                     database.execSQL("ALTER TABLE custom_recipe ADD COLUMN desc TEXT NOT NULL")
                 }
             }
+
+
+            val MIGRATION_4_5 = object : Migration(4, 5) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    // Add the userId column to the custom_recipe table
+                    database.execSQL("ALTER TABLE custom_recipe ADD COLUMN userId TEXT NOT NULL DEFAULT ''")
+                }
+            }
+
+            val MIGRATION_5_6 = object : Migration(5, 6) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    // Alter the recipes table to make the image column nullable
+                    database.execSQL("ALTER TABLE recipes RENAME COLUMN image TO temp_image")
+                    database.execSQL("ALTER TABLE recipes ADD COLUMN image TEXT")
+                    database.execSQL("UPDATE recipes SET image = temp_image")
+                    database.execSQL("ALTER TABLE recipes DROP COLUMN temp_image")
+                }
+            }
+
             return Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java,
@@ -102,6 +121,7 @@ abstract class AppDatabase : RoomDatabase() {
                 .addMigrations(MIGRATION_5_6)
                 .build()
         }
+
 
         val MIGRATION_4_5 = object : Migration(4, 5) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -117,6 +137,7 @@ abstract class AppDatabase : RoomDatabase() {
                 database.execSQL("ALTER TABLE custom_recipes ADD COLUMN userId TEXT NOT NULL DEFAULT ''")
             }
         }
+
     }
 
 

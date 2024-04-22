@@ -17,7 +17,7 @@ data class Recipe(
     val userId: String?,
     val title: String,
     val summary: String,
-    val image: String,
+    val image: String?,
     val cookingTime: Int,
     val sourceName: String,
     var instructions: String? = null,
@@ -130,6 +130,11 @@ data class RecipeResponse(
 
 data class RecipeListResponse(
     val recipes: List<RecipeResponse>
+)
+
+
+data class RecipeSearchListResponse(
+    val results: List<RecipeResponse>
 )
 
 // For GetRecipeInformation Response

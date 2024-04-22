@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
@@ -15,10 +16,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bite.models.Ingredient
 import com.example.bite.models.Recipe
+import com.example.bite.models.RecipeLocalData
 import com.example.bite.network.SpoonacularRepository
 import com.example.bite.network.SyncWithFirebase
 import com.tapadoo.alerter.Alerter
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,16 +32,26 @@ class RecipeDetailActivity : AppCompatActivity() {
     private lateinit var recipe: Recipe
     private lateinit var shimmerLayout: ShimmerFrameLayout
     private lateinit var database: AppDatabase
+    private lateinit var collapsingToolbar: CollapsingToolbarLayout
+    private lateinit var recipeTitleTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_detail)
+        recipeTitleTextView = findViewById(R.id.recipeTitle)
+
+        val backButton: ImageView = findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            finish()
+        }
 
         spoonacularRepository = SpoonacularRepository()
         database = AppDatabase.getInstance(this)
 
         shimmerLayout = findViewById<ShimmerFrameLayout>(R.id.shimmer_layout)
         shimmerLayout.startShimmer()
+
+        collapsingToolbar = findViewById(R.id.collapsingToolbar)
 
         // Retrieve recipe ID from Intent
         val recipeId = intent.getStringExtra("RECIPE_ID")
@@ -82,11 +95,10 @@ class RecipeDetailActivity : AppCompatActivity() {
                     // Update UI with fetched recipe details
                     recipe?.let {
                         // Update UI with fetched recipe details
-                        findViewById<TextView>(R.id.recipeLabel).text = "Recipe"
                         findViewById<TextView>(R.id.recipeTitle).text = recipe.name
                         findViewById<TextView>(R.id.recipeDescription).text =
                             HtmlCompat.fromHtml(recipe.desc, HtmlCompat.FROM_HTML_MODE_LEGACY)
-                        findViewById<TextView>(R.id.recipeAuthor).text = "By ${recipe.userId}"
+                        findViewById<TextView>(R.id.recipeAuthor).text = "By You"
 
                         // Use Glide to load the recipe image
                         Glide.with(this@RecipeDetailActivity).load(recipe.image)
@@ -94,7 +106,7 @@ class RecipeDetailActivity : AppCompatActivity() {
 
                         findViewById<TextView>(R.id.recipeInstructions).text = recipe.instructions
 
-                        // TODO: IMPLEMENT GETTING INGREDIENTS
+                        // IMPLEMENT GETTING INGREDIENTS
                         // Update Ingredients RecyclerView
                         //                    recipe.ingredients?.let {
                         //                        val recyclerView: RecyclerView = findViewById(R.id.ingredientsRecyclerView)
@@ -152,7 +164,6 @@ class RecipeDetailActivity : AppCompatActivity() {
 
                     if (recipe != null) {
                         Log.d("Recipe Detail", "Recipe found: ${recipe.name}")
-                        findViewById<TextView>(R.id.recipeLabel).text = "Recipe"
                         findViewById<TextView>(R.id.recipeTitle).text = recipe.name
                         findViewById<TextView>(R.id.recipeDescription).text =
                             HtmlCompat.fromHtml(recipe.desc, HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -211,10 +222,10 @@ class RecipeDetailActivity : AppCompatActivity() {
                 val ingredientsList: List<Ingredient>? = recipeId.let { spoonacularRepository.getIngredients(it) }
 
                 // Update UI with fetched recipe details
-                findViewById<TextView>(R.id.recipeLabel).text = "Recipe"
-                findViewById<TextView>(R.id.recipeTitle).text = recipe.title
                 findViewById<TextView>(R.id.recipeDescription).text = HtmlCompat.fromHtml(recipe.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
                 findViewById<TextView>(R.id.recipeAuthor).text = "By ${recipe.sourceName}"
+                findViewById<TextView>(R.id.recipeTitle).text = recipe.title
+
 
                 // Use Glide to load the recipe image
                 Glide.with(this@RecipeDetailActivity).load(recipe.image)
@@ -231,7 +242,23 @@ class RecipeDetailActivity : AppCompatActivity() {
                     recyclerView.adapter = adapter
                 }
 
-                favoriteButton = findViewById(R.id.favoriteButton)
+                favoriteButton = findViewById(R.id.favoriteButton
+                )
+                val recipeLocalData = RecipeLocalData(
+                    AppDatabase.getInstance(applicationContext).recipeDao(),
+                    applicationContext
+                )
+
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val isFavorite = recipeLocalData.isRowIsExist(recipe.id)
+                    recipe.isFavorite = isFavorite
+
+                    withContext(Dispatchers.Main) {
+                        favoriteButton.isSelected = isFavorite
+                    }
+                }
+
+
                 favoriteButton.isSelected = recipe.isFavorite
                 favoriteButton.setOnClickListener {
                     recipe.isFavorite = !recipe.isFavorite
@@ -253,13 +280,11 @@ class RecipeDetailActivity : AppCompatActivity() {
                             .show()
                     }
                 }
+                collapsingToolbar.visibility = View.VISIBLE
             } finally {
-                // Hide loading layout
                 shimmerLayout.stopShimmer()
                 shimmerLayout.visibility = View.GONE
-                findViewById<View>(R.id.loadingGraphic)?.visibility = View.GONE
                 findViewById<View>(R.id.mainContent)?.visibility = View.VISIBLE
-
             }
         }
     }
@@ -267,11 +292,16 @@ class RecipeDetailActivity : AppCompatActivity() {
 
     private fun updateFavorite(recipe: Recipe, favorite: Boolean, id: String) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val exists = AppDatabase.getInstance(applicationContext).recipeDao().isRowIsExist(id)
+            val recipeLocalData = RecipeLocalData(
+                AppDatabase.getInstance(applicationContext).recipeDao(),
+                applicationContext
+            )
+
+            val exists = recipeLocalData.isRowIsExist(id)
             if (exists) {
-                AppDatabase.getInstance(applicationContext).recipeDao().updateRecipe(favorite, id)
+                recipeLocalData.updateRecipe(favorite, id)
             } else {
-                AppDatabase.getInstance(applicationContext).recipeDao().insertRecipe(recipe)
+                recipeLocalData.insertRecipe(recipe)
             }
         }
     }
