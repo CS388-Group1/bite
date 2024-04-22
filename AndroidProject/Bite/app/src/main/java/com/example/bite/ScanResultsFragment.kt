@@ -38,8 +38,9 @@ class ScanResultsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.getString("category")?.let {
-            navigateToSearchResults(it)
+        arguments?.getString("category")?.let { category ->
+            (requireActivity() as ScanRecipeActivity).updateAppBarTitle("Scan Results", "$category")
+            navigateToSearchResults(category)
         }
 
         recipeAdapter = RecipeAdapter(emptyList()) { recipe ->

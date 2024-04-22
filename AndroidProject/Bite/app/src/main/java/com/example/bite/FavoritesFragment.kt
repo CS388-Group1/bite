@@ -48,10 +48,10 @@ class FavoritesFragment : Fragment() {
         // Reset the current offset every time the view is created
         currentOffset = 0
 
-        val backButton = view.findViewById<ImageButton>(R.id.exit)
-        backButton.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
+//        val backButton = view.findViewById<ImageButton>(R.id.exit)
+//        backButton.setOnClickListener {
+//            requireActivity().onBackPressed()
+//        }
 
         retrieveFavorite(currentOffset, pageSize)
         return view

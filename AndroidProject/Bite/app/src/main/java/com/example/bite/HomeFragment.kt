@@ -9,15 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.bite.network.SpoonacularRepository
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.tapadoo.alerter.Alerter
@@ -27,7 +24,7 @@ import java.time.format.DateTimeFormatter
 
 class HomeFragment : Fragment() {
     private lateinit var spoonacularRepository: SpoonacularRepository
-    private lateinit var recipesRv: RecyclerView
+    private lateinit var discoverRecyclerView: RecyclerView
     private lateinit var recipeAdapter: RecipeAdapter
     private lateinit var seeAllButton: Button
     private lateinit var preferencesButton: ImageView
@@ -45,15 +42,15 @@ class HomeFragment : Fragment() {
         container.startShimmer()
 
         spoonacularRepository = SpoonacularRepository()
-        recipesRv = view.findViewById(R.id.recipeRecyclerView)
-        recipesRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        discoverRecyclerView = view.findViewById(R.id.trendingRecyclerView)
+        discoverRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recipeAdapter = RecipeAdapter(emptyList()) { recipe ->
             val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE_ID", recipe.id)
             startActivity(intent)
         }
-        recipesRv.adapter = recipeAdapter
-        recipesRv.visibility = View.VISIBLE
+        discoverRecyclerView.adapter = recipeAdapter
+        discoverRecyclerView.visibility = View.VISIBLE
         recipeAdapter.onFavoriteClicked = { recipe ->
             if(recipeAdapter.onFavoriteClick(recipe)){
                 activity?.let {
@@ -110,7 +107,7 @@ class HomeFragment : Fragment() {
         rotdShimmerLayout.startShimmer()
 
         val snapHelper = PagerSnapHelper() // or LinearSnapHelper()
-        snapHelper.attachToRecyclerView(recipesRv)
+        snapHelper.attachToRecyclerView(discoverRecyclerView)
 
         seeAllButton = view.findViewById(R.id.seeAllButton)
         preferencesButton = view.findViewById(R.id.preferencesButton)
@@ -123,13 +120,6 @@ class HomeFragment : Fragment() {
         // Fetch random recipe asynchronously
         fetchRandomRecipe()
 
-        seeAllButton.setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.apply {
-                replace(R.id.fragment_container, DiscoverFragment())
-                addToBackStack(null)
-                commit()
-            }
-        }
         // Fetch trending recipes asynchronously
         fetchTrendingRecipes()
 
@@ -168,7 +158,7 @@ class HomeFragment : Fragment() {
                     Alerter.create(it)
                         .setTitle("Bite: Error")
                         .setText("Failed to fetch random recipe: ${e.message}")
-                        .setBackgroundColorRes(com.example.bite.R.color.red)
+                        .setBackgroundColorRes(R.color.red)
                         .setDuration(5000)
                         .show()
                 }
@@ -180,10 +170,10 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val recipes = spoonacularRepository.getTrendingRecipes()
-                val container = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout;
-                container.stopShimmer()
-                container.visibility = View.GONE
-                recipesRv.visibility = View.VISIBLE
+                val shimmerContainer = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout
+                shimmerContainer.stopShimmer()
+                shimmerContainer.visibility = View.GONE
+//                discoverRecyclerView.visibility = View.VISIBLE
                 recipeAdapter.updateRecipes(recipes)
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch trending recipes: ${e.message}")
@@ -191,7 +181,7 @@ class HomeFragment : Fragment() {
                     Alerter.create(it)
                         .setTitle("Bite: Error")
                         .setText("Failed to fetch trending recipes: ${e.message}")
-                        .setBackgroundColorRes(com.example.bite.R.color.red)
+                        .setBackgroundColorRes(R.color.red)
                         .setDuration(5000)
                         .show()
                 }
