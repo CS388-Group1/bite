@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -172,16 +173,11 @@ class RecipeDetailActivity : AppCompatActivity() {
 
 
                         // Use Glide to load the recipe image on the main thread
-
                         Glide.with(this@RecipeDetailActivity).load(recipe.image)
                             .into(findViewById(R.id.recipeImage))
 
-
-//                        withContext(Dispatchers.Main) {
-//                            Glide.with(this@RecipeDetailActivity)
-//                                .load(recipe.image)
-//                                .into(findViewById(R.id.recipeImage))
-//                        }
+                        favoriteButton = findViewById(R.id.favoriteButton)
+                        favoriteButton.visibility = View.GONE
 
                     }
 

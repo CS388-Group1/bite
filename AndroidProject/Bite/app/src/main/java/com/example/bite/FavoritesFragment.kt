@@ -62,8 +62,19 @@ class FavoritesFragment : Fragment() {
         recyclerView = view.findViewById(R.id.favoritesRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = RecipeAdapter(mutableListOf()) { recipe ->
-            // Handle recipe click
+            val intent = Intent(requireActivity(), RecipeDetailActivity::class.java)
+            intent.putExtra("RECIPE_ID", recipe.id.toString())
+            if (recipe?.sourceName == "") {
+                intent.putExtra("UserID", recipe.userId.toString())
+                intent.putExtra("RecipeName", recipe.title.toString())
+                Log.v("Custom Recipe Clicked", "user id: ${recipe.userId.toString()}")
+            }
+            startActivity(intent)
         }
+
+
+        recyclerView.adapter = adapter
+
         recyclerView.adapter = adapter
         adapter.onFavoriteClicked = { recipe ->
             if(adapter.onFavoriteClick(recipe)){

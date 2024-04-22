@@ -35,7 +35,6 @@ data class CustomRecipe(
     @ColumnInfo(name = "instructions") var instructions: String = "",
     @ColumnInfo(name = "desc") var desc: String = "",
     @ColumnInfo(name = "userId") var userId: String = "",
-    //val ingredients: List<CustomIngredient> = emptyList()
 ) {
     companion object {
         fun fromSnapshot(snapshot: DocumentSnapshot): CustomRecipe {
