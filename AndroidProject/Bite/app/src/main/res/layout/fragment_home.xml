@@ -5,6 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_layout_rotd"
+        android:layout_width="0dp"
+        android:layout_height="324dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rotdTextView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <include layout="@layout/item_recipe_shimmer" />
+
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_layout_home"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/discoverLabel"
+        tools:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_recipe_shimmer" />
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -57,27 +96,15 @@
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recipeRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="324dp"
-            android:layout_marginTop="4dp"
+            android:id="@+id/rotdRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
             android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/discoverLabel"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <include
-            android:id="@+id/rotdRecipe"
-            layout="@layout/item_recipe"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rotdTextView" />
+
         <TextView
             android:id="@+id/discoverLabel"
             android:layout_width="wrap_content"
@@ -89,28 +116,20 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rotdRecipe" />
+            app:layout_constraintTop_toBottomOf="@+id/rotdRecyclerView" />
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_layout_home"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trendingRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="324dp"
+            android:clipToPadding="false"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/discoverLabel"
-            tools:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <include layout="@layout/item_recipe_shimmer" />
-            </LinearLayout>
-
-        </com.facebook.shimmer.ShimmerFrameLayout>
-
+            tools:visibility="visible" />
 
         <Button
             android:id="@+id/seeAllButton"

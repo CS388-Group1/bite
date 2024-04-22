@@ -8,14 +8,18 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentContainerView
 import com.example.bite.network.SpoonacularRepository
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.tapadoo.alerter.Alerter
 import org.json.JSONObject
 
@@ -26,12 +30,17 @@ class ScanRecipeActivity : AppCompatActivity() {
     }
 
     private lateinit var repository: SpoonacularRepository
+    private lateinit var shimmerLayout: ShimmerFrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_recipe)
         repository = SpoonacularRepository()
         requestCameraPermission()
+
+        showAnalyzingOverlay(true)
+        shimmerLayout = findViewById(R.id.shimmer_layout)
+        shimmerLayout.startShimmer()
 
         val exitButton = findViewById<ImageButton>(R.id.back)
         exitButton.setOnClickListener {
@@ -57,7 +66,7 @@ class ScanRecipeActivity : AppCompatActivity() {
                     .setTitle("Bite: Error")
                     .setText("Camera permission denied")
                     .setBackgroundColorRes(com.example.bite.R.color.red)
-                    .setDuration(10000)
+                    .setDuration(5000)
                     .show()
             }
         }
@@ -74,7 +83,7 @@ class ScanRecipeActivity : AppCompatActivity() {
                     .setTitle("Bite: Error")
                     .setText("Failed to select image")
                     .setBackgroundColorRes(com.example.bite.R.color.red)
-                    .setDuration(10000)
+                    .setDuration(5000)
                     .show()
             }
         }
@@ -96,6 +105,10 @@ class ScanRecipeActivity : AppCompatActivity() {
                     }
                 }
             }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+                finish()
+            }
             .show()
     }
 
@@ -109,16 +122,31 @@ class ScanRecipeActivity : AppCompatActivity() {
                     .setTitle("Bite: Error")
                     .setText("Failed to capture image")
                     .setBackgroundColorRes(com.example.bite.R.color.red)
-                    .setDuration(10000)
+                    .setDuration(5000)
                     .show()
             }
         }
     }
 
     private fun uploadImage(imageBitmap: Bitmap) {
+        updateProcessingText("Processing Image", "Hang tight! We’re analyzing your photo to identify the food")
+        showAnalyzingOverlay(true)
+        updateAppBarTitle("Analyzing...", "")
         repository.uploadImage(imageBitmap, object : SpoonacularRepository.UploadCallback {
             override fun onSuccess(result: String) {
                 runOnUiThread {
+                    showAnalyzingOverlay(false)
+                    shimmerLayout.stopShimmer()
+                    shimmerLayout.visibility = View.GONE
+                    findViewById<FragmentContainerView>(R.id.fragment_container).visibility = View.VISIBLE
+
+//                    Alerter.create(this@ScanRecipeActivity)
+//                        .setTitle("Bite: Success")
+//                        .setText("Image uploaded successfully")
+//                        .setBackgroundColorRes(R.color.green)
+//                        .setDuration(3000)
+//                        .show()
+
                     val category = parseCategoryFromResult(result)
                     val fragment = ScanResultsFragment.newInstance(category)
 
@@ -130,11 +158,14 @@ class ScanRecipeActivity : AppCompatActivity() {
 
             override fun onFailure(error: String) {
                 runOnUiThread {
+                    showAnalyzingOverlay(false)
+                    shimmerLayout.stopShimmer()
+                    shimmerLayout.visibility = View.GONE
                     Alerter.create(this@ScanRecipeActivity)
                         .setTitle("Bite: Error")
                         .setText(error)
                         .setBackgroundColorRes(com.example.bite.R.color.red)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }
@@ -143,12 +174,32 @@ class ScanRecipeActivity : AppCompatActivity() {
 
     private fun parseCategoryFromResult(result: String): String {
         try {
-            val jsonPart = result.substringAfter(":")
-            val jsonObject = JSONObject(jsonPart)
-            return jsonObject.getString("category")
+            val jsonObject = JSONObject(result)
+            val choices = jsonObject.getJSONArray("choices")
+            if (choices.length() > 0) {
+                val firstChoice = choices.getJSONObject(0)
+                val message = firstChoice.getJSONObject("message")
+                val content = message.getString("content")
+                return content.trim()
+            }
         } catch (e: Exception) {
             Log.e("ScanRecipeActivity", "Error parsing JSON result", e)
-            return "Unknown"
         }
+        return "Unknown"
+    }
+
+    private fun showAnalyzingOverlay(show: Boolean) {
+        val analyzingOverlay = findViewById<View>(R.id.analyzingOverlay)
+        analyzingOverlay.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    fun updateAppBarTitle(title: String, subtitle: String) {
+        findViewById<TextView>(R.id.titleScanResults).text = title
+        findViewById<TextView>(R.id.subtitleScanResults).text = subtitle
+    }
+
+    fun updateProcessingText(text: String, subtitle: String) {
+        findViewById<TextView>(R.id.processingText).text = text
+        findViewById<TextView>(R.id.subProcessingText).text = subtitle
     }
 }

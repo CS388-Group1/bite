@@ -175,17 +175,38 @@ V4: Partnership with grocery stores for ingredient delivery, premium subscriptio
 
 ## GitHub Project board
 
-[Add screenshot of your Project Board with the updated status of issues for Milestone 3. Note that these should include the updated issues you worked on for this sprint and not be a duplicate of Milestone 2 Project board.] <img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
+<img src="codepath/sprint2_ready.png" width=600>
+
+### Closed Issues
+
+<img src="codepath/sprint2_issues.png" width=600>
+
+
 
 ## Completed user stories
 
-- List the completed user stories from this unit
-- List any pending user stories / any user stories you decided to cut
-from the original requirements
+**Required Features**
 
-[Add video/gif of your current application that shows build progress]
-<img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
+- [x] User can input available ingredients
+- [x] User can search for recipes based on input ingredients
+- [x] User can view a list of recipe options
+- [x] User can view detailed information for each recipe
+- [x] User can save favorite recipes
+- [x] User can discover trending recipes
+- [x] User can scan food and find recipes for it
+
+**Optional Features**
+
+- [x] User can add a recipe
+- [ ] User has a list of their created recipes
+- [ ] ~~User can filter recipes by cuisine, meal type, or cooking time~~
+- [ ] ~~User can rate and review recipes~~
+- [x] User can save dietary preferences
+
+### Build Progress
+
+<img src="codepath/m3.gif" width=350>
 
 ## App Demo Video
 
-- Embed the YouTube/Vimeo link of your Completed Demo Day prep video
+[![Watch the video](https://img.youtube.com/vi/juprhXD0Y0U/0.jpg)](https://youtu.be/juprhXD0Y0U)

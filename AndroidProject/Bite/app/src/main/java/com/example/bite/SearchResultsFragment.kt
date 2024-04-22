@@ -2,10 +2,10 @@ package com.example.bite
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -25,12 +25,14 @@ class SearchResultsFragment : Fragment() {
     private var currentIngredients = ""
 
     companion object {
-        private const val ARG_INGREDIENTS = "ingredients"
+        private const val ARG_QUERY = "query"
+        private const val ARG_IS_RECIPE_NAME = "isRecipeName"
 
-        fun newInstance(ingredients: String): SearchResultsFragment {
+        fun newInstance(query: String, isRecipeName: Boolean): SearchResultsFragment {
             val fragment = SearchResultsFragment()
             val args = Bundle()
-            args.putString(ARG_INGREDIENTS, ingredients)
+            args.putString(ARG_QUERY, query)
+            args.putBoolean(ARG_IS_RECIPE_NAME, isRecipeName)
             fragment.arguments = args
             return fragment
         }
@@ -44,7 +46,7 @@ class SearchResultsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_recipe_list, container, false)
         val container = view?.findViewById(R.id.shimmer_layout_recipe_list) as ShimmerFrameLayout;
         container.startShimmer()
-        recyclerView = view.findViewById(R.id.recipeRecyclerView)
+        recyclerView = view.findViewById(R.id.trendingRecyclerView)
         recipeAdapter = RecipeAdapter(emptyList()) { recipe ->
             val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE_ID", recipe.id)
@@ -61,7 +63,7 @@ class SearchResultsFragment : Fragment() {
                         .setTitle("Bite Favorites")
                         .setText("Item added to Favorites")
                         .setBackgroundColorRes(R.color.green)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }else{
@@ -70,7 +72,7 @@ class SearchResultsFragment : Fragment() {
                         .setTitle("Bite Favorites")
                         .setText("Item removed from Favorites")
                         .setBackgroundColorRes(R.color.green)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }
@@ -93,9 +95,20 @@ class SearchResultsFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.getString(ARG_INGREDIENTS)?.let {
-            currentIngredients = it
-            searchRecipesByIngredients(it, currentOffset)
+        val query = arguments?.getString(ARG_QUERY)
+        val isRecipeName = arguments?.getBoolean(ARG_IS_RECIPE_NAME, false) ?: false
+
+        if (isRecipeName) {
+            Log.d("SearchResultsFragment", "Searching by recipe name")
+            query?.let {
+                searchRecipesByName(it)
+            }
+        } else {
+            Log.d("SearchResultsFragment", "Searching by ingredients")
+            query?.let {
+                currentIngredients = it
+                searchRecipesByIngredients(it, currentOffset)
+            }
         }
     }
 
@@ -123,7 +136,7 @@ class SearchResultsFragment : Fragment() {
                             .setTitle("Bite: Error")
                             .setText("No more recipes found")
                             .setBackgroundColorRes(com.example.bite.R.color.red)
-                            .setDuration(10000)
+                            .setDuration(5000)
                             .show()
                     }
                 }
@@ -135,10 +148,52 @@ class SearchResultsFragment : Fragment() {
                         .setTitle("Bite: Error")
                         .setText("Error: ${e.message}")
                         .setBackgroundColorRes(com.example.bite.R.color.red)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }
         }
     }
+
+    private fun searchRecipesByName(query: String) {
+        Log.d("SearchResultsFragment", "Searching for recipes by name: $query")
+        if (loading) return
+        loading = true
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val recipes = SpoonacularRepository().searchRecipeByName(query)
+                Log.d("SearchResultsFragment", "Found ${recipes.size} recipes")
+                val container = view?.findViewById(R.id.shimmer_layout_recipe_list) as ShimmerFrameLayout
+                container.stopShimmer()
+                container.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+                if (recipes.isNotEmpty()) {
+                    recipeAdapter.updateRecipes(recipes)
+                } else {
+                    // Handle case when no recipes are found
+                    activity?.let {
+                        Alerter.create(it)
+                            .setTitle("Bite: Error")
+                            .setText("No recipes found")
+                            .setBackgroundColorRes(com.example.bite.R.color.red)
+                            .setDuration(5000)
+                            .show()
+                    }
+                }
+                loading = false
+            } catch (e: Exception) {
+                Log.e("SearchResultsFragment", "Error searching for recipes by name", e)
+                loading = false
+                activity?.let {
+                    Alerter.create(it)
+                        .setTitle("Bite: Error")
+                        .setText("Error: ${e.message}")
+                        .setBackgroundColorRes(com.example.bite.R.color.red)
+                        .setDuration(5000)
+                        .show()
+                }
+            }
+        }
+    }
+
 }

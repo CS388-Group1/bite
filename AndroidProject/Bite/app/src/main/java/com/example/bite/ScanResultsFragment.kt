@@ -38,8 +38,9 @@ class ScanResultsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.getString("category")?.let {
-            navigateToSearchResults(it)
+        arguments?.getString("category")?.let { category ->
+            (requireActivity() as ScanRecipeActivity).updateAppBarTitle("Scan Results", "$category")
+            navigateToSearchResults(category)
         }
 
         recipeAdapter = RecipeAdapter(emptyList()) { recipe ->
@@ -50,7 +51,7 @@ class ScanResultsFragment : Fragment() {
     }
 
     private fun navigateToSearchResults(query: String) {
-        val searchResultsFragment = SearchResultsFragment.newInstance(query)
+        val searchResultsFragment = SearchResultsFragment.newInstance(query, true) // Pass true for isRecipeName
         parentFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.slide_in_right,

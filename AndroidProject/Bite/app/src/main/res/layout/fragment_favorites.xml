@@ -46,28 +46,51 @@
 
         </com.facebook.shimmer.ShimmerFrameLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/favoritesRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipeRefreshLayout"
             android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/favoriteView"
-            android:visibility="gone"
-            tools:visibility="visible"/>
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
 
-        <ImageButton
-            android:id="@+id/exit"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/favoritesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingBottom="66dp"
+                android:clipToPadding="false"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:id="@+id/noFavoritesTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:background="@android:color/transparent"
-            android:contentDescription="Exit"
-            android:src="@drawable/ic_larrow"
+            android:text="No Favorites"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/favoriteView"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="#757575"/>
 
+<!--        <ImageButton-->
+<!--            android:id="@+id/exit"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:contentDescription="Exit"-->
+<!--            android:src="@drawable/ic_larrow"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

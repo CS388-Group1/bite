@@ -24,7 +24,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.tapadoo.alerter.Alerter
 
 class SearchByIngredientFragment : Fragment() {
@@ -46,15 +45,6 @@ class SearchByIngredientFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search_by_ingredient, container, false)
-        val container_selected = view.findViewById(R.id.shimmer_layout_selected) as ShimmerFrameLayout;
-        container_selected.startShimmer()
-        container_selected.stopShimmer()
-        container_selected.visibility = View.GONE
-        val container_common = view.findViewById(R.id.shimmer_layout_common) as ShimmerFrameLayout;
-        container_common.startShimmer()
-        container_common.stopShimmer()
-        container_common.visibility = View.GONE
-
 
         recyclerView = view.findViewById(R.id.recyclerViewCommonIngredients)
         selectedRecyclerView = view.findViewById(R.id.recyclerViewSelectedIngredients)
@@ -88,10 +78,6 @@ class SearchByIngredientFragment : Fragment() {
                     selectedAdapter.notifyDataSetChanged()
                     if (selectedIngredientsLayout.visibility == View.GONE) {
                         selectedIngredientsLayout.visibility = View.VISIBLE
-                        val container_selected = view?.findViewById(R.id.shimmer_layout_selected) as ShimmerFrameLayout;
-                        container_selected.stopShimmer()
-                        container_selected.visibility = View.GONE
-                        selectedRecyclerView.visibility = View.VISIBLE
                     }
 
                     commonIngredientsTextView.text = "Common Ingredients"
@@ -103,10 +89,6 @@ class SearchByIngredientFragment : Fragment() {
                                 ingredient.id !in selectedIngredientIds
                             }
                         ingredientAdapter.updateIngredients(commonIngredients)
-                        val container_common = view?.findViewById(R.id.shimmer_layout_common) as ShimmerFrameLayout;
-                        container_common.stopShimmer()
-                        container_common.visibility = View.GONE
-                        recyclerView.visibility = View.VISIBLE
                     }
 
                     nestedScrollView.smoothScrollTo(0, 0)
@@ -123,10 +105,6 @@ class SearchByIngredientFragment : Fragment() {
                     selectedAdapter.notifyDataSetChanged()
                     if (selectedIngredientsLayout.visibility == View.GONE) {
                         selectedIngredientsLayout.visibility = View.VISIBLE
-                        //val container_selected = view?.findViewById(R.id.shimmer_layout_selected) as ShimmerFrameLayout;
-                        //container_selected.stopShimmer()
-                        //container_selected.visibility = View.GONE
-                        //selectedRecyclerView.visibility = View.VISIBLE
                     }
 
                     commonIngredientsTextView.text = "Common Ingredients"
@@ -138,10 +116,6 @@ class SearchByIngredientFragment : Fragment() {
                                 ingredient.id !in selectedIngredientIds
                             }
                         ingredientAdapter.updateIngredients(commonIngredients)
-                        val container_common = view?.findViewById(R.id.shimmer_layout_common) as ShimmerFrameLayout;
-                        container_common.stopShimmer()
-                        container_common.visibility = View.GONE
-                        recyclerView.visibility = View.VISIBLE
                     }
 
                     nestedScrollView.smoothScrollTo(0, 0)
@@ -160,10 +134,6 @@ class SearchByIngredientFragment : Fragment() {
             selectedAdapter.notifyDataSetChanged()
             if (selected.isNotEmpty()) {
                 selectedIngredientsLayout.visibility = View.VISIBLE
-                val container_selected = view?.findViewById(R.id.shimmer_layout_selected) as ShimmerFrameLayout;
-                container_selected.stopShimmer()
-                container_selected.visibility = View.GONE
-                selectedRecyclerView.visibility = View.VISIBLE
             }
 
             val selectedIngredientIds = selected.map { it.id }
@@ -172,10 +142,6 @@ class SearchByIngredientFragment : Fragment() {
                     ingredient.id !in selectedIngredientIds
                 }
             ingredientAdapter.updateIngredients(commonIngredients)
-            val container_common = view?.findViewById(R.id.shimmer_layout_common) as ShimmerFrameLayout;
-            container_common.stopShimmer()
-            container_common.visibility = View.GONE
-            recyclerView.visibility = View.VISIBLE
         }
 
 
@@ -218,7 +184,7 @@ class SearchByIngredientFragment : Fragment() {
             val selectedIngredientNames = selected.map { it.name }
             val ingredientString = selectedIngredientNames.joinToString(",")
 
-            val searchResultsFragment = SearchResultsFragment.newInstance(ingredientString)
+            val searchResultsFragment = SearchResultsFragment.newInstance(ingredientString, false)
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, searchResultsFragment)
                 .addToBackStack(null)

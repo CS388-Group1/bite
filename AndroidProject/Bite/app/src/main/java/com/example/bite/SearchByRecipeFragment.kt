@@ -58,7 +58,7 @@ class SearchByRecipeFragment : Fragment() {
                         .setTitle("Bite Favorites")
                         .setText("Item added to Favorites")
                         .setBackgroundColorRes(R.color.green)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }else{
@@ -67,7 +67,7 @@ class SearchByRecipeFragment : Fragment() {
                         .setTitle("Bite Favorites")
                         .setText("Item removed from Favorites")
                         .setBackgroundColorRes(R.color.green)
-                        .setDuration(10000)
+                        .setDuration(5000)
                         .show()
                 }
             }
@@ -106,7 +106,7 @@ class SearchByRecipeFragment : Fragment() {
     }
 
     private fun navigateToSearchResults(query: String) {
-        val searchResultsFragment = SearchResultsFragment.newInstance(query)
+        val searchResultsFragment = SearchResultsFragment.newInstance(query, true) // Pass true for isRecipeName
         parentFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.slide_in_right,
@@ -117,7 +117,6 @@ class SearchByRecipeFragment : Fragment() {
             .replace(R.id.fragment_container, searchResultsFragment)
             .addToBackStack(null)
             .commit()
-        // Removed hideSearchButton call here
     }
 
     override fun onResume() {
