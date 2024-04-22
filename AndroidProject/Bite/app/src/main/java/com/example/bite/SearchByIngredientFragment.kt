@@ -46,11 +46,15 @@ class SearchByIngredientFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search_by_ingredient, container, false)
-
         val container_selected = view.findViewById(R.id.shimmer_layout_selected) as ShimmerFrameLayout;
         container_selected.startShimmer()
+        container_selected.stopShimmer()
+        container_selected.visibility = View.GONE
         val container_common = view.findViewById(R.id.shimmer_layout_common) as ShimmerFrameLayout;
         container_common.startShimmer()
+        container_common.stopShimmer()
+        container_common.visibility = View.GONE
+
 
         recyclerView = view.findViewById(R.id.recyclerViewCommonIngredients)
         selectedRecyclerView = view.findViewById(R.id.recyclerViewSelectedIngredients)
@@ -93,6 +97,41 @@ class SearchByIngredientFragment : Fragment() {
                     commonIngredientsTextView.text = "Common Ingredients"
                     viewLifecycleOwner.lifecycleScope.launch {
                         ingredientRepository.updateIngredientSelection(ingredient.id, true)
+                        val selectedIngredientIds = selected.map { it.id }
+                        val commonIngredients =
+                            ingredientRepository.getCommonIngredients().filter { ingredient ->
+                                ingredient.id !in selectedIngredientIds
+                            }
+                        ingredientAdapter.updateIngredients(commonIngredients)
+                        val container_common = view?.findViewById(R.id.shimmer_layout_common) as ShimmerFrameLayout;
+                        container_common.stopShimmer()
+                        container_common.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
+                    }
+
+                    nestedScrollView.smoothScrollTo(0, 0)
+                }
+            }
+        })
+
+        selectedAdapter.setOnClickListener(object : IngredientAdapter.OnClickListener {
+            override fun onClick(position: Int, ingredient: Ingredient) {
+                if (ingredient.id in selected.map { it.id }) {
+                    selected.remove(ingredient)
+                    selectedAdapter.updateIngredients(selected)
+
+                    selectedAdapter.notifyDataSetChanged()
+                    if (selectedIngredientsLayout.visibility == View.GONE) {
+                        selectedIngredientsLayout.visibility = View.VISIBLE
+                        //val container_selected = view?.findViewById(R.id.shimmer_layout_selected) as ShimmerFrameLayout;
+                        //container_selected.stopShimmer()
+                        //container_selected.visibility = View.GONE
+                        //selectedRecyclerView.visibility = View.VISIBLE
+                    }
+
+                    commonIngredientsTextView.text = "Common Ingredients"
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        ingredientRepository.updateIngredientSelection(ingredient.id, false)
                         val selectedIngredientIds = selected.map { it.id }
                         val commonIngredients =
                             ingredientRepository.getCommonIngredients().filter { ingredient ->
