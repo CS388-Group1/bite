@@ -151,7 +151,7 @@ class RecipeDetailActivity : AppCompatActivity() {
 
 
     private fun fetchRecipeFromFirebase(userId: String, recipeName: String) {
-        lifecycleScope.launch(Dispatchers.Main) {
+        lifecycleScope.launch {
             try {
                 val syncWithFirebase = SyncWithFirebase(database.customRecipeDao())
                 val recipeWithIngredients  = syncWithFirebase.getRecipeByUserIdAndName(this@RecipeDetailActivity, userId, recipeName)
@@ -164,19 +164,24 @@ class RecipeDetailActivity : AppCompatActivity() {
 
                     if (recipe != null) {
                         Log.d("Recipe Detail", "Recipe found: ${recipe.name}")
-                        findViewById<TextView>(R.id.recipeTitle).text = recipe.name
                         findViewById<TextView>(R.id.recipeDescription).text =
                             HtmlCompat.fromHtml(recipe.desc, HtmlCompat.FROM_HTML_MODE_LEGACY)
                         findViewById<TextView>(R.id.recipeAuthor).text = "By You"
                         findViewById<TextView>(R.id.recipeInstructions).text = recipe.instructions
+                        findViewById<TextView>(R.id.recipeTitle).text = recipe.name
 
 
                         // Use Glide to load the recipe image on the main thread
-                        withContext(Dispatchers.Main) {
-                            Glide.with(this@RecipeDetailActivity)
-                                .load(recipe.image)
-                                .into(findViewById(R.id.recipeImage))
-                        }
+
+                        Glide.with(this@RecipeDetailActivity).load(recipe.image)
+                            .into(findViewById(R.id.recipeImage))
+
+
+//                        withContext(Dispatchers.Main) {
+//                            Glide.with(this@RecipeDetailActivity)
+//                                .load(recipe.image)
+//                                .into(findViewById(R.id.recipeImage))
+//                        }
 
                     }
 
@@ -189,6 +194,7 @@ class RecipeDetailActivity : AppCompatActivity() {
                         recyclerView.adapter = adapter
                     }
                 }
+                collapsingToolbar.visibility = View.VISIBLE
 
             } catch (e: Exception) {
                 // Handle exception
@@ -206,7 +212,6 @@ class RecipeDetailActivity : AppCompatActivity() {
                 // Hide loading layout
                 shimmerLayout.stopShimmer()
                 shimmerLayout.visibility = View.GONE
-                findViewById<View>(R.id.loadingGraphic)?.visibility = View.GONE
                 findViewById<View>(R.id.mainContent)?.visibility = View.VISIBLE
 
             }
