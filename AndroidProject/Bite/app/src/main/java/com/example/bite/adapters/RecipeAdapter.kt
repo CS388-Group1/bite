@@ -109,16 +109,6 @@ class RecipeAdapter(private var recipes: List<Recipe>, var onRecipeClicked: (Rec
                 onFavoriteClicked?.invoke(recipe)
             }
 
-
-            buttonFavorite.isSelected = recipe.isFavorite
-            buttonFavorite.setOnClickListener {
-                recipe.isFavorite = !recipe.isFavorite
-                updateFavorite(recipe, recipe.isFavorite, recipe.id)
-                buttonFavorite.isSelected = recipe.isFavorite
-                onFavoriteClick(recipe)
-                onFavoriteClicked?.invoke(recipe)
-            }
-
             itemView.setOnClickListener {
                 onRecipeClicked(recipe)
             }

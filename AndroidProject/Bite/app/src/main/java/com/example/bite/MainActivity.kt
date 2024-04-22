@@ -2,11 +2,14 @@ package com.example.bite
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.bite.network.IngredientRepository
 import com.example.bite.network.SpoonacularRepository
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
@@ -17,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fabCenterPlus: FloatingActionButton
     private lateinit var fabScanFood: FloatingActionButton
     private lateinit var fabCreateRecipe: FloatingActionButton
-    private var areFabsVisible = false
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var homeFragment: HomeFragment
@@ -38,16 +40,12 @@ class MainActivity : AppCompatActivity() {
         fabScanFood = findViewById(R.id.fab_scan_food)
         fabCreateRecipe = findViewById(R.id.fab_create_recipe)
 
-        fabCenterPlus.setOnClickListener {
-            if (!areFabsVisible) {
-                fabScanFood.show()
-                fabCreateRecipe.show()
-                areFabsVisible = true
-            } else {
-                fabScanFood.hide()
-                fabCreateRecipe.hide()
-                areFabsVisible = false
-            }
+        val bottomAppBar = findViewById<BottomAppBar>(R.id.bottomAppBar)
+
+        if (fabCenterPlus.visibility == View.VISIBLE) {
+            (fabCenterPlus.layoutParams as CoordinatorLayout.LayoutParams).anchorId = bottomAppBar.id
+        } else {
+            (fabCenterPlus.layoutParams as CoordinatorLayout.LayoutParams).anchorId = View.NO_ID
         }
 
         homeFragment = HomeFragment()
@@ -56,12 +54,19 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         bottomNavigationView.background = null
-        loadFragment(HomeFragment())
 
+        // Set up the initial fragment
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, HomeFragment())
+                .commit()
+        }
+
+        // Set up the bottom navigation view listener
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> {
-                    loadFragment(homeFragment)
+                    loadFragment(HomeFragment())
                     true
                 }
                 R.id.navigation_search -> {
@@ -70,11 +75,11 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_discover -> {
-                    loadFragment(discoverFragment)
+                    loadFragment(DiscoverFragment())
                     true
                 }
                 R.id.navigation_favorites -> {
-                    loadFragment(favoritesFragment)
+                    loadFragment(FavoritesFragment())
                     true
                 }
                 else -> false
@@ -83,10 +88,10 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container, homeFragment)
-            .add(R.id.fragment_container, discoverFragment)
-            .add(R.id.fragment_container, favoritesFragment)
-            .hide(discoverFragment)
-            .hide(favoritesFragment)
+//            .add(R.id.fragment_container, discoverFragment)
+//            .add(R.id.fragment_container, favoritesFragment)
+//            .hide(discoverFragment)
+//            .hide(favoritesFragment)
             .commit()
 
         // Handle clicks for FABs
@@ -106,41 +111,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-
-        if (homeFragment.isAdded) transaction.hide(homeFragment)
-        if (discoverFragment.isAdded) transaction.hide(discoverFragment)
-        if (favoritesFragment.isAdded) transaction.hide(favoritesFragment)
-
-        when (fragment) {
-            homeFragment -> {
-                if (!homeFragment.isAdded) {
-                    transaction.add(R.id.fragment_container, homeFragment)
-                }
-                transaction.show(homeFragment)
-            }
-            discoverFragment -> {
-                if (!discoverFragment.isAdded) {
-                    transaction.add(R.id.fragment_container, discoverFragment)
-                }
-                transaction.show(discoverFragment)
-            }
-            favoritesFragment -> {
-                if (!favoritesFragment.isAdded) {
-                    transaction.add(R.id.fragment_container, favoritesFragment)
-                }
-                transaction.show(favoritesFragment)
-            }
-        }
-
-        transaction.commit()
-    }
-
-    private fun searchRecipes(query: String) {
-        lifecycleScope.launch {
-            // Load recipes and update the adapter
-            val recipes = repository.searchRecipesByIngredients(query)
-            adapter.updateRecipes(recipes)
-        }
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 }

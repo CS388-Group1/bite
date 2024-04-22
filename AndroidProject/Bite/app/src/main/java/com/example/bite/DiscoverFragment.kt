@@ -34,10 +34,10 @@ class DiscoverFragment : Fragment() {
         setupScrollListener()
         fetchRecipesPaginated()
 
-        val backButton = view.findViewById<ImageButton>(R.id.exit)
-        backButton.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
+//        val backButton = view.findViewById<ImageButton>(R.id.exit)
+//        backButton.setOnClickListener {
+//            requireActivity().onBackPressed()
+//        }
 
         return view
     }
