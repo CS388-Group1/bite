@@ -1,15 +1,20 @@
 package com.example.bite.models
 
+import android.util.Log
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Junction
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import com.google.firebase.firestore.DocumentSnapshot
+
 
 @Entity(tableName = "recipes")
 data class Recipe(
     @PrimaryKey val id: String,
+    val userId: String?,
     val title: String,
     val summary: String,
     val image: String?,
@@ -22,15 +27,33 @@ data class Recipe(
 // Stores recipes created by the user in local database
 @Entity(tableName = "custom_recipe")
 data class CustomRecipe(
-    @PrimaryKey(autoGenerate = true) val recipeId: Int = 0,
-    val userId: String,
-    val name: String,
-    val image: String,
-    val desc: String,
-    val servings: Int,
-    val readyInMinutes: Int,
-    val instructions: String
-)
+    @PrimaryKey(autoGenerate = true) var recipeId: Int = 0,
+    @ColumnInfo(name = "name") var name: String = "",
+    @ColumnInfo(name = "image") var image: String = "",
+    @ColumnInfo(name = "servings") var servings: Int = 0,
+    @ColumnInfo(name = "readyInMinutes") var readyInMinutes: Int = 0,
+    @ColumnInfo(name = "instructions") var instructions: String = "",
+    @ColumnInfo(name = "desc") var desc: String = "",
+    @ColumnInfo(name = "userId") var userId: String = "",
+) {
+    companion object {
+        fun fromSnapshot(snapshot: DocumentSnapshot): CustomRecipe {
+            Log.d("Checking From Snapshot", "This is printing from the From Snapshot method.")
+            val recipeId = snapshot.getLong("recipeId")?.toInt() ?: 0
+            val name = snapshot.getString("name") ?: ""
+            val image = snapshot.getString("image") ?: ""
+            val servings = snapshot.getLong("servings")?.toInt() ?: 0
+            val readyInMinutes = snapshot.getLong("readyInMinutes")?.toInt() ?: 0
+            val instructions = snapshot.getString("instructions") ?: ""
+            val desc = snapshot.getString("description") ?: "not found"
+            val userId = snapshot.getString("userId") ?: ""
+
+            Log.d("CustomRecipe", "RecipeId: $recipeId, Name: $name, Desc: $desc")
+
+            return CustomRecipe(recipeId, name, image, servings, readyInMinutes, instructions, desc, userId)
+        }
+    }
+}
 // Data class used to hold recipes created by user
 data class CustomCreateRecipe(
     val userId: String,
@@ -92,6 +115,7 @@ data class RecipeResponse(
     fun toRecipe(): Recipe {
         return Recipe(
             id = this.id.toString(),
+            userId = null,
             title = this.title,
             summary = "",
             image = this.image,
@@ -124,6 +148,7 @@ data class DetailedRecipeResponse(
     fun toRecipe(): Recipe {
         return Recipe(
             id = id.toString(),
+            userId = null,
             title = title,
             summary = summary ?: "",
             image = image,

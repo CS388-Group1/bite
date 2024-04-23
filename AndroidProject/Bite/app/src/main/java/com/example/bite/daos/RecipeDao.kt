@@ -25,4 +25,6 @@ interface RecipeDao {
 
     @Query("SELECT EXISTS(SELECT * FROM recipes WHERE id = :id)")
     fun isRowIsExist(id : String) : Boolean
+
+
 }

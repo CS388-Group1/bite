@@ -1,7 +1,11 @@
 package com.example.bite
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,6 +19,7 @@ import com.example.bite.models.Ingredient
 import com.example.bite.models.Recipe
 import com.example.bite.models.RecipeLocalData
 import com.example.bite.network.SpoonacularRepository
+import com.example.bite.network.SyncWithFirebase
 import com.tapadoo.alerter.Alerter
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
@@ -26,6 +31,8 @@ class RecipeDetailActivity : AppCompatActivity() {
     private lateinit var spoonacularRepository: SpoonacularRepository
     private lateinit var favoriteButton: ImageButton
     private lateinit var recipe: Recipe
+    private lateinit var shimmerLayout: ShimmerFrameLayout
+    private lateinit var database: AppDatabase
     private lateinit var collapsingToolbar: CollapsingToolbarLayout
     private lateinit var recipeTitleTextView: TextView
 
@@ -40,17 +47,175 @@ class RecipeDetailActivity : AppCompatActivity() {
         }
 
         spoonacularRepository = SpoonacularRepository()
+        database = AppDatabase.getInstance(this)
 
-        val shimmerLayout = findViewById<ShimmerFrameLayout>(R.id.shimmer_layout)
+        shimmerLayout = findViewById<ShimmerFrameLayout>(R.id.shimmer_layout)
         shimmerLayout.startShimmer()
 
         collapsingToolbar = findViewById(R.id.collapsingToolbar)
 
         // Retrieve recipe ID from Intent
         val recipeId = intent.getStringExtra("RECIPE_ID")
+        val recipeName = intent.getStringExtra("RecipeName")
+        val userId = intent.getStringExtra("UserID")
+        Log.v("IN RECIPE DETAIL", "User id: $userId")
 
-//        findViewById<View>(R.id.loadingGraphic).visibility = View.VISIBLE
+        // Check if UserId is set in the Intent
+        if (userId != null) {
+            // Check internet connectivity
+            if (isInternetAvailable(this)) {
+                // Fetch data from Firebase
+                if (recipeName != null) {
+                    fetchRecipeFromFirebase(userId, recipeName)
+                    Log.v("Recipe Detail Fetch:", "Taken from Firebase")
+                }
+            } else {
+                // Fetch recipe from local database
+                if (recipeName != null) {
+                    fetchRecipeFromLocalDatabase(userId, recipeName)
+                    Log.v("Recipe Detail Fetch:", "Taken from local database")
+                }
+            }
+        } else {
+            // Fetch recipe directly from Spoonacular API
+            fetchRecipeFromSpoonacular(recipeId)
+            Log.v("Recipe Detail Fetch:", "Taken from Spoonacular")
+        }
 
+        // findViewById<View>(R.id.loadingGraphic).visibility = View.VISIBLE
+
+    }
+
+    private fun fetchRecipeFromLocalDatabase(userId: String, recipeName: String) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val recipe = recipeName?.let {
+                    database.customRecipeDao().getRecipeByUserIdAndName(userId, recipeName)
+                }
+                runOnUiThread {
+                    // Update UI with fetched recipe details
+                    recipe?.let {
+                        // Update UI with fetched recipe details
+                        findViewById<TextView>(R.id.recipeTitle).text = recipe.name
+                        findViewById<TextView>(R.id.recipeDescription).text =
+                            HtmlCompat.fromHtml(recipe.desc, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                        findViewById<TextView>(R.id.recipeAuthor).text = "By You"
+
+                        // Use Glide to load the recipe image
+                        Glide.with(this@RecipeDetailActivity).load(recipe.image)
+                            .into(findViewById(R.id.recipeImage))
+
+                        findViewById<TextView>(R.id.recipeInstructions).text = recipe.instructions
+
+                        // IMPLEMENT GETTING INGREDIENTS
+                        // Update Ingredients RecyclerView
+                        //                    recipe.ingredients?.let {
+                        //                        val recyclerView: RecyclerView = findViewById(R.id.ingredientsRecyclerView)
+                        //                        val layoutManager = LinearLayoutManager(this@RecipeDetailActivity)
+                        //                        val adapter = RecipeIngredientAdapter(it)
+                        //                        recyclerView.layoutManager = layoutManager
+                        //                        recyclerView.adapter = adapter
+                        //                    }
+
+                    } ?: run {
+                        // Recipe not found in local database
+                        runOnUiThread {
+                            Alerter.create(this@RecipeDetailActivity)
+                                .setTitle("Error")
+                                .setText("Recipe not found in local database")
+                                .setBackgroundColorRes(R.color.red)
+                                .setDuration(5000)
+                                .show()
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                // Handle exception
+                e.printStackTrace()
+                runOnUiThread {
+                    // Show error message to the user
+                    Alerter.create(this@RecipeDetailActivity)
+                        .setTitle("Error")
+                        .setText("Failed to fetch recipe details from local database: ${e.message}")
+                        .setBackgroundColorRes(R.color.red)
+                        .setDuration(5000)
+                        .show()
+                }
+            }
+        }
+    }
+
+    private fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        return connectivityManager?.activeNetworkInfo?.isConnected ?: false
+    }
+
+
+    private fun fetchRecipeFromFirebase(userId: String, recipeName: String) {
+        lifecycleScope.launch {
+            try {
+                val syncWithFirebase = SyncWithFirebase(database.customRecipeDao())
+                val recipeWithIngredients  = syncWithFirebase.getRecipeByUserIdAndName(this@RecipeDetailActivity, userId, recipeName)
+
+                // Update UI with fetched recipe details
+
+                recipeWithIngredients?.let { rw ->
+                    val recipe = rw.recipe
+                    val ingredients = rw.ingredients
+
+                    if (recipe != null) {
+                        Log.d("Recipe Detail", "Recipe found: ${recipe.name}")
+                        findViewById<TextView>(R.id.recipeDescription).text =
+                            HtmlCompat.fromHtml(recipe.desc, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                        findViewById<TextView>(R.id.recipeAuthor).text = "By You"
+                        findViewById<TextView>(R.id.recipeInstructions).text = recipe.instructions
+                        findViewById<TextView>(R.id.recipeTitle).text = recipe.name
+
+
+                        // Use Glide to load the recipe image on the main thread
+                        Glide.with(this@RecipeDetailActivity).load(recipe.image)
+                            .into(findViewById(R.id.recipeImage))
+
+                        favoriteButton = findViewById(R.id.favoriteButton)
+                        favoriteButton.visibility = View.GONE
+
+                    }
+
+                    // Printing Ingredients RecyclerView
+                    ingredients.let {
+                        val recyclerView: RecyclerView = findViewById(R.id.ingredientsRecyclerView)
+                        val layoutManager = LinearLayoutManager(this@RecipeDetailActivity)
+                        val adapter = CustomRecipeIngredientAdapter(it)
+                        recyclerView.layoutManager = layoutManager
+                        recyclerView.adapter = adapter
+                    }
+                }
+                collapsingToolbar.visibility = View.VISIBLE
+
+            } catch (e: Exception) {
+                // Handle exception
+                e.printStackTrace()
+                runOnUiThread {
+                    // Show error message to the user
+                    Alerter.create(this@RecipeDetailActivity)
+                        .setTitle("Error")
+                        .setText("Failed to fetch recipe details: ${e.message}")
+                        .setBackgroundColorRes(R.color.red)
+                        .setDuration(5000)
+                        .show()
+                }
+            } finally {
+                // Hide loading layout
+                shimmerLayout.stopShimmer()
+                shimmerLayout.visibility = View.GONE
+                findViewById<View>(R.id.mainContent)?.visibility = View.VISIBLE
+
+            }
+        }
+
+    }
+
+    private fun fetchRecipeFromSpoonacular(recipeId: String?){
         // Fetch recipe from repository based on ID
         lifecycleScope.launch {
             try {
@@ -124,6 +289,7 @@ class RecipeDetailActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun updateFavorite(recipe: Recipe, favorite: Boolean, id: String) {
         lifecycleScope.launch(Dispatchers.IO) {
