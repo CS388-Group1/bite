@@ -12,7 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bite.daos.UserPreferencesDao
 import com.example.bite.models.Recipe
+import com.example.bite.models.UserPreferences
 import com.example.bite.network.SpoonacularRepository
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.tapadoo.alerter.Alerter
@@ -22,11 +24,15 @@ class DiscoverFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecipeAdapter
     private val spoonacularRepository = SpoonacularRepository()
+    private lateinit var userPreferencesDao: UserPreferencesDao
 
     private var isLoading = false
     private var currentPage = 0
     private val pageSize = 10
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val appDatabase = AppDatabase.getInstance(requireContext())
+        userPreferencesDao = appDatabase.userPreferencesDao()
+
         val view = inflater.inflate(R.layout.fragment_discover, container, false)
         val container = view.findViewById(R.id.shimmer_layout_discover) as ShimmerFrameLayout;
         container.startShimmer()
@@ -96,7 +102,10 @@ class DiscoverFragment : Fragment() {
         isLoading = true
         lifecycleScope.launch {
             try {
-                val newRecipes = spoonacularRepository.getDiscoverRecipes(pageSize)
+                // Grab user preferences if available
+                val userPreferences = userPreferencesDao.getUserPreferences() ?: UserPreferences()
+                val newRecipes = spoonacularRepository.getDiscoverRecipes(userPreferences, pageSize)
+//                val newRecipes = spoonacularRepository.getDiscoverRecipes(pageSize)
                 adapter.updateRecipes(newRecipes)
                 currentPage++
             } catch (e: Exception) {

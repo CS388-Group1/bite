@@ -55,16 +55,19 @@ interface SpoonacularApi {
     @GET("recipes/random")
     suspend fun getTrendingRecipes(
         @Query("number") number: Int = 50,
-        @Query("tags") tags: String = "vegetarian",
+        @Query("include-tags") includeTags: String = "",
+        @Query("exclude-tags") excludeTags: String = "",
         @Query("apiKey") apiKey: String = BuildConfig.SPOONACULAR_API_KEY
     ): RecipeListResponse
 
     @GET("recipes/random")
     suspend fun getDiscoverRecipes(
         @Query("number") number: Int = 50,
-        @Query("tags") tags: String = "vegetarian",
+        @Query("include-tags") includeTags: String = "",
+        @Query("exclude-tags") excludeTags: String = "",
         @Query("apiKey") apiKey: String
     ): RecipeListResponse
+
 
     @GET("recipes/complexSearch")
     suspend fun searchRecipeByName(

@@ -6,6 +6,7 @@ import com.example.bite.BuildConfig
 import com.example.bite.models.Ingredient
 import com.example.bite.models.IngredientListResponse
 import com.example.bite.models.Recipe
+import com.example.bite.models.UserPreferences
 import com.google.gson.Gson
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -72,8 +73,13 @@ class SpoonacularRepository {
     }
 
 
-    suspend fun getTrendingRecipes(): List<Recipe> {
-        val response = api.getTrendingRecipes()
+    suspend fun getTrendingRecipes(userPreferences: UserPreferences): List<Recipe> {
+        val (includeTags, excludeTags) = buildTagsFromPreferences(userPreferences)
+        // Log.v("Trending--->", includeTags.toString())
+        // Log.v("Trending--->", excludeTags.toString())
+        val apiKey = BuildConfig.SPOONACULAR_API_KEY
+        val response = api.getTrendingRecipes(number = 50, includeTags = includeTags, excludeTags = excludeTags, apiKey = apiKey)
+        // Log.v("Trending--->", response.toString())
         return response.recipes.map { it.toRecipe()}
     }
 
@@ -206,10 +212,25 @@ class SpoonacularRepository {
         })
     }
 
-    suspend fun getDiscoverRecipes(pageSize: Int = 10): List<Recipe> {
-        val response = api.getDiscoverRecipes(number = pageSize, tags = "vegetarian", apiKey = BuildConfig.SPOONACULAR_API_KEY)
+    suspend fun getDiscoverRecipes(userPreferences: UserPreferences, pageSize: Int = 10): List<Recipe> {
+        val (includeTags, excludeTags) = buildTagsFromPreferences(userPreferences)
+        val apiKey = BuildConfig.SPOONACULAR_API_KEY
+        val response = api.getDiscoverRecipes(number = 50, includeTags = includeTags, excludeTags = excludeTags, apiKey = apiKey)
         return response.recipes.map { it.toRecipe() }
     }
 
+    private fun buildTagsFromPreferences(userPreferences: UserPreferences): Pair<String, String> {
+        val includeList = mutableListOf<String>()
+        val excludeList = mutableListOf<String>()
 
+        // Convert all tags to lowercase to ensure consistency and avoid case sensitivity issues
+        includeList.addAll(userPreferences.dietaryRestrictions.split(",").map { it.trim().lowercase() })
+        excludeList.addAll(userPreferences.allergies.split(",").map { it.trim() })
+
+        // Filter out blanks or duplicates and join into a comma-separated string
+        val includeTags = includeList.filterNot { it.isBlank() }.toSet().joinToString(",")
+        val excludeTags = excludeList.filterNot { it.isBlank() }.toSet().joinToString(",")
+
+        return Pair(includeTags, excludeTags)
+    }
 }
