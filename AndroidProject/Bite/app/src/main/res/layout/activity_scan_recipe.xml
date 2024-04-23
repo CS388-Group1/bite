@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/analyzingOverlay"
+        layout="@layout/layout_analyzing_overlay"
+        android:visibility="gone" />
+
     <include layout="@layout/app_bar_scan_results" />
 
     <com.facebook.shimmer.ShimmerFrameLayout
