@@ -174,11 +174,12 @@ class HomeFragment : Fragment() {
     private fun fetchTrendingRecipes() {
         lifecycleScope.launch {
             try {
-                val recipes = spoonacularRepository.getTrendingRecipes()
-                val container = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout;
-                container.stopShimmer()
-                container.visibility = View.GONE
-                recipesRv.visibility = View.VISIBLE
+                val userPreferences = userPreferencesDao.getUserPreferences() ?: UserPreferences()
+                val recipes = spoonacularRepository.getTrendingRecipes(userPreferences)
+                val shimmerContainer = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout
+                shimmerContainer.stopShimmer()
+                shimmerContainer.visibility = View.GONE
+//                discoverRecyclerView.visibility = View.VISIBLE
                 recipeAdapter.updateRecipes(recipes)
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch trending recipes: ${e.message}")
