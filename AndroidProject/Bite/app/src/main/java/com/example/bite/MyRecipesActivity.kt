@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.bite.models.CustomRecipeViewModel
 import com.example.bite.models.Recipe
 import com.google.firebase.auth.FirebaseAuth
@@ -30,6 +31,7 @@ class MyRecipesActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var customRecipeViewModel: CustomRecipeViewModel
     private lateinit var noRecipesTextView: TextView
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +44,13 @@ class MyRecipesActivity : AppCompatActivity() {
         noRecipesTextView = findViewById(R.id.noRecipesTextView)
 
         setupRecyclerView()
-        fetchCustomRecipes()
+
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout.setOnRefreshListener {
+            fetchCustomRecipes()
+        }
+
+        fetchCustomRecipes() // Add this line to fetch recipes on initial load
 
         backButton.setOnClickListener {
             onBackPressed()
@@ -74,6 +82,7 @@ class MyRecipesActivity : AppCompatActivity() {
                         val firestoreRecipes = fetchRecipesFromFirestore(userId)
                         withContext(Dispatchers.Main) {
                             updateUIWithRecipes(firestoreRecipes)
+                            swipeRefreshLayout.isRefreshing = false // Stop the refresh animation
                         }
                     }else {
 
@@ -175,8 +184,8 @@ class MyRecipesActivity : AppCompatActivity() {
             recyclerView.visibility = View.VISIBLE
             adapter.updateRecipes(recipeList)
         }
+        swipeRefreshLayout.isRefreshing = false
     }
-
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
