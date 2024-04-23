@@ -96,6 +96,35 @@ class SearchByIngredientFragment : Fragment() {
             }
         })
 
+        selectedAdapter.setOnClickListener(object : IngredientAdapter.OnClickListener {
+            override fun onClick(position: Int, ingredient: Ingredient) {
+                if (ingredient.id in selected.map { it.id }) {
+                    selected.remove(ingredient)
+                    selectedAdapter.updateIngredients(selected)
+                    selectedAdapter.notifyDataSetChanged()
+
+                    if (selected.isEmpty()) {
+                        selectedIngredientsLayout.visibility = View.GONE
+                    }
+
+                    commonIngredientsTextView.text = "Common Ingredients"
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        ingredientRepository.updateIngredientSelection(ingredient.id, false)
+                        val selectedIngredientIds = selected.map { it.id }
+                        val commonIngredients =
+                            ingredientRepository.getCommonIngredients().filter { ingredient ->
+                                ingredient.id !in selectedIngredientIds
+                            }
+                        ingredientAdapter.updateIngredients(commonIngredients)
+                        recyclerView.visibility = View.VISIBLE
+                    }
+
+                    nestedScrollView.smoothScrollTo(0, 0)
+                }
+            }
+        })
+
+
         ingredientRepository = IngredientRepository(
             AppDatabase.getInstance(requireContext()).ingredientDao(),
             requireContext()
