@@ -101,10 +101,10 @@ class SearchByIngredientFragment : Fragment() {
                 if (ingredient.id in selected.map { it.id }) {
                     selected.remove(ingredient)
                     selectedAdapter.updateIngredients(selected)
-
                     selectedAdapter.notifyDataSetChanged()
-                    if (selectedIngredientsLayout.visibility == View.GONE) {
-                        selectedIngredientsLayout.visibility = View.VISIBLE
+
+                    if (selected.isEmpty()) {
+                        selectedIngredientsLayout.visibility = View.GONE
                     }
 
                     commonIngredientsTextView.text = "Common Ingredients"
@@ -116,12 +116,14 @@ class SearchByIngredientFragment : Fragment() {
                                 ingredient.id !in selectedIngredientIds
                             }
                         ingredientAdapter.updateIngredients(commonIngredients)
+                        recyclerView.visibility = View.VISIBLE
                     }
 
                     nestedScrollView.smoothScrollTo(0, 0)
                 }
             }
         })
+
 
         ingredientRepository = IngredientRepository(
             AppDatabase.getInstance(requireContext()).ingredientDao(),
