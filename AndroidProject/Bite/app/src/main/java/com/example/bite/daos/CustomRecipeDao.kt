@@ -33,6 +33,10 @@ interface CustomRecipeDao {
         val ingredients: List<CustomIngredient>
     )
 
+    @Query("SELECT * FROM custom_recipe WHERE userId = :userId AND name = :recipeName")
+    suspend fun getRecipeByUserIdAndName(userId: String, recipeName: String): CustomRecipe?
+
+
     @Query("SELECT * FROM custom_recipe WHERE userId = :userId")
     fun getCustomRecipesWithIngredientsByUserId(userId: String): List<CustomRecipeWithIngredients>
 
@@ -78,4 +82,6 @@ interface CustomRecipeDao {
             )
         }
     }
+
+
 }

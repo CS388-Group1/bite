@@ -8,9 +8,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.example.bite.models.CustomIngredient
 import java.text.DecimalFormat
 
-class RecipeIngredientAdapter(private val ingredients: List<Ingredient>) : RecyclerView.Adapter<RecipeIngredientAdapter.ViewHolder>() {
+class CustomRecipeIngredientAdapter(private val ingredients: List<CustomIngredient>) : RecyclerView.Adapter<CustomRecipeIngredientAdapter.ViewHolder>() {
 
     private val decimalFormat = DecimalFormat("#.##")
 
@@ -19,10 +20,9 @@ class RecipeIngredientAdapter(private val ingredients: List<Ingredient>) : Recyc
         private val nameTextView: TextView = itemView.findViewById(R.id.ingredientName)
         private val amountTextView: TextView = itemView.findViewById(R.id.ingredientAmount)
 
-        fun bind(ingredient: Ingredient) {
-            val imageUrl = "https://spoonacular.com/cdn/ingredients_100x100/${ingredient.image}"
+        fun bind(ingredient: CustomIngredient) {
             Glide.with(itemView.context)
-                .load(imageUrl)
+                .load(R.drawable.cookie_transparent)
                 .into(imageView)
 
             nameTextView.text = ingredient.name.split(" ").joinToString(" ") { it.capitalize() }
@@ -37,8 +37,6 @@ class RecipeIngredientAdapter(private val ingredients: List<Ingredient>) : Recyc
             .inflate(R.layout.item_recipe_ingredient, parent, false)
         return ViewHolder(view)
     }
-
-
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val ingredient = ingredients[position]

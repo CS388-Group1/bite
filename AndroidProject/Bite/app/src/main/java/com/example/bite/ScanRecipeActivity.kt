@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -37,6 +38,7 @@ class ScanRecipeActivity : AppCompatActivity() {
         repository = SpoonacularRepository()
         requestCameraPermission()
 
+        showAnalyzingOverlay(true)
         shimmerLayout = findViewById(R.id.shimmer_layout)
         shimmerLayout.startShimmer()
 
@@ -103,6 +105,10 @@ class ScanRecipeActivity : AppCompatActivity() {
                     }
                 }
             }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+                finish()
+            }
             .show()
     }
 
@@ -123,19 +129,23 @@ class ScanRecipeActivity : AppCompatActivity() {
     }
 
     private fun uploadImage(imageBitmap: Bitmap) {
+        updateProcessingText("Processing Image", "Hang tight! We’re analyzing your photo to identify the food")
+        showAnalyzingOverlay(true)
+        updateAppBarTitle("Analyzing...", "")
         repository.uploadImage(imageBitmap, object : SpoonacularRepository.UploadCallback {
             override fun onSuccess(result: String) {
                 runOnUiThread {
+                    showAnalyzingOverlay(false)
                     shimmerLayout.stopShimmer()
                     shimmerLayout.visibility = View.GONE
                     findViewById<FragmentContainerView>(R.id.fragment_container).visibility = View.VISIBLE
 
-                    Alerter.create(this@ScanRecipeActivity)
-                        .setTitle("Bite: Success")
-                        .setText("Image uploaded successfully")
-                        .setBackgroundColorRes(R.color.green)
-                        .setDuration(3000)
-                        .show()
+//                    Alerter.create(this@ScanRecipeActivity)
+//                        .setTitle("Bite: Success")
+//                        .setText("Image uploaded successfully")
+//                        .setBackgroundColorRes(R.color.green)
+//                        .setDuration(3000)
+//                        .show()
 
                     val category = parseCategoryFromResult(result)
                     val fragment = ScanResultsFragment.newInstance(category)
@@ -146,9 +156,9 @@ class ScanRecipeActivity : AppCompatActivity() {
                 }
             }
 
-
             override fun onFailure(error: String) {
                 runOnUiThread {
+                    showAnalyzingOverlay(false)
                     shimmerLayout.stopShimmer()
                     shimmerLayout.visibility = View.GONE
                     Alerter.create(this@ScanRecipeActivity)
@@ -176,5 +186,20 @@ class ScanRecipeActivity : AppCompatActivity() {
             Log.e("ScanRecipeActivity", "Error parsing JSON result", e)
         }
         return "Unknown"
+    }
+
+    private fun showAnalyzingOverlay(show: Boolean) {
+        val analyzingOverlay = findViewById<View>(R.id.analyzingOverlay)
+        analyzingOverlay.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    fun updateAppBarTitle(title: String, subtitle: String) {
+        findViewById<TextView>(R.id.titleScanResults).text = title
+        findViewById<TextView>(R.id.subtitleScanResults).text = subtitle
+    }
+
+    fun updateProcessingText(text: String, subtitle: String) {
+        findViewById<TextView>(R.id.processingText).text = text
+        findViewById<TextView>(R.id.subProcessingText).text = subtitle
     }
 }

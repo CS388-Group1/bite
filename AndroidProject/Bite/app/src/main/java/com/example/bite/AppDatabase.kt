@@ -122,6 +122,22 @@ abstract class AppDatabase : RoomDatabase() {
                 .build()
         }
 
+
+        val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add the userId column to the custom_recipe table
+                database.execSQL("ALTER TABLE custom_recipe ADD COLUMN userId TEXT NOT NULL DEFAULT ''")
+            }
+        }
+
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Perform any necessary schema changes here for the upgrade from version 5 to version 6
+                // For example, alter tables, add columns, etc.
+                database.execSQL("ALTER TABLE custom_recipes ADD COLUMN userId TEXT NOT NULL DEFAULT ''")
+            }
+        }
+
     }
 
 

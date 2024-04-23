@@ -1,5 +1,6 @@
 package com.example.bite.network
 
+import android.app.Activity
 import android.util.Log
 import com.example.bite.models.CustomIngredient
 import com.example.bite.models.CustomRecipe
@@ -9,7 +10,11 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import com.example.bite.daos.CustomRecipeDao as CustomRecipeDao
+import com.google.android.gms.tasks.Tasks
+
 
 class SyncWithFirebase(private val customRecipeDao: CustomRecipeDao) {
 
@@ -64,6 +69,67 @@ class SyncWithFirebase(private val customRecipeDao: CustomRecipeDao) {
             }
         }
     }
+
+    suspend fun getRecipeByUserIdAndName(activity: Activity, userId: String, recipeName: String): CustomRecipeDao.CustomRecipeWithIngredients? {
+        return try {
+            val documentSnapshot = withContext(Dispatchers.IO) {
+                Tasks.await(
+                    fStore
+                        .collection("users")
+                        .document(userId)
+                        .collection("createdRecipes")
+                        .whereEqualTo("name", recipeName)
+                        .get()
+                )
+            }
+
+            val recipe = documentSnapshot.documents.firstOrNull()
+
+
+            recipe?.let { firestoreRecipe ->
+                val ingredientsSnapshot = withContext(Dispatchers.IO) {
+                    Tasks.await(
+                        fStore
+                            .collection("users")
+                            .document(userId)
+                            .collection("createdRecipes")
+                            .document(recipe.id)
+                            .collection("ingredients")
+                            .get()
+                    )
+                }
+                Log.d("Ingredients Retrieval", "Recipe id: ${recipe.id}")
+
+                val ingredients = ingredientsSnapshot.documents.map { doc ->
+                    doc.toObject(CustomIngredient::class.java)
+                }.filterNotNull()
+
+                if (ingredients.isNotEmpty()) {
+                    Log.d("RecipeDetailActivity", "Ingredients found ")
+                } else {
+                    Log.d("RecipeDetailActivity", "No ingredients found ")
+                }
+
+                val recipe = documentSnapshot.documents.firstOrNull()?.let { CustomRecipe.fromSnapshot(it) }
+
+
+                val customRecipeWithIngredients =
+                    recipe?.let { CustomRecipeDao.CustomRecipeWithIngredients(it, ingredients) }
+                Log.d("FirebaseSync", "Recipe with ingredients found in Firestore for user: $userId, recipe: $recipeName")
+
+                customRecipeWithIngredients
+            } ?: run {
+                Log.d("FirebaseSync", "Recipe not found in Firestore for user: $userId, recipe: $recipeName")
+                null
+            }
+
+        } catch (e: Exception) {
+            Log.e("FirebaseSync", "Error fetching recipe from Firestore: ${e.message}", e)
+            null
+        }
+    }
+
+
 
     private fun storeIngredientsInFirestore(
         userId: String,
