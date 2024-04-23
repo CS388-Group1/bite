@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.bite.daos.UserPreferencesDao
+import com.example.bite.models.UserPreferences
 import com.example.bite.network.SpoonacularRepository
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.tapadoo.alerter.Alerter
@@ -34,12 +36,15 @@ class HomeFragment : Fragment() {
     private lateinit var rotdRecyclerView: RecyclerView
     private lateinit var rotdAdapter: RecipeAdapter
     private lateinit var rotdShimmerLayout: ShimmerFrameLayout
-
+    private lateinit var userPreferencesDao: UserPreferencesDao
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val appDatabase = AppDatabase.getInstance(requireContext())
+        userPreferencesDao = appDatabase.userPreferencesDao()
+
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         val container = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout
         container.startShimmer()
@@ -179,7 +184,8 @@ class HomeFragment : Fragment() {
     private fun fetchTrendingRecipes() {
         lifecycleScope.launch {
             try {
-                val recipes = spoonacularRepository.getTrendingRecipes()
+                val userPreferences = userPreferencesDao.getUserPreferences() ?: UserPreferences()
+                val recipes = spoonacularRepository.getTrendingRecipes(userPreferences)
                 val container = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout;
                 container.stopShimmer()
                 container.visibility = View.GONE
