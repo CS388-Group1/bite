@@ -157,7 +157,7 @@ class HomeFragment : Fragment() {
                 activity?.let {
                     Alerter.create(it)
                         .setTitle("Bite: Error")
-                        .setText("Failed to fetch random recipe: ${e.message}")
+                        .setText("Failed to fetch recipe of the day: ${e.message}")
                         .setBackgroundColorRes(R.color.red)
                         .setDuration(5000)
                         .show()
@@ -194,6 +194,6 @@ class HomeFragment : Fragment() {
         val currentDate = LocalDate.now()
         val form = DateTimeFormatter.ofPattern("yyyyMMdd")
         val number = currentDate.format(form).toInt()
-        return (number % 100000).toString()
+        return (number % 10000).toString()
     }
 }
