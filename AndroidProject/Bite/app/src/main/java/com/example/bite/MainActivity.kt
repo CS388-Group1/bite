@@ -86,14 +86,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container, homeFragment)
-//            .add(R.id.fragment_container, discoverFragment)
-//            .add(R.id.fragment_container, favoritesFragment)
-//            .hide(discoverFragment)
-//            .hide(favoritesFragment)
-            .commit()
-
         // Handle clicks for FABs
         fabScanFood.setOnClickListener {
             val intent = Intent(this@MainActivity, ScanRecipeActivity::class.java)
