@@ -15,4 +15,5 @@
     <color name="yellow">#FFFF00</color>
     <color name="shimmerColor">#C2C2C2</color>
     <color name="semi_transparent_black">#75000000</color>
+    <color name="semi_transparent_white">#75FFFFFF</color>
 </resources>
