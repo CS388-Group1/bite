@@ -34,6 +34,7 @@ class HomeFragment : Fragment() {
     private lateinit var rotdAdapter: RecipeAdapter
     private lateinit var rotdShimmerLayout: ShimmerFrameLayout
     private lateinit var userPreferencesDao: UserPreferencesDao
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,19 +44,27 @@ class HomeFragment : Fragment() {
         userPreferencesDao = appDatabase.userPreferencesDao()
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+
         val container = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout
+
         container.startShimmer()
+        container.visibility = View.VISIBLE
+
+        rotdShimmerLayout = view.findViewById(R.id.shimmer_layout_rotd)
+        rotdShimmerLayout.startShimmer()
 
         spoonacularRepository = SpoonacularRepository()
+
         discoverRecyclerView = view.findViewById(R.id.trendingRecyclerView)
         discoverRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
         recipeAdapter = RecipeAdapter(emptyList()) { recipe ->
             val intent = Intent(requireContext(), RecipeDetailActivity::class.java)
             intent.putExtra("RECIPE_ID", recipe.id)
             startActivity(intent)
         }
         discoverRecyclerView.adapter = recipeAdapter
-        discoverRecyclerView.visibility = View.VISIBLE
+
         recipeAdapter.onFavoriteClicked = { recipe ->
             if(recipeAdapter.onFavoriteClick(recipe)){
                 activity?.let {
@@ -108,9 +117,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-        rotdShimmerLayout = view.findViewById(R.id.shimmer_layout_rotd)
-        rotdShimmerLayout.startShimmer()
-
         val snapHelper = PagerSnapHelper() // or LinearSnapHelper()
         snapHelper.attachToRecyclerView(discoverRecyclerView)
 
@@ -153,10 +159,10 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val recipe = spoonacularRepository.getRandomRecipe(getDailyNumber())
-                rotdShimmerLayout.stopShimmer()
-                rotdShimmerLayout.visibility = View.GONE
                 rotdRecyclerView.visibility = View.VISIBLE
                 rotdAdapter.updateRecipes(listOf(recipe))
+                rotdShimmerLayout.stopShimmer()
+                rotdShimmerLayout.visibility = View.GONE
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch random recipe: ${e.message}")
                 activity?.let {
@@ -176,11 +182,11 @@ class HomeFragment : Fragment() {
             try {
                 val userPreferences = userPreferencesDao.getUserPreferences() ?: UserPreferences()
                 val recipes = spoonacularRepository.getTrendingRecipes(userPreferences)
+                discoverRecyclerView.visibility = View.VISIBLE
+                recipeAdapter.updateRecipes(recipes)
                 val shimmerContainer = view?.findViewById(R.id.shimmer_layout_home) as ShimmerFrameLayout
                 shimmerContainer.stopShimmer()
                 shimmerContainer.visibility = View.GONE
-//                discoverRecyclerView.visibility = View.VISIBLE
-                recipeAdapter.updateRecipes(recipes)
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Failed to fetch trending recipes: ${e.message}")
                 activity?.let {
