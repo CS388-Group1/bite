@@ -39,8 +39,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // FOR TESTING: Pre-fill login fields for testing. Remove for production.
-        binding.editTextTextEmailAddress.setText("test@test.com")
-        binding.editTextTextPassword.setText("testing123")
+//        binding.editTextTextEmailAddress.setText("test@test.com")
+//        binding.editTextTextPassword.setText("testing123")
 
         auth = FirebaseAuth.getInstance()
         fStore = FirebaseFirestore.getInstance()
