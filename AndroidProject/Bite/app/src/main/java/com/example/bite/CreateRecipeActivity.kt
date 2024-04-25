@@ -191,7 +191,7 @@ class CreateRecipeActivity : AppCompatActivity() {
                     Log.e("NetworkConn----->", "Network Unavailable.")
                 }
 
-                val intent = Intent(this@CreateRecipeActivity, MyRecipesActivity::class.java)
+                val intent = Intent(this@CreateRecipeActivity, MainActivity::class.java)
                 startActivity(intent)
 
             } else {
